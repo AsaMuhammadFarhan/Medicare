@@ -24,8 +24,7 @@ export class ConfigurationSettingResolver {
     return ConfigurationSettings.find({
       order: {
         createdAt: 'DESC'
-      },
-      relations: ['comments']
+      }
     })
   }
 
