@@ -18,6 +18,19 @@ import { ConfigurationSettings } from './entities/ConfigurationSettings'
 import { ConfigurationSettingResolver } from './resolvers/configurationSettings'
 import { Pasien } from './entities/Pasien'
 import { UserPasienResolver } from './resolvers/pasien'
+import { Reservasi } from './entities/Reservasi'
+import { Perawat } from './entities/Perawat'
+import { Dokter } from './entities/Dokter'
+import { PoliBagian } from './entities/PoliBagian'
+import { Kunjungan } from './entities/Kunjungan'
+import { KunjunganPoli } from './entities/KunjunganPoli'
+import { Tindakan } from './entities/Tindakan'
+import { Bhp } from './entities/Bhp'
+import { Obat } from './entities/Obat'
+import { RefTindakan } from './entities/RefTindakan'
+import { RefBhp } from './entities/RefBhp'
+import { RefObat } from './entities/RefObat'
+import { Penyakit } from './entities/Penyakit'
 
 const main = async () => {
   const Conn = await createConnection({
@@ -30,6 +43,19 @@ const main = async () => {
       User,
       ConfigurationSettings,
       Pasien,
+      Reservasi,
+      Dokter,
+      Perawat,
+      PoliBagian,
+      Kunjungan,
+      KunjunganPoli,
+      Tindakan,
+      Bhp,
+      Obat,
+      RefTindakan,
+      RefBhp,
+      RefObat,
+      Penyakit,
     ],
     ssl: undefined,
     extra: {

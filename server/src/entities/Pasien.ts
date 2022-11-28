@@ -75,3 +75,5 @@ export class Pasien extends BaseEntity {
   @JoinColumn()
   user: User
 }
+
+// id,no_rm, nama, nik, alamat, tempat_lahir, tgl_lahir, rt, rw, id_kelurahan, id_kecamatan,id_kabupaten, id_provinsi, id_user
