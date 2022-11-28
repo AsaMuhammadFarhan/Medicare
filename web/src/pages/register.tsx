@@ -2,6 +2,7 @@ import { Box, Button, Center, Flex, FormControl, FormErrorMessage, FormHelperTex
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { SimpleFooter } from "../components/Footer";
 import Iconify from "../components/Iconify";
 import Logo from "../components/Logo";
 import { OriginalMetaTags } from "../components/MetaTags";
@@ -15,7 +16,6 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 const RegisterPage = () => {
   const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
-  const [everSubmit, setEverSubmit] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
 
   const [username, setUsername] = useState('');
@@ -29,7 +29,6 @@ const RegisterPage = () => {
 
   const handleClickSignUp = () => {
     setSubmit(true);
-    setEverSubmit(true);
     if (password !== passwordConfirmation) {
       setErrorField('passwordConfirmation');
       setErrorMessage("password confirmation doesn't same");
@@ -63,7 +62,8 @@ const RegisterPage = () => {
   return (
     <Flex
       bgColor={themeColor.background}
-      justify="center"
+      alignItems="center"
+      direction="column"
       minH="100vh"
       w="100%"
       h="100%"
@@ -233,7 +233,7 @@ const RegisterPage = () => {
                     </FormHelperText>
                   </FormControl>
                   <FormControl
-                    isInvalid={everSubmit && password !== passwordConfirmation}
+                    isInvalid={errorField === "passwordConfirmation"}
                     isRequired
                   >
                     <FormLabel htmlFor="password">
@@ -247,7 +247,7 @@ const RegisterPage = () => {
                       type="password"
                     />
                     <FormErrorMessage>
-                      Password Konfirmasi Tidak Sama
+                      {errorMessage}
                     </FormErrorMessage>
                   </FormControl>
                 </Stack>
@@ -264,6 +264,8 @@ const RegisterPage = () => {
           </Flex>
         </HStack>
       </Box>
+
+      <SimpleFooter />
     </Flex>
   )
 }

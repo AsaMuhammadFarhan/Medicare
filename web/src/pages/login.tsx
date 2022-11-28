@@ -2,6 +2,7 @@ import { Avatar, AvatarGroup, Button, Center, Checkbox, Flex, FormControl, FormE
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { SimpleFooter } from "../components/Footer";
 import Iconify from "../components/Iconify";
 import Logo from "../components/Logo";
 import { OriginalMetaTags } from "../components/MetaTags";
@@ -40,13 +41,15 @@ const LoginPage = () => {
         return;
       }
       setSubmit(false);
-      router.push("/");
+      if (result.data?.login.user?.role === "admin") router.push("/admin/dashboard")
+      else router.push("pasien/dashboard");
     })
   }
 
   return (
     <Flex
       bgColor={themeColor.background}
+      direction="column"
       justify="center"
       minH="100vh"
       w="100%"
@@ -193,6 +196,8 @@ const LoginPage = () => {
           </Flex>
         </Flex>
       </Flex>
+
+      <SimpleFooter />
     </Flex>
   )
 }

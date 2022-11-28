@@ -3,6 +3,7 @@ mutation Login($usernameorEmail: String!, $password: String!) {
     user {
       id
       username
+      role
     }
     errors {
       field

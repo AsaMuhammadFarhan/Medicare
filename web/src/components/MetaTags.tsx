@@ -1,13 +1,13 @@
 import Head from "next/head";
 
 export const OriginalMetaTags = ({
-  pageName = "Clinic"
+  pageName = "Kelompok 4"
 }: {
   pageName?: string;
 }) => {
   return (
     <Head>
-      <title>{pageName} | Kelompok 4</title>
+      <title>{pageName ? pageName + " | " : ""}Medicare</title>
       <meta name="description" content="E-Commerce Tim 4 Present. Fast Clinic Reservation with SEO friendly" />
       <meta name="keywords" content="E-Commerce,Medicare,NodeJS,NextJS" />
       <link
