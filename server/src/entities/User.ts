@@ -40,6 +40,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToOne(() => Pasien, (pasien) => pasien.user)
+  @Field(() => Pasien, { nullable: true })
+  @OneToOne(() => Pasien, (pasien) => pasien.user, { nullable: true })
   pasien: Pasien
 }

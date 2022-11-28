@@ -12,6 +12,7 @@ import {
 import { Pasien } from '../entities/Pasien'
 import { User } from '../entities/User'
 import { isAuth } from '../middleware/isAuth'
+import { getConnection } from 'typeorm'
 
 @InputType()
 class PasienInput {
@@ -66,28 +67,18 @@ export class UserPasienResolver {
     })
   }
 
-  @Query(() => User, { nullable: true })
+  @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getUserWithPasienData(): Promise<User[]> {
-    const detailPasiens: User[] = []
-    const users = await User.find({
-      where: {
-        role: 'guest',
-      },
-      order: { id: 'ASC' },
-    })
-    for (const user of users) {
-      const pasien = await Pasien.findOne({
-        where: {
-          userId: user.id,
-        },
-      })
-      if (pasien) {
-        user.pasien = pasien
-      }
-      detailPasiens.push(user)
-    }
-    return detailPasiens
+  async getUsersWithPasienData(): Promise<User[]> {
+    const query = getConnection()
+      .getRepository(User)
+      .createQueryBuilder('user')
+      .where('user.role = :role', { role: 'guest' })
+      .leftJoinAndSelect(
+        'user.pasien',
+        'pasien'
+      )
+    return await query.getMany()
   }
 
   @Mutation(() => Pasien)
