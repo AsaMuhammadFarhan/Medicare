@@ -1,19 +1,115 @@
-import React from "react";
-import {
-  Link,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
+import { As, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import React from 'react';
 
 interface NextChakraLinkProps {
   isExternal?: boolean;
-  href?: string;
-  needHover?: boolean;
-};
+  href: string;
+  w?: string;
+  width?: string;
+  maxW?: string | string[];
+  h?: string;
+  height?: string;
+  maxH?: string | string[];
+  borderRadius?: string | string[];
+  as?: As<any>;
+  title?: string;
+}
 
-export const NextChakraLink: React.FC<NextChakraLinkProps> = ({ children, isExternal = false, href = "/", needHover = true }) => {
+export const NextChakraLink: React.FC<NextChakraLinkProps> = ({
+  children,
+  isExternal = false,
+  href = '/',
+  w,
+  width,
+  maxW,
+  h,
+  height,
+  maxH,
+  borderRadius = '0px',
+  as,
+  title,
+}) => {
   return (
     <NextLink href={href} passHref>
-      <Link _hover={needHover ? undefined : { textDecor: "none" }} isExternal={isExternal}>
+      <Link
+        _hover={{ textDecor: 'none' }}
+        borderRadius={borderRadius}
+        isExternal={isExternal}
+        title={title ?? href}
+        h={height ?? h}
+        w={width ?? w}
+        maxW={maxW}
+        maxH={maxH}
+        as={as}
+      >
+        {children}
+      </Link>
+    </NextLink>
+  );
+};
+
+export const NextChakraLinkNoFocus: React.FC<NextChakraLinkProps> = ({
+  children,
+  isExternal = false,
+  href = '/',
+  w,
+  width,
+  maxW,
+  h,
+  height,
+  maxH,
+  borderRadius = '0px',
+  as,
+  title,
+}) => {
+  return (
+    <NextLink href={href} passHref>
+      <Link
+        _hover={{ textDecor: 'none' }}
+        borderRadius={borderRadius}
+        isExternal={isExternal}
+        title={title ?? href}
+        h={height ?? h}
+        w={width ?? w}
+        _focus={{}}
+        maxW={maxW}
+        maxH={maxH}
+        as={as}
+      >
+        {children}
+      </Link>
+    </NextLink>
+  );
+};
+
+export const NextChakraLinkWithHover: React.FC<NextChakraLinkProps> = ({
+  children,
+  isExternal = false,
+  href = '/',
+  w,
+  width,
+  maxW,
+  h,
+  height,
+  maxH,
+  borderRadius = '0px',
+  as,
+  title,
+}) => {
+  return (
+    <NextLink href={href} passHref>
+      <Link
+        borderRadius={borderRadius}
+        isExternal={isExternal}
+        title={title ?? href}
+        h={height ?? h}
+        w={width ?? w}
+        _focus={{}}
+        maxW={maxW}
+        maxH={maxH}
+        as={as}
+      >
         {children}
       </Link>
     </NextLink>

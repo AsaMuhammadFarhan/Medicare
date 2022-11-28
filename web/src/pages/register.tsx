@@ -1,13 +1,21 @@
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, HStack, Input, InputGroup, InputRightElement, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { NextChakraLink } from "../components/NextChakraLink";
+import Iconify from "../components/Iconify";
+import Logo from "../components/Logo";
+import { OriginalMetaTags } from "../components/MetaTags";
+import NextChakraImage from "../components/NextChakraImage";
+import { NextChakraLinkWithHover } from "../components/NextChakraLink";
+import { Rating } from "../components/Rating";
 import { useRegisterMutation } from "../generated/graphql";
+import themeColor from "../utils/color";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const RegisterPage = () => {
   const router = useRouter();
+  const { isOpen, onToggle } = useDisclosure();
+  const [everSubmit, setEverSubmit] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
 
   const [username, setUsername] = useState('');
@@ -19,8 +27,9 @@ const RegisterPage = () => {
 
   const [, register] = useRegisterMutation();
 
-  const handleClickLogin = () => {
+  const handleClickSignUp = () => {
     setSubmit(true);
+    setEverSubmit(true);
     if (password !== passwordConfirmation) {
       setErrorField('passwordConfirmation');
       setErrorMessage("password confirmation doesn't same");
@@ -52,71 +61,209 @@ const RegisterPage = () => {
   }
 
   return (
-    <Flex minH="100vh" w="100%" justify="center" alignItems="center" bgColor="gray.200" p="40px">
-      <Stack spacing="24px" alignItems="center">
-        <Stack spacing="8px" alignItems="center">
-          <Text fontSize="32px" fontWeight={700}>
-            Register to create new account
-          </Text>
-          <Text>
-            <NextChakraLink href="/login">
-            or sign in if you have one
-            </NextChakraLink>
-          </Text>
-        </Stack>
-        <Stack minW="600px" spacing="16px" borderRadius="8px" bgColor="white" p="16px">
-          <FormControl isInvalid={errorField === 'username'}>
-            <FormLabel>Username</FormLabel>
-            <Input
-              name="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errorField === 'email'}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              name="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              type="password"
-            />
-          </FormControl>
-          <FormControl isInvalid={errorField === "passwordConfirmation"}>
-            <FormLabel>Password Confirmation</FormLabel>
-            <Input
-              name="password"
-              value={passwordConfirmation}
-              onChange={(event) => setPasswordConfirmation(event.target.value)}
-              type="password"
-            />
-            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-          </FormControl>
-          <Button
-            colorScheme="blue"
-            isLoading={isSubmit}
-            onClick={() => handleClickLogin()}
+    <Flex
+      bgColor={themeColor.background}
+      justify="center"
+      minH="100vh"
+      w="100%"
+      h="100%"
+    >
+      <OriginalMetaTags pageName="Register" />
+      <Box
+        maxW="1214px"
+        w="100%"
+      >
+        <HStack
+          direction="row"
+          spacing="48px"
+          py="80px"
+        >
+          {/* RIGHT SEGMENT */}
+          <Center
+            display={["none", "none", "flex"]}
+            px={["", "", "24px"]}
+            w="100%"
           >
-            Login
-          </Button>
-          <Text fontSize="12px">
-            Already have account?{" "}
-            <NextChakraLink href="/login">
-              Sign In
-            </NextChakraLink>
-          </Text>
-        </Stack>
-      </Stack>
+            <VStack spacing="8">
+              <Stack
+                direction="row"
+                fontSize="24px"
+                spacing="12px"
+              >
+                <Flex boxSize="24px" flexShrink={0}>
+                  <Iconify icon="bxs:quote-alt-left" />
+                </Flex>
+                <Heading fontWeight="medium" textAlign="center">
+                  Kesehatan. Nikmat yang hanya bisa dilihat oleh orang yang sakit.
+                </Heading>
+                <Flex boxSize="24px" flexShrink={0}>
+                  <Iconify icon="bxs:quote-alt-right" />
+                </Flex>
+              </Stack>
+              <VStack
+                alignItems="center"
+                spacing="16px"
+              >
+                <Flex
+                  position="relative"
+                  overflow="hidden"
+                  flexShrink={0}
+                  boxSize="64px"
+                  rounded="full"
+                >
+                  <NextChakraImage
+                    objectFit="cover"
+                    src="https://i.pinimg.com/originals/8c/da/c4/8cdac45ae15fd9f28eb9518130eded60.png"
+                    title="Couple Doctor"
+                    alt="Couple Doctor"
+                    boxSize="64px"
+                  />
+                </Flex>
+                <Stack textAlign="center" spacing="2px" alignItems="center">
+                  <Text fontSize="md" fontWeight="medium" color={themeColor.chakraBlue10}>
+                    Muhammad Tomen Jefri
+                  </Text>
+                  <Text fontWeight="medium" fontSize="sm" color={themeColor.chakraBlue10}>
+                    sipalingmotivator@dibimbing.id
+                  </Text>
+                  <Rating defaultValue={5} />
+                </Stack>
+              </VStack>
+            </VStack>
+          </Center>
+          {/* LEFT SEGMENT */}
+          <Flex
+            borderRadius="8px"
+            bgColor="white"
+            boxShadow="md"
+            p="32px 40px"
+            w="100%"
+          >
+            <Stack
+              spacing="32px"
+              w="100%"
+            >
+              <Stack spacing="6" align="center">
+                <Logo />
+                <Stack spacing="3" textAlign="center">
+                  <Heading fontSize="24px">
+                    Create an account
+                  </Heading>
+                  <HStack justify="center" spacing="1">
+                    <Text color="muted">Already have an account?</Text>
+                    <NextChakraLinkWithHover href="/login">
+                      <Button variant="link" colorScheme="blue">
+                        Log in
+                      </Button>
+                    </NextChakraLinkWithHover>
+                  </HStack>
+                </Stack>
+              </Stack>
+              <Stack spacing="6">
+                <Stack spacing="5">
+                  <FormControl
+                    isInvalid={errorField === "username"}
+                    isRequired
+                  >
+                    <FormLabel htmlFor="name">
+                      Name
+                    </FormLabel>
+                    <Input
+                      onChange={(event) => setUsername(event.target.value)}
+                      placeholder="Name"
+                      value={username}
+                      type="text"
+                    />
+                    <FormErrorMessage>
+                      {errorMessage}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <FormControl
+                    isInvalid={errorField === "email"}
+                    isRequired
+                  >
+                    <FormLabel htmlFor="email">
+                      Email
+                    </FormLabel>
+                    <Input
+                      onChange={(event) => setEmail(event.target.value)}
+                      placeholder="Name"
+                      value={email}
+                      type="email"
+                    />
+                    <FormErrorMessage>
+                      {errorMessage}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <FormControl
+                    isInvalid={errorField === "password"}
+                    isRequired
+                  >
+                    <FormLabel htmlFor="password">
+                      Password
+                    </FormLabel>
+                    <InputGroup>
+                      <InputRightElement>
+                        <Button
+                          onClick={onToggle}
+                          variant="ghost"
+                        >
+                          <Flex
+                            color={themeColor.chakraBlue6}
+                            fontSize="24px"
+                            boxSize="24px"
+                            flexShrink={0}
+                          >
+                            <Iconify icon={isOpen ? "bx:hide" : "bx:show"} />
+                          </Flex>
+                        </Button>
+                      </InputRightElement>
+                      <Input
+                        onChange={(event) => setPassword(event.target.value)}
+                        type={isOpen ? 'text' : 'password'}
+                        placeholder="Password"
+                        autoComplete="false"
+                        id="new-password"
+                        value={password}
+                        name="password"
+                      />
+                    </InputGroup>
+                    <FormHelperText color="muted">
+                      At least 8 characters long
+                    </FormHelperText>
+                  </FormControl>
+                  <FormControl
+                    isInvalid={everSubmit && password !== passwordConfirmation}
+                    isRequired
+                  >
+                    <FormLabel htmlFor="password">
+                      Confirmation Password
+                    </FormLabel>
+                    <Input
+                      onChange={(e) => setPasswordConfirmation(e.target.value)}
+                      value={passwordConfirmation}
+                      placeholder="Confirm Password"
+                      autoComplete="false"
+                      type="password"
+                    />
+                    <FormErrorMessage>
+                      Password Konfirmasi Tidak Sama
+                    </FormErrorMessage>
+                  </FormControl>
+                </Stack>
+                <Button
+                  onClick={handleClickSignUp}
+                  isLoading={isSubmit}
+                  colorScheme="blue"
+                  type="submit"
+                >
+                  Create Account
+                </Button>
+              </Stack>
+            </Stack>
+          </Flex>
+        </HStack>
+      </Box>
     </Flex>
   )
 }
