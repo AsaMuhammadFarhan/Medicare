@@ -16,6 +16,8 @@ import { User } from './entities/User'
 import { UserResolver } from './resolvers/user'
 import { ConfigurationSettings } from './entities/ConfigurationSettings'
 import { ConfigurationSettingResolver } from './resolvers/configurationSettings'
+import { Pasien } from './entities/Pasien'
+import { UserPasienResolver } from './resolvers/pasien'
 
 const main = async () => {
   const Conn = await createConnection({
@@ -27,6 +29,7 @@ const main = async () => {
     entities: [
       User,
       ConfigurationSettings,
+      Pasien,
     ],
     ssl: undefined,
     extra: {
@@ -78,6 +81,7 @@ const main = async () => {
       resolvers: [
         UserResolver,
         ConfigurationSettingResolver,
+        UserPasienResolver,
       ],
       validate: false,
     }),

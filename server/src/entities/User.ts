@@ -1,10 +1,18 @@
 import { Field, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
+import { Pasien } from './Pasien'
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-
   @Field()
   @PrimaryGeneratedColumn()
   id!: number
@@ -31,4 +39,7 @@ export class User extends BaseEntity {
   @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date
+
+  @OneToOne(() => Pasien, (pasien) => pasien.user)
+  pasien: Pasien
 }
