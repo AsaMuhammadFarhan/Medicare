@@ -4,7 +4,6 @@ import { createConnection } from 'typeorm'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
-import { UserResolver } from './resolvers/user'
 import Redis from 'ioredis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
@@ -12,21 +11,25 @@ import { isProduction, isStaging } from './constants'
 import { MyContext } from './types'
 import cors from 'cors'
 import path from 'path'
-import { User } from './entities/User'
 import { v4 as uuid } from 'uuid'
+import { User } from './entities/User'
+import { UserResolver } from './resolvers/user'
+import { ConfigurationSettings } from './entities/ConfigurationSettings'
+import { ConfigurationSettingResolver } from './resolvers/configurationSettings'
 
 const main = async () => {
   const Conn = await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: process.env.TYPEORM_LOGGING.toLowerCase() == 'true' ? true : false,
-    // synchronize: true,
     migrations: [path.join(__dirname, './migrations/*')],
-    entities: [User],
+    // LIST ENTITY
+    entities: [
+      User,
+      ConfigurationSettings,
+    ],
     ssl: undefined,
     extra: {
-      // based on  https://node-postgres.com/api/pool
-      // max connection pool size
       max: process.env.DATABASE_CONNECTION_POOL_SIZE,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 3000,
@@ -71,7 +74,11 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      // LIST RESOLVER
+      resolvers: [
+        UserResolver,
+        ConfigurationSettingResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res, redis }),
