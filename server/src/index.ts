@@ -35,6 +35,15 @@ import { RefObatResolver } from './resolvers/refObat'
 import { RefBhpResolver } from './resolvers/refBhp'
 import { RefTindakanResolver } from './resolvers/refTindakan'
 import { PenyakitResolver } from './resolvers/penyakit'
+import { BhpResolver } from './resolvers/bhp'
+import { DokterResolver } from './resolvers/dokter'
+import { KunjunganResolver } from './resolvers/kunjungan'
+import { KunjunganPoliResolver } from './resolvers/KunjunganPoli'
+import { ObatResolver } from './resolvers/obat'
+import { PoliBagianResolver } from './resolvers/poliBagian'
+import { ReservasiResolver } from './resolvers/reservasi'
+import { TindakanResolver } from './resolvers/tindakan'
+import { PerawatResolver } from './resolvers/perawat'
 
 const main = async () => {
   const Conn = await createConnection({
@@ -44,22 +53,22 @@ const main = async () => {
     migrations: [path.join(__dirname, './migrations/*')],
     // LIST ENTITY
     entities: [
-      User,
+      Bhp,
       ConfigurationSettings,
-      Pasien,
-      Reservasi,
       Dokter,
-      Perawat,
-      PoliBagian,
       Kunjungan,
       KunjunganPoli,
-      Tindakan,
-      Bhp,
       Obat,
-      RefTindakan,
+      Pasien,
+      Penyakit,
+      Perawat,
+      PoliBagian,
       RefBhp,
       RefObat,
-      Penyakit,
+      RefTindakan,
+      Reservasi,
+      Tindakan,
+      User,
     ],
     ssl: undefined,
     extra: {
@@ -109,13 +118,22 @@ const main = async () => {
     schema: await buildSchema({
       // LIST RESOLVER
       resolvers: [
-        UserResolver,
+        BhpResolver,
         ConfigurationSettingResolver,
+        DokterResolver,
+        KunjunganResolver,
+        KunjunganPoliResolver,
+        ObatResolver,
         UserPasienResolver,
-        RefObatResolver,
-        RefBhpResolver,
-        RefTindakanResolver,
         PenyakitResolver,
+        PerawatResolver,
+        PoliBagianResolver,
+        RefBhpResolver,
+        RefObatResolver,
+        RefTindakanResolver,
+        ReservasiResolver,
+        TindakanResolver,
+        UserResolver,
       ],
       validate: false,
     }),

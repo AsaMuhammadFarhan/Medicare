@@ -1,3 +1,8 @@
+import { Template } from "../entities/Template"
+import { isAdmin } from "../middleware/isAdmin"
+import { Arg, Field, InputType, Int, Mutation, Query, Resolver, UseMiddleware } from "type-graphql"
+import { getConnection } from "typeorm"
+
 @InputType()
 class TemplateInput {
   @Field({ nullable: true })
@@ -11,7 +16,7 @@ class TemplateInput {
 export class TemplateResolver {
   @Query(() => [Template], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getTemplates(): Promise<Template[] | undefined> {
+  async getAllTemplates(): Promise<Template[] | undefined> {
     const query = getConnection()
       .getRepository(Template)
       .createQueryBuilder("template")
@@ -46,25 +51,27 @@ export class TemplateResolver {
     return await query.getMany();
   }
 
-  @Query(() => [Template], { nullable: true })
+  @Query(() => Template, { nullable: true })
   @UseMiddleware(isAdmin)
   async getTemplate(
     @Arg('id', () => Int) id: number,
-  ): Promise<Template[] | undefined> {
-    const found = await Template.findOne(id, {
-      relations: ['templateRelation', 'templateRelation.user', 'anotherTemplateRelation']
-    })
-    if (found) {
-      found.clickCount++
-      found.save()
-    }
-    return found;
+  ): Promise<Template | undefined> {
+    const query = getConnection()
+    .getRepository(Template)
+    .createQueryBuilder("Template")
+    .where('"Template"."id" = :id', { id })
+    // .leftJoinAndSelect('Template.reservasi', 'reservasi')
+    // .leftJoinAndSelect('Template.penyakit', 'penyakit')
+    // .leftJoinAndSelect('Template.user', 'user')
+    // .leftJoinAndSelect('user.pasien', 'pasien')
+
+    return await query.getOne();
   }
 
   @Mutation(() => Template)
   @UseMiddleware(isAdmin)
   async createTemplate(@Arg("input") input: TemplateInput): Promise<Template> {
-    return Template.create({ ...input }).save();
+    return await Template.create({ ...input }).save();
   }
 
   @Mutation(() => Template)
@@ -74,7 +81,7 @@ export class TemplateResolver {
     @Arg("input") input: TemplateInput
   ): Promise<Template | null> {
     const found = await Template.findOne(id);
-    if (!ref) {
+    if (!found) {
       return null;
     }
 
@@ -92,3 +99,4 @@ export class TemplateResolver {
     await Template.delete(id)
     return true
   }
+}
