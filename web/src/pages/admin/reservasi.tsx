@@ -2,12 +2,12 @@ import { withUrqlClient } from "next-urql";
 import LayoutAdmin from "../../components/LayoutGeneral";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 
-const AdminDashboardPage = () => {
+const AdminReservasiPage = () => {
   return(
     <LayoutAdmin>
-      tekos dashboard
+      tekos reservasi
     </LayoutAdmin>
   )
 };
 
-export default withUrqlClient(createUrqlClient)(AdminDashboardPage);
+export default withUrqlClient(createUrqlClient)(AdminReservasiPage);

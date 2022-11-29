@@ -55,7 +55,7 @@ const RegisterPage = () => {
         return;
       }
       setSubmit(false);
-      router.push("/");
+      router.push("/pasien/welcome");
     })
   }
 
@@ -165,12 +165,12 @@ const RegisterPage = () => {
                     isInvalid={errorField === "username"}
                     isRequired
                   >
-                    <FormLabel htmlFor="name">
+                    <FormLabel>
                       Name
                     </FormLabel>
                     <Input
                       onChange={(event) => setUsername(event.target.value)}
-                      placeholder="Name"
+                      placeholder="Username"
                       value={username}
                       type="text"
                     />
@@ -182,14 +182,14 @@ const RegisterPage = () => {
                     isInvalid={errorField === "email"}
                     isRequired
                   >
-                    <FormLabel htmlFor="email">
+                    <FormLabel>
                       Email
                     </FormLabel>
                     <Input
                       onChange={(event) => setEmail(event.target.value)}
-                      placeholder="Name"
+                      autoComplete="false"
+                      placeholder="Email"
                       value={email}
-                      type="email"
                     />
                     <FormErrorMessage>
                       {errorMessage}
@@ -199,7 +199,7 @@ const RegisterPage = () => {
                     isInvalid={errorField === "password"}
                     isRequired
                   >
-                    <FormLabel htmlFor="password">
+                    <FormLabel>
                       Password
                     </FormLabel>
                     <InputGroup>
@@ -214,7 +214,7 @@ const RegisterPage = () => {
                             boxSize="24px"
                             flexShrink={0}
                           >
-                            <Iconify icon={isOpen ? "bx:hide" : "bx:show"} />
+                            <Iconify boxSize="24px" icon={isOpen ? "bx:hide" : "bx:show"} />
                           </Flex>
                         </Button>
                       </InputRightElement>
@@ -223,9 +223,8 @@ const RegisterPage = () => {
                         type={isOpen ? 'text' : 'password'}
                         placeholder="Password"
                         autoComplete="false"
-                        id="new-password"
                         value={password}
-                        name="password"
+                        name="new-password"
                       />
                     </InputGroup>
                     <FormHelperText color="muted">
@@ -236,7 +235,7 @@ const RegisterPage = () => {
                     isInvalid={errorField === "passwordConfirmation"}
                     isRequired
                   >
-                    <FormLabel htmlFor="password">
+                    <FormLabel>
                       Confirmation Password
                     </FormLabel>
                     <Input

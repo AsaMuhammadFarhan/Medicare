@@ -1,9 +1,22 @@
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { withUrqlClient } from "next-urql";
+import { useRouter } from "next/router";
 import { OriginalMetaTags } from "../components/MetaTags";
 import { NextChakraLinkWithHover } from "../components/NextChakraLink";
 import themeColor from "../utils/color";
+import { createUrqlClient } from "../utils/createUrqlClient";
+import { getRouterQueryAsString } from "../utils/getRouterQuery";
 
-export default function Privacy() {
+export const PrivacyPage = () => {
+
+  const router = useRouter();
+  const next = getRouterQueryAsString(router.query.next);
+
+  const getHomeLink = () => {
+    if (next !== "") return next;
+    return "/"
+  }
+
   return (
     <Flex
       bgColor={themeColor.chakraBlue6}
@@ -15,7 +28,7 @@ export default function Privacy() {
     >
       <OriginalMetaTags pageName="Privacy" />
       <Stack>
-        <NextChakraLinkWithHover href="/">
+        <NextChakraLinkWithHover href={getHomeLink()}>
           <Button variant="link" color="white">
             {`←`} Home
           </Button>
@@ -47,3 +60,5 @@ export default function Privacy() {
     </Flex>
   );
 }
+
+export default withUrqlClient(createUrqlClient)(PrivacyPage);

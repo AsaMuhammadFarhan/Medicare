@@ -128,7 +128,7 @@ const LoginPage = () => {
                           boxSize="24px"
                           flexShrink={0}
                         >
-                          <Iconify icon={isOpen ? "bx:hide" : "bx:show"} />
+                          <Iconify boxSize="24px" icon={isOpen ? "bx:hide" : "bx:show"} />
                         </Flex>
                       </Button>
                     </InputRightElement>

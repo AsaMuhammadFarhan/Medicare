@@ -1,0 +1,23 @@
+query meWithPasienData {
+  meWithPasienData {
+    id
+    username
+    email
+    role
+    pasien {
+      id
+      noRm
+      nama
+      nik
+      alamat
+      tempatLahir
+      tanggalLahir
+      rt
+      rw
+      idKelurahan
+      idKecamatan
+      idKabupatenKota
+      idProvinsi
+    }
+  }
+}

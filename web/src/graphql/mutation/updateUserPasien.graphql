@@ -1,0 +1,5 @@
+mutation updateUserPasien($input: PasienInput!, $id: Float!) {
+  updateUserPasien(input: $input, id: $id) {
+    id
+  }
+}

@@ -31,6 +31,14 @@ const IndexPage = () => {
     })
   };
 
+  const getBaseRouter = (role?: string) => {
+    if (!role) return "/";
+    if (role === "admin") return "/admin/dashboard";
+    if (role === "admin-poli") return "/poli/dashboard";
+    if (role === "guest") return "/pasien/dashboard";
+    return "/"
+  };
+
   return (
     <Flex display="flex" w="100%" direction="column" maxW="100vw">
       <OriginalMetaTags pageName="Home" />
@@ -88,11 +96,19 @@ const IndexPage = () => {
               <Text>
                 Halo, {me.data.me?.username}
               </Text>
+              <NextChakraLink href={getBaseRouter(me.data.me.role)}>
+              <Button
+                variant="link"
+                color="white"
+              >
+                Dashboard
+              </Button>
+              </NextChakraLink>
               <Button
                 onClick={() => {
                   handleClickLogout()
                 }}
-                variant="ghost"
+                variant="link"
                 color="white"
               >
                 Logout
