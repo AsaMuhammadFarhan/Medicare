@@ -40,6 +40,9 @@ class KunjunganPoliInput {
 
   @Field()
   penyakitId: number
+
+  @Field()
+  kunjunganId: number
 }
 
 @Resolver()

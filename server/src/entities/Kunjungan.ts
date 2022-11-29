@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -81,9 +82,9 @@ export class Kunjungan extends BaseEntity {
   @Column()
   penyakitId: number
 
-  @Field(() => KunjunganPoli, { nullable: true })
-  @OneToOne(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.kunjungan)
-  kunjunganPoli: KunjunganPoli
+  @Field(() => [KunjunganPoli], { nullable: true })
+  @OneToMany(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.kunjungan)
+  kunjunganPoli: KunjunganPoli[]
 }
 
 // Id,id_reservasi, id_pasien, id_penyakit,tekanan_darah, denyut_nadi, usia_tahun,usia_bulan,usia_hari, created_by,created_at, edited_by,edited_at

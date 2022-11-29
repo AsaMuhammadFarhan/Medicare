@@ -6,7 +6,6 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -54,8 +53,12 @@ export class KunjunganPoli extends BaseEntity {
   updatedAt: Date
 
   @Field(() => Kunjungan, { nullable: true })
-  @OneToOne(() => Kunjungan, (kunjungan) => kunjungan.kunjunganPoli)
+  @OneToMany(() => Kunjungan, (kunjungan) => kunjungan.kunjunganPoli)
   kunjungan: Kunjungan
+
+  @Field()
+  @Column()
+  kunjunganId: number
 
   @Field(() => PoliBagian, { nullable: true })
   @ManyToOne(() => PoliBagian, (poliBagian) => poliBagian.kunjunganPoli)

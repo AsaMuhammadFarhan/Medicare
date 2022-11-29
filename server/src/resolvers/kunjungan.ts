@@ -72,6 +72,7 @@ export class KunjunganResolver {
       .leftJoinAndSelect('Kunjungan.reservasi', 'reservasi')
       .leftJoinAndSelect('Kunjungan.penyakit', 'penyakit')
       .leftJoinAndSelect('Kunjungan.user', 'user')
+      .leftJoinAndSelect('Kunjungan.kunjunganPoli', 'kunjunganPoli')
       .leftJoinAndSelect('user.pasien', 'pasien')
 
     const keywordList = keywords.split(' ')
@@ -100,6 +101,7 @@ export class KunjunganResolver {
       .leftJoinAndSelect('Kunjungan.reservasi', 'reservasi')
       .leftJoinAndSelect('Kunjungan.penyakit', 'penyakit')
       .leftJoinAndSelect('Kunjungan.user', 'user')
+      .leftJoinAndSelect('Kunjungan.kunjunganPoli', 'kunjunganPoli')
       .leftJoinAndSelect('user.pasien', 'pasien')
 
     return await query.getOne()
