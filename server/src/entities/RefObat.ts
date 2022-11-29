@@ -41,11 +41,9 @@ export class RefObat extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Field(() => Int)
-  @Column()
-  poliBagianId: number
-
   @Field(() => [Obat])
   @OneToMany(() => Obat, (obat) => obat.refObat)
   obat: Obat[]
 }
+
+// Id,nama, harga, created_by,created_at, edited_by,edited_at

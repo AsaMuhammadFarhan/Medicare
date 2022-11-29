@@ -41,10 +41,6 @@ export class RefBhp extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Field(() => Int)
-  @Column()
-  poliBagianId: number
-
   @Field(() => [Bhp])
   @OneToMany(() => Bhp, (bhp) => bhp.refBhp)
   bhp: Bhp[]

@@ -41,10 +41,6 @@ export class RefTindakan extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Field(() => Int)
-  @Column()
-  poliBagianId: number
-
   @Field(() => [Tindakan])
   @OneToMany(() => Tindakan, (tindakan) => tindakan.refTindakan)
   tindakan: Tindakan[]
