@@ -1,4 +1,4 @@
-import { RefObat } from '../entities/RefObat'
+import { RefBhp } from '../entities/RefBhp'
 import { isAdmin } from '../middleware/isAdmin'
 import {
   Arg,
@@ -13,7 +13,7 @@ import {
 import { getConnection } from 'typeorm'
 
 @InputType()
-class RefObatInput {
+class RefBhpInput {
   @Field()
   nama: string
 
@@ -28,21 +28,21 @@ class RefObatInput {
 }
 
 @Resolver()
-export class RefObatResolver {
-  @Query(() => [RefObat], { nullable: true })
+export class RefBhpResolver {
+  @Query(() => [RefBhp], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getAllRefObats(): Promise<RefObat[] | undefined> {
-    return await RefObat.find()
+  async getAllRefBhps(): Promise<RefBhp[] | undefined> {
+    return await RefBhp.find()
   }
 
-  @Query(() => [RefObat], { nullable: true })
+  @Query(() => [RefBhp], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getRefObats(
+  async getRefBhps(
     @Arg('keywords') keywords: string
-  ): Promise<RefObat[] | undefined> {
+  ): Promise<RefBhp[] | undefined> {
     const query = getConnection()
-      .getRepository(RefObat)
-      .createQueryBuilder('refObat')
+      .getRepository(RefBhp)
+      .createQueryBuilder('refBhp')
 
     const keywordList = keywords.split(' ')
     for (let i = 0; i < keywordList.length; i++) {
@@ -58,35 +58,35 @@ export class RefObatResolver {
     return await query.getMany()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefBhp)
   @UseMiddleware(isAdmin)
-  async createRefObat(@Arg('input') input: RefObatInput): Promise<RefObat> {
-    return RefObat.create({ ...input }).save()
+  async createRefBhp(@Arg('input') input: RefBhpInput): Promise<RefBhp> {
+    return RefBhp.create({ ...input }).save()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefBhp)
   @UseMiddleware(isAdmin)
-  async updateRefObat(
+  async updateRefBhp(
     @Arg('id', () => Int) id: number,
-      @Arg('input') input: RefObatInput
-  ): Promise<RefObat | null> {
-    const ref = await RefObat.findOne(id)
+      @Arg('input') input: RefBhpInput
+  ): Promise<RefBhp | null> {
+    const ref = await RefBhp.findOne(id)
     if (!ref) {
       return null
     }
 
     if (typeof input !== 'undefined') {
-      RefObat.update({ id }, { ...input })
+      RefBhp.update({ id }, { ...input })
     }
     return ref
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefBhp)
   @UseMiddleware(isAdmin)
-  async deleteRefObat(
+  async deleteRefBhp(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {
-    await RefObat.delete(id)
+    await RefBhp.delete(id)
     return true
   }
 }

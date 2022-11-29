@@ -21,11 +21,7 @@ export class ConfigurationSettingResolver {
   @Query(() => [ConfigurationSettings])
   @UseMiddleware(isAdmin)
   async configurationSettings(): Promise<ConfigurationSettings[]> {
-    return ConfigurationSettings.find({
-      order: {
-        createdAt: 'DESC'
-      }
-    })
+    return await ConfigurationSettings.find()
   }
 
   @Query(() => [ConfigurationSettings])
@@ -47,7 +43,7 @@ export class ConfigurationSettingResolver {
       query.orWhere(`LOWER(name) LIKE :${key}`, param)
     }
 
-    return query.getMany()
+    return await query.getMany()
   }
 
   @Mutation(() => ConfigurationSettings)

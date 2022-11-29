@@ -61,17 +61,33 @@ export class KunjunganPoli extends BaseEntity {
   @ManyToOne(() => PoliBagian, (poliBagian) => poliBagian.kunjunganPoli)
   poliBagian: PoliBagian
 
+  @Field()
+  @Column()
+  poliBagianId: number
+
   @Field(() => Dokter, { nullable: true })
   @ManyToOne(() => Dokter, (dokter) => dokter.kunjunganPoli)
   dokter: Dokter
+
+  @Field()
+  @Column()
+  dokterId: number
 
   @Field(() => Perawat, { nullable: true })
   @ManyToOne(() => Perawat, (perawat) => perawat.kunjunganPoli)
   perawat: Perawat
 
+  @Field()
+  @Column()
+  perawatId: number
+
   @Field(() => Penyakit, { nullable: true })
   @ManyToOne(() => Penyakit, (penyakit) => penyakit.kunjunganPoli)
   penyakit: Penyakit
+
+  @Field()
+  @Column()
+  penyakitId: number
 
   @Field(() => [Tindakan], { nullable: true })
   @OneToMany(() => Tindakan, (tindakan) => tindakan.kunjunganPoli)

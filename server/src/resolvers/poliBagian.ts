@@ -1,4 +1,3 @@
-import { RefObat } from '../entities/RefObat'
 import { isAdmin } from '../middleware/isAdmin'
 import {
   Arg,
@@ -11,14 +10,15 @@ import {
   UseMiddleware,
 } from 'type-graphql'
 import { getConnection } from 'typeorm'
+import { PoliBagian } from '../entities/PoliBagian'
 
 @InputType()
-class RefObatInput {
+class PoliBagianInput {
   @Field()
   nama: string
 
   @Field()
-  harga: number
+  hargaPendaftaran: number
 
   @Field()
   createdBy: string
@@ -28,21 +28,21 @@ class RefObatInput {
 }
 
 @Resolver()
-export class RefObatResolver {
-  @Query(() => [RefObat], { nullable: true })
+export class PoliBagianResolver {
+  @Query(() => [PoliBagian], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getAllRefObats(): Promise<RefObat[] | undefined> {
-    return await RefObat.find()
+  async getAllPoliBagians(): Promise<PoliBagian[] | undefined> {
+    return await PoliBagian.find()
   }
 
-  @Query(() => [RefObat], { nullable: true })
+  @Query(() => [PoliBagian], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getRefObats(
+  async getPoliBagians(
     @Arg('keywords') keywords: string
-  ): Promise<RefObat[] | undefined> {
+  ): Promise<PoliBagian[] | undefined> {
     const query = getConnection()
-      .getRepository(RefObat)
-      .createQueryBuilder('refObat')
+      .getRepository(PoliBagian)
+      .createQueryBuilder('PoliBagian')
 
     const keywordList = keywords.split(' ')
     for (let i = 0; i < keywordList.length; i++) {
@@ -58,35 +58,35 @@ export class RefObatResolver {
     return await query.getMany()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => PoliBagian)
   @UseMiddleware(isAdmin)
-  async createRefObat(@Arg('input') input: RefObatInput): Promise<RefObat> {
-    return RefObat.create({ ...input }).save()
+  async createPoliBagian(@Arg('input') input: PoliBagianInput): Promise<PoliBagian> {
+    return PoliBagian.create({ ...input }).save()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => PoliBagian)
   @UseMiddleware(isAdmin)
-  async updateRefObat(
+  async updatePoliBagian(
     @Arg('id', () => Int) id: number,
-      @Arg('input') input: RefObatInput
-  ): Promise<RefObat | null> {
-    const ref = await RefObat.findOne(id)
+      @Arg('input') input: PoliBagianInput
+  ): Promise<PoliBagian | null> {
+    const ref = await PoliBagian.findOne(id)
     if (!ref) {
       return null
     }
 
     if (typeof input !== 'undefined') {
-      RefObat.update({ id }, { ...input })
+      PoliBagian.update({ id }, { ...input })
     }
     return ref
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => PoliBagian)
   @UseMiddleware(isAdmin)
-  async deleteRefObat(
+  async deletePoliBagian(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {
-    await RefObat.delete(id)
+    await PoliBagian.delete(id)
     return true
   }
 }

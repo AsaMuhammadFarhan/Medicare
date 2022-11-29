@@ -32,6 +32,9 @@ import { RefBhp } from './entities/RefBhp'
 import { RefObat } from './entities/RefObat'
 import { Penyakit } from './entities/Penyakit'
 import { RefObatResolver } from './resolvers/refObat'
+import { RefBhpResolver } from './resolvers/refBhp'
+import { RefTindakanResolver } from './resolvers/refTindakan'
+import { PenyakitResolver } from './resolvers/penyakit'
 
 const main = async () => {
   const Conn = await createConnection({
@@ -109,7 +112,10 @@ const main = async () => {
         UserResolver,
         ConfigurationSettingResolver,
         UserPasienResolver,
-        RefObatResolver
+        RefObatResolver,
+        RefBhpResolver,
+        RefTindakanResolver,
+        PenyakitResolver,
       ],
       validate: false,
     }),

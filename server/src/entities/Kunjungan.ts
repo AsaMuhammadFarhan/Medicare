@@ -61,13 +61,25 @@ export class Kunjungan extends BaseEntity {
   @ManyToOne(() => User, (user) => user.kunjungan)
   user: User
 
+  @Field()
+  @Column()
+  userId: number
+
   @Field(() => Reservasi, { nullable: true })
   @OneToOne(() => Reservasi, (reservasi) => reservasi.kunjungan)
   reservasi: Reservasi
 
+  @Field()
+  @Column()
+  reservasiId: number
+
   @Field(() => Penyakit, { nullable: true })
   @ManyToOne(() => Penyakit, (penyakit) => penyakit.kunjungan)
   penyakit: Penyakit
+
+  @Field()
+  @Column()
+  penyakitId: number
 
   @Field(() => KunjunganPoli, { nullable: true })
   @OneToOne(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.kunjungan)

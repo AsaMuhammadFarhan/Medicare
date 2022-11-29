@@ -54,7 +54,15 @@ export class Tindakan extends BaseEntity {
   @ManyToOne(() => RefTindakan, (refTindakan) => refTindakan.tindakan)
   refTindakan: RefTindakan
 
+  @Field()
+  @Column()
+  refTindakanId: number
+
   @Field(() => KunjunganPoli)
   @ManyToOne(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.tindakan)
   kunjunganPoli: KunjunganPoli
+
+  @Field()
+  @Column()
+  kunjunganPoliId: number
 }

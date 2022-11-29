@@ -69,7 +69,7 @@ export class UserPasienResolver {
 
   @Query(() => [User])
   @UseMiddleware(isAuth)
-  async getUsersWithPasienData(): Promise<User[]> {
+  async getAllUserPasien(): Promise<User[]> {
     const query = getConnection()
       .getRepository(User)
       .createQueryBuilder('user')

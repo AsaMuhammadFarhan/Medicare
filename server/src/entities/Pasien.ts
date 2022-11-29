@@ -59,10 +59,6 @@ export class Pasien extends BaseEntity {
   idProvinsi: string
 
   @Field()
-  @Column()
-  userId: number
-
-  @Field()
   @CreateDateColumn()
   createdAt: Date
 
@@ -74,6 +70,10 @@ export class Pasien extends BaseEntity {
   @OneToOne(() => User, user => user.pasien)
   @JoinColumn()
   user: User
+
+  @Field()
+  @Column()
+  userId: number
 }
 
 // id,no_rm, nama, nik, alamat, tempat_lahir, tgl_lahir, rt, rw, id_kelurahan, id_kecamatan,id_kabupaten, id_provinsi, id_user

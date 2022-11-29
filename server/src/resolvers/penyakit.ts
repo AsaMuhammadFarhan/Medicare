@@ -1,4 +1,4 @@
-import { RefObat } from '../entities/RefObat'
+import { Penyakit } from '../entities/Penyakit'
 import { isAdmin } from '../middleware/isAdmin'
 import {
   Arg,
@@ -13,12 +13,12 @@ import {
 import { getConnection } from 'typeorm'
 
 @InputType()
-class RefObatInput {
+class PenyakitInput {
   @Field()
   nama: string
 
   @Field()
-  harga: number
+  kode: string
 
   @Field()
   createdBy: string
@@ -28,21 +28,21 @@ class RefObatInput {
 }
 
 @Resolver()
-export class RefObatResolver {
-  @Query(() => [RefObat], { nullable: true })
+export class PenyakitResolver {
+  @Query(() => [Penyakit], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getAllRefObats(): Promise<RefObat[] | undefined> {
-    return await RefObat.find()
+  async getAllPenyakits(): Promise<Penyakit[] | undefined> {
+    return await Penyakit.find()
   }
 
-  @Query(() => [RefObat], { nullable: true })
+  @Query(() => [Penyakit], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getRefObats(
+  async getPenyakits(
     @Arg('keywords') keywords: string
-  ): Promise<RefObat[] | undefined> {
+  ): Promise<Penyakit[] | undefined> {
     const query = getConnection()
-      .getRepository(RefObat)
-      .createQueryBuilder('refObat')
+      .getRepository(Penyakit)
+      .createQueryBuilder('Penyakit')
 
     const keywordList = keywords.split(' ')
     for (let i = 0; i < keywordList.length; i++) {
@@ -58,35 +58,35 @@ export class RefObatResolver {
     return await query.getMany()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => Penyakit)
   @UseMiddleware(isAdmin)
-  async createRefObat(@Arg('input') input: RefObatInput): Promise<RefObat> {
-    return RefObat.create({ ...input }).save()
+  async createPenyakit(@Arg('input') input: PenyakitInput): Promise<Penyakit> {
+    return Penyakit.create({ ...input }).save()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => Penyakit)
   @UseMiddleware(isAdmin)
-  async updateRefObat(
+  async updatePenyakit(
     @Arg('id', () => Int) id: number,
-      @Arg('input') input: RefObatInput
-  ): Promise<RefObat | null> {
-    const ref = await RefObat.findOne(id)
+      @Arg('input') input: PenyakitInput
+  ): Promise<Penyakit | null> {
+    const ref = await Penyakit.findOne(id)
     if (!ref) {
       return null
     }
 
     if (typeof input !== 'undefined') {
-      RefObat.update({ id }, { ...input })
+      Penyakit.update({ id }, { ...input })
     }
     return ref
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => Penyakit)
   @UseMiddleware(isAdmin)
-  async deleteRefObat(
+  async deletePenyakit(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {
-    await RefObat.delete(id)
+    await Penyakit.delete(id)
     return true
   }
 }

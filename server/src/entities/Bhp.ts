@@ -44,4 +44,8 @@ export class Bhp extends BaseEntity {
   @Field(() => RefBhp)
   @ManyToOne(() => RefBhp, (refBhp) => refBhp.bhp)
   refBhp: RefBhp
+
+  @Field()
+  @Column()
+  refBhpId: number
 }

@@ -1,4 +1,4 @@
-import { RefObat } from '../entities/RefObat'
+import { RefTindakan } from '../entities/RefTindakan'
 import { isAdmin } from '../middleware/isAdmin'
 import {
   Arg,
@@ -13,7 +13,7 @@ import {
 import { getConnection } from 'typeorm'
 
 @InputType()
-class RefObatInput {
+class RefTindakanInput {
   @Field()
   nama: string
 
@@ -28,21 +28,21 @@ class RefObatInput {
 }
 
 @Resolver()
-export class RefObatResolver {
-  @Query(() => [RefObat], { nullable: true })
+export class RefTindakanResolver {
+  @Query(() => [RefTindakan], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getAllRefObats(): Promise<RefObat[] | undefined> {
-    return await RefObat.find()
+  async getAllRefTindakans(): Promise<RefTindakan[] | undefined> {
+    return await RefTindakan.find()
   }
 
-  @Query(() => [RefObat], { nullable: true })
+  @Query(() => [RefTindakan], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getRefObats(
+  async getRefTindakans(
     @Arg('keywords') keywords: string
-  ): Promise<RefObat[] | undefined> {
+  ): Promise<RefTindakan[] | undefined> {
     const query = getConnection()
-      .getRepository(RefObat)
-      .createQueryBuilder('refObat')
+      .getRepository(RefTindakan)
+      .createQueryBuilder('refTindakan')
 
     const keywordList = keywords.split(' ')
     for (let i = 0; i < keywordList.length; i++) {
@@ -58,35 +58,35 @@ export class RefObatResolver {
     return await query.getMany()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefTindakan)
   @UseMiddleware(isAdmin)
-  async createRefObat(@Arg('input') input: RefObatInput): Promise<RefObat> {
-    return RefObat.create({ ...input }).save()
+  async createRefTindakan(@Arg('input') input: RefTindakanInput): Promise<RefTindakan> {
+    return RefTindakan.create({ ...input }).save()
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefTindakan)
   @UseMiddleware(isAdmin)
-  async updateRefObat(
+  async updateRefTindakan(
     @Arg('id', () => Int) id: number,
-      @Arg('input') input: RefObatInput
-  ): Promise<RefObat | null> {
-    const ref = await RefObat.findOne(id)
+      @Arg('input') input: RefTindakanInput
+  ): Promise<RefTindakan | null> {
+    const ref = await RefTindakan.findOne(id)
     if (!ref) {
       return null
     }
 
     if (typeof input !== 'undefined') {
-      RefObat.update({ id }, { ...input })
+      RefTindakan.update({ id }, { ...input })
     }
     return ref
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => RefTindakan)
   @UseMiddleware(isAdmin)
-  async deleteRefObat(
+  async deleteRefTindakan(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {
-    await RefObat.delete(id)
+    await RefTindakan.delete(id)
     return true
   }
 }

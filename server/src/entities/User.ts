@@ -52,6 +52,10 @@ export class User extends BaseEntity {
   @OneToOne(() => PoliBagian, (poliBagian) => poliBagian.user, { nullable: true })
   poliBagian: PoliBagian
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  poliBagianId: number
+
   @Field(() => [Reservasi])
   @OneToMany(() => Reservasi, reservasi => reservasi.user)
   reservasi: Reservasi[]

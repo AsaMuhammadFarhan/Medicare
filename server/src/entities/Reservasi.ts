@@ -64,9 +64,17 @@ export class Reservasi extends BaseEntity {
   @ManyToOne(() => PoliBagian, (poliBagian) => poliBagian.reservasi)
   poliBagian: PoliBagian
 
+  @Field()
+  @Column()
+  poliBagianId: number
+
   @Field(() => Dokter, { nullable: true })
   @ManyToOne(() => Dokter, (dokter) => dokter.reservasi)
   dokter: Dokter
+
+  @Field()
+  @Column()
+  dokterId: number
 }
 
 // id, id_pasien, tanggal_rencana_datang, id_poli_bagian, id_dokter,no_telp, status_pasien, created_by,created_at, edited_by,edited_at

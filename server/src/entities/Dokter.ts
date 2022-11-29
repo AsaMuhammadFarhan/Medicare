@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -44,16 +44,16 @@ export class Dokter extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Field(() => Int)
-  @Column()
-  poliBagianId: number
-
   @Field(() => PoliBagian)
   @ManyToOne(() => PoliBagian, (poliBagian) => poliBagian.dokter, {
     onDelete: 'SET NULL',
     nullable: true,
   })
   poliBagian: PoliBagian
+
+  @Field()
+  @Column()
+  poliBagianId: number
 
   @Field(() => [KunjunganPoli])
   @OneToMany(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.dokter, {

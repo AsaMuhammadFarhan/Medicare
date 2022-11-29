@@ -46,7 +46,15 @@ export class Obat extends BaseEntity {
   @ManyToOne(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.obat)
   kunjunganPoli: KunjunganPoli
 
+  @Field()
+  @Column()
+  kunjunganPoliId: number
+
   @Field(() => RefObat)
   @ManyToOne(() => RefObat, (refObat) => refObat.obat)
   refObat: RefObat
+
+  @Field()
+  @Column()
+  refObatId: number
 }

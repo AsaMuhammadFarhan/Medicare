@@ -11,6 +11,18 @@ class TemplateInput {
 export class TemplateResolver {
   @Query(() => [Template], { nullable: true })
   @UseMiddleware(isAdmin)
+  async getTemplates(): Promise<Template[] | undefined> {
+    const query = getConnection()
+      .getRepository(Template)
+      .createQueryBuilder("template")
+      // .leftJoinAndSelect('template.name', 'name')
+      // .leftJoinAndSelect('template.value', 'value')
+
+    return await query.getMany();
+  }
+
+  @Query(() => [Template], { nullable: true })
+  @UseMiddleware(isAdmin)
   async getTemplates(
     @Arg("keywords") keywords: string
   ): Promise<Template[] | undefined> {
@@ -36,15 +48,15 @@ export class TemplateResolver {
 
   @Query(() => [Template], { nullable: true })
   @UseMiddleware(isAdmin)
-  async getTemplates(
+  async getTemplate(
     @Arg('id', () => Int) id: number,
   ): Promise<Template[] | undefined> {
-    const found = await Article.findOne(id, {
+    const found = await Template.findOne(id, {
       relations: ['templateRelation', 'templateRelation.user', 'anotherTemplateRelation']
     })
-    if (article) {
-      article.clickCount++
-      article.save()
+    if (found) {
+      found.clickCount++
+      found.save()
     }
     return found;
   }
@@ -57,7 +69,7 @@ export class TemplateResolver {
 
   @Mutation(() => Template)
   @UseMiddleware(isAdmin)
-  async updateConfigurationSetting(
+  async updateTemplate(
     @Arg("id", () => Int) id: number,
     @Arg("input") input: TemplateInput
   ): Promise<Template | null> {
@@ -74,7 +86,7 @@ export class TemplateResolver {
 
   @Mutation(() => Template)
   @UseMiddleware(isAdmin)
-  async deleteConfigurationSetting(
+  async deleteTemplate(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {
     await Template.delete(id)
