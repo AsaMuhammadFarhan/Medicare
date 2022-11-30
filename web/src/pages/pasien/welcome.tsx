@@ -7,12 +7,14 @@ import Iconify from "../../components/Iconify";
 import { OriginalMetaTags } from "../../components/MetaTags";
 import { NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import { useCreateUserPasienMutation, useMeWithPasienDataQuery } from "../../generated/graphql";
-import { getKecamatan, kabupatenKota } from "../../utils/arrayStock/kabupatenKota";
+import { kabupatenKota } from "../../utils/arrayStock/kabupatenKota";
+import { kecamatan } from "../../utils/arrayStock/kecamatan";
+import { kelurahan } from "../../utils/arrayStock/kelurahan";
 import { provinsi } from "../../utils/arrayStock/provinsi";
 import { getArrayofYearbyStartYear } from "../../utils/arrayStock/waktu";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { monthNames } from "../../utils/format";
+import { getMonthIndexFromOne, monthNames } from "../../utils/format";
 import { useStep } from "../../utils/useStep";
 
 const WelcomePasienPage = () => {
@@ -70,6 +72,7 @@ const WelcomePasienPage = () => {
 
   const handleSavePasienData = () => {
     // Validate
+    // Done by term123
 
     // Do something
     createUserPasien({
@@ -79,7 +82,7 @@ const WelcomePasienPage = () => {
         nik,
         alamat,
         tempatLahir,
-        tanggalLahir,
+        tanggalLahir: new Date(`${tahunLahir}-${getMonthIndexFromOne(bulanLahir)}-${tanggalLahir}`),
         rt,
         rw,
         idKelurahan,
@@ -89,7 +92,23 @@ const WelcomePasienPage = () => {
         userId: meWithPasienData.data?.meWithPasienData?.id ?? -1,
       }
     }).then((result) => {
-
+      if (result.error) {
+        toast({
+          title: "Gagal Menyimpan Perubahan",
+          description: result.error.message,
+          isClosable: true,
+          position: "top",
+          status: "error"
+        });
+        return;
+      }
+      toast({
+        title: "Berhasil Menyimpan Perubahan",
+        status: "success",
+        position: "top",
+        isClosable: true,
+      });
+      router.replace("/pasien/dashboard");
     })
   }
 
@@ -128,8 +147,6 @@ const WelcomePasienPage = () => {
     return
   }
 
-  const kecamatanOptions = await getKecamatan(idKabupatenKota !== "" ? idKabupatenKota : undefined);
-
   useEffect(() => {
     if (meWithPasienData.data?.meWithPasienData?.pasien?.id) router.replace("/pasien/dashboard");
   }, [meWithPasienData.data?.meWithPasienData?.pasien?.id]);
@@ -137,7 +154,8 @@ const WelcomePasienPage = () => {
   return (
     <Flex
       bgColor={themeColor.chakraBlue6}
-      justify="center"
+      alignItems="center"
+      direction="column"
       minH="100vh"
       w="100vw"
       p="80px"
@@ -149,6 +167,7 @@ const WelcomePasienPage = () => {
         bgColor="white"
         h="fit-content"
         maxW="800px"
+        mb="16px"
         w="100%"
         p="32px"
       >
@@ -293,6 +312,9 @@ const WelcomePasienPage = () => {
             >
               Lengkapi Data Tempat Tinggal Kamu
             </Text>
+            <Text>
+              Silahkan masukkan data lokasi tempat tinggal kamu sekarang.
+            </Text>
             <Stack>
               <Text>
                 Alamat
@@ -332,28 +354,61 @@ const WelcomePasienPage = () => {
                 value={idProvinsi}
               >
                 {provinsi.map((prov) => (
-                  <option value={prov.id}>{prov.nama}</option>
+                  <option value={prov.id}>{prov.name}</option>
                 ))}
               </Select>
-              <Select
-                onChange={(e) => setIdKabupatenKota(e.target.value)}
-                placeholder="Pilih Kota"
-                value={idKabupatenKota}
-              >
-                {kabupatenKota.filter((kabKot) => kabKot.id.slice(0, 2) === idProvinsi).map((kabKot) => (
-                  <option value={kabKot.id}>{kabKot.nama}</option>
-                ))}
-              </Select>
-              <Select
-                onChange={(e) => setIdKecamatan(e.target.value)}
-                placeholder="Pilih Kecamatan"
-                value={idKecamatan}
-              >
-                {kecamatanOptions.filter((kecamatan) => kecamatan.id.slice(0, 5) === idKabupatenKota).map((kabKot) => (
-                  <option value={kabKot.id}>{kabKot.nama}</option>
-                ))}
-              </Select>
+              {idProvinsi !== "" && (
+                <Select
+                  onChange={(e) => setIdKabupatenKota(e.target.value)}
+                  placeholder="Pilih Kota"
+                  value={idKabupatenKota}
+                >
+                  {kabupatenKota.filter((kabKot) => kabKot.id.slice(0, 2) === idProvinsi).map((kabKot) => (
+                    <option value={kabKot.id}>{kabKot.name}</option>
+                  ))}
+                </Select>
+              )}
+              {idKabupatenKota !== "" && idProvinsi !== "" && (
+                <Select
+                  onChange={(e) => setIdKecamatan(e.target.value)}
+                  placeholder="Pilih Kecamatan"
+                  value={idKecamatan}
+                >
+                  {kecamatan.filter((kec) => kec.id.slice(0, 4) === idKabupatenKota).map((kec) => (
+                    <option value={kec.id}>{kec.name}</option>
+                  ))}
+                </Select>
+              )}
+              {idKecamatan !== "" && idKabupatenKota !== "" && idProvinsi !== "" && (
+                <Select
+                  onChange={(e) => setIdKelurahan(e.target.value)}
+                  placeholder="Pilih Kecamatan"
+                  value={idKelurahan}
+                >
+                  {kelurahan.filter((kel) => kel.id.slice(0, 7) === idKecamatan).map((kel) => (
+                    <option value={kel.id}>{kel.name}</option>
+                  ))}
+                </Select>
+              )}
             </Stack>
+          </Stack>
+        )}
+
+        {currentStep === 3 && (
+          <Stack
+            spacing="16px"
+            pb="40px"
+          >
+            <Text
+              color={themeColor.chakraBlue8}
+              fontWeight={700}
+              fontSize="60px"
+            >
+              Pembuatan Akun Pasien Selesai!
+            </Text>
+            <Text px="8px">
+              Simpan perubahan ini dan kamu sudah bisa menikmati layanan dari Medicare.
+            </Text>
           </Stack>
         )}
 
@@ -380,6 +435,10 @@ const WelcomePasienPage = () => {
           </Flex>
         )}
       </Stack>
+
+      <NextChakraLinkWithHover href="/pasien/dashboard" color="white">
+        Lewati
+      </NextChakraLinkWithHover>
 
     </Flex>
   );

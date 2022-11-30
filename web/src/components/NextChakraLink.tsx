@@ -14,6 +14,7 @@ interface NextChakraLinkProps {
   borderRadius?: string | string[];
   as?: As<any>;
   title?: string;
+  color?: string;
 }
 
 export const NextChakraLink: React.FC<NextChakraLinkProps> = ({
@@ -29,6 +30,7 @@ export const NextChakraLink: React.FC<NextChakraLinkProps> = ({
   borderRadius = '0px',
   as,
   title,
+  color,
 }) => {
   return (
     <NextLink href={href} passHref>
@@ -39,6 +41,7 @@ export const NextChakraLink: React.FC<NextChakraLinkProps> = ({
         title={title ?? href}
         h={height ?? h}
         w={width ?? w}
+        color={color}
         maxW={maxW}
         maxH={maxH}
         as={as}
@@ -62,6 +65,7 @@ export const NextChakraLinkNoFocus: React.FC<NextChakraLinkProps> = ({
   borderRadius = '0px',
   as,
   title,
+  color,
 }) => {
   return (
     <NextLink href={href} passHref>
@@ -72,6 +76,7 @@ export const NextChakraLinkNoFocus: React.FC<NextChakraLinkProps> = ({
         title={title ?? href}
         h={height ?? h}
         w={width ?? w}
+        color={color}
         _focus={{}}
         maxW={maxW}
         maxH={maxH}
@@ -96,6 +101,7 @@ export const NextChakraLinkWithHover: React.FC<NextChakraLinkProps> = ({
   borderRadius = '0px',
   as,
   title,
+  color,
 }) => {
   return (
     <NextLink href={href} passHref>
@@ -105,6 +111,7 @@ export const NextChakraLinkWithHover: React.FC<NextChakraLinkProps> = ({
         title={title ?? href}
         h={height ?? h}
         w={width ?? w}
+        color={color}
         _focus={{}}
         maxW={maxW}
         maxH={maxH}
