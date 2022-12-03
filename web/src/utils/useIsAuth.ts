@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useMeQuery } from "../generated/graphql";
-import { isServer } from "./isServer";
 
 export const useIsAuth = (role?: string[]) => {
-  const [me] = useMeQuery({
-    pause: isServer(),
-  });
+  const [me] = useMeQuery();
   const router = useRouter();
   useEffect(() => {
     if (!me.fetching && !me.data?.me) {
@@ -17,5 +14,5 @@ export const useIsAuth = (role?: string[]) => {
         router.replace("/404");
       }
     }
-  }, [me.fetching, me.data, router]);
+  }, [me.fetching, me.data, router, role]);
 };

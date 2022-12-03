@@ -213,7 +213,7 @@ export const LayoutPasien: React.FC<{
           alert(result.error.message);
           return;
         }
-        router.push("/");
+        router.push("/login");
       })
     }
     return (
