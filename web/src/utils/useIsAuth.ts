@@ -10,7 +10,7 @@ export const useIsAuth = (role?: string[]) => {
   const router = useRouter();
   useEffect(() => {
     if (!me.fetching && !me.data?.me) {
-      router.replace("/login?next=" + router.asPath);
+      router.replace("/login?next=" + encodeURIComponent(router.asPath));
     }
     if (role && me.data?.me?.role) {
       if (!me.fetching && !role?.includes(me.data?.me?.role)) {

@@ -1,0 +1,7 @@
+query getAllRefObats {
+  getAllRefObats {
+    id
+    nama
+    harga
+  }
+}

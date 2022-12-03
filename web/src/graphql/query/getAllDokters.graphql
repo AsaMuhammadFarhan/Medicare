@@ -1,0 +1,12 @@
+query getAllDokters {
+  getAllDokters {
+    id
+    nama
+    nomorTelepon
+    poliBagian {
+      id
+      nama
+      hargaPendaftaran
+    }
+  }
+}

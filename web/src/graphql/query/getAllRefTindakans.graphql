@@ -1,0 +1,7 @@
+query getAllRefTindakans {
+  getAllRefTindakans {
+    id
+    nama
+    harga
+  }
+}

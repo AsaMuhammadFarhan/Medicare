@@ -1,0 +1,11 @@
+query getAllPoliBagians {
+  getAllPoliBagians {
+    id
+    nama
+    hargaPendaftaran
+    dokter{
+      id
+      nama
+    }
+  }
+}

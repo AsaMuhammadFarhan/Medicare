@@ -892,6 +892,31 @@ export type UpdateUserPasienMutationVariables = Exact<{
 
 export type UpdateUserPasienMutation = { __typename?: 'Mutation', updateUserPasien: { __typename?: 'Pasien', id: number } };
 
+export type GetAllDoktersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllDoktersQuery = { __typename?: 'Query', getAllDokters?: Array<{ __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string, poliBagian: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } }> | null };
+
+export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, dokter: Array<{ __typename?: 'Dokter', id: number, nama: string }> }> | null };
+
+export type GetAllRefBhpsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllRefBhpsQuery = { __typename?: 'Query', getAllRefBhps?: Array<{ __typename?: 'RefBhp', id: number, nama: string, harga: number }> | null };
+
+export type GetAllRefObatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllRefObatsQuery = { __typename?: 'Query', getAllRefObats?: Array<{ __typename?: 'RefObat', id: number, nama: string, harga: number }> | null };
+
+export type GetAllRefTindakansQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllRefTindakansQuery = { __typename?: 'Query', getAllRefTindakans?: Array<{ __typename?: 'RefTindakan', id: number, nama: string, harga: number }> | null };
+
 export type GetAllReservasisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -975,6 +1000,80 @@ export const UpdateUserPasienDocument = gql`
 
 export function useUpdateUserPasienMutation() {
   return Urql.useMutation<UpdateUserPasienMutation, UpdateUserPasienMutationVariables>(UpdateUserPasienDocument);
+};
+export const GetAllDoktersDocument = gql`
+    query getAllDokters {
+  getAllDokters {
+    id
+    nama
+    nomorTelepon
+    poliBagian {
+      id
+      nama
+      hargaPendaftaran
+    }
+  }
+}
+    `;
+
+export function useGetAllDoktersQuery(options: Omit<Urql.UseQueryArgs<GetAllDoktersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllDoktersQuery>({ query: GetAllDoktersDocument, ...options });
+};
+export const GetAllPoliBagiansDocument = gql`
+    query getAllPoliBagians {
+  getAllPoliBagians {
+    id
+    nama
+    hargaPendaftaran
+    dokter {
+      id
+      nama
+    }
+  }
+}
+    `;
+
+export function useGetAllPoliBagiansQuery(options: Omit<Urql.UseQueryArgs<GetAllPoliBagiansQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllPoliBagiansQuery>({ query: GetAllPoliBagiansDocument, ...options });
+};
+export const GetAllRefBhpsDocument = gql`
+    query getAllRefBhps {
+  getAllRefBhps {
+    id
+    nama
+    harga
+  }
+}
+    `;
+
+export function useGetAllRefBhpsQuery(options: Omit<Urql.UseQueryArgs<GetAllRefBhpsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllRefBhpsQuery>({ query: GetAllRefBhpsDocument, ...options });
+};
+export const GetAllRefObatsDocument = gql`
+    query getAllRefObats {
+  getAllRefObats {
+    id
+    nama
+    harga
+  }
+}
+    `;
+
+export function useGetAllRefObatsQuery(options: Omit<Urql.UseQueryArgs<GetAllRefObatsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllRefObatsQuery>({ query: GetAllRefObatsDocument, ...options });
+};
+export const GetAllRefTindakansDocument = gql`
+    query getAllRefTindakans {
+  getAllRefTindakans {
+    id
+    nama
+    harga
+  }
+}
+    `;
+
+export function useGetAllRefTindakansQuery(options: Omit<Urql.UseQueryArgs<GetAllRefTindakansQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllRefTindakansQuery>({ query: GetAllRefTindakansDocument, ...options });
 };
 export const GetAllReservasisDocument = gql`
     query getAllReservasis {

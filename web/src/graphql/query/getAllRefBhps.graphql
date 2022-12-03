@@ -1,0 +1,7 @@
+query getAllRefBhps {
+  getAllRefBhps {
+    id
+    nama
+    harga
+  }
+}

@@ -44,11 +44,11 @@ const adminSidebar = [
 const pasienSidebar = [
   {
     label: "Dasboard",
-    link: "/pasien/dasboard",
+    link: "/pasien/dashboard",
   },
   {
-    label: "Reservasi",
-    link: "/",
+    label: "Buat Reservasi",
+    link: "/pasien/reservasi",
   },
 ];
 
@@ -190,15 +190,9 @@ const LayoutAdmin: React.FC<{
 
 export const LayoutPasien: React.FC<{
   metaTitle?: string;
-  name?: string;
-  email?: string;
-  profilePicture?: string;
 }> = ({
   children,
   metaTitle,
-  name = "Pasien",
-  email,
-  profilePicture,
 }) => {
     useIsAuth();
     const router = useRouter();
@@ -259,8 +253,8 @@ export const LayoutPasien: React.FC<{
                     bgColor: "white",
                     color: themeColor.chakraBlue6
                   }}
-                  bgColor={router.pathname.includes(nav.link) ? "transparent" : "white"}
-                  color={router.pathname.includes(nav.link) ? "white" : themeColor.chakraBlue6}
+                  bgColor={router.pathname.includes(nav.link) ? "white" : "transparent"}
+                  color={router.pathname.includes(nav.link) ? themeColor.chakraBlue6 : "white"}
                   w="100%"
                 >
                   <HStack w="100%" spacing="12px">

@@ -1,11 +1,17 @@
+import { Stack, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
+import { LayoutPasien } from "../../components/LayoutGeneral";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useIsAuth } from "../../utils/useIsAuth";
 
 const PasienDashboardPage = () => {
-  useIsAuth();
   return(
-    <>layout</>
+    <LayoutPasien metaTitle="Dashboard">
+      <Stack spacing="16px">
+        <Text>
+          Dashboard
+        </Text>
+      </Stack>
+    </LayoutPasien>
   )
 };
 
