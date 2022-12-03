@@ -50,6 +50,10 @@ const pasienSidebar = [
     label: "Buat Reservasi",
     link: "/pasien/reservasi",
   },
+  {
+    label: "Akun",
+    link: "/pasien/data-akun",
+  },
 ];
 
 const LayoutAdmin: React.FC<{

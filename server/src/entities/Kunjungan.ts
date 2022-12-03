@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -68,6 +69,7 @@ export class Kunjungan extends BaseEntity {
 
   @Field(() => Reservasi, { nullable: true })
   @OneToOne(() => Reservasi, (reservasi) => reservasi.kunjungan)
+  @JoinColumn()
   reservasi: Reservasi
 
   @Field()

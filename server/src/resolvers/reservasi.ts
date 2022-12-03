@@ -51,7 +51,7 @@ export class ReservasiResolver {
       .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagian')
       .leftJoinAndSelect('Reservasi.kunjungan', 'kunjungan')
       .leftJoinAndSelect('Reservasi.user', 'user')
-      .leftJoinAndSelect('user', 'user.pasien')
+      .leftJoinAndSelect('user.pasien', 'userPasien')
     // .leftJoinAndSelect('Reservasi.value', 'value')
 
     return await query.getMany()

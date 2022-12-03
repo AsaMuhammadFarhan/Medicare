@@ -76,6 +76,13 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "meWithAllData", x.arguments)
             );
           },
+          updateUserPasien: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "meWithPasienData");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "meWithPasienData", x.arguments)
+            );
+          },
         },
       },
     }),
