@@ -32,7 +32,9 @@ export const createUrqlClient = (ssrExchange: any) => ({
             cache.invalidate("Query");
           },
           login: (_result, args, cache, info) => {
-            cache.invalidate("Query");
+            const allField = cache.inspectFields("Query")
+            const argsQueries = allField.filter(x => x.fieldName === "me")
+            argsQueries.forEach(x => cache.invalidate("Query", "me", x.arguments))
           },
           register: (_result, args, cache, info) => {
             cache.invalidate("Query");

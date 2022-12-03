@@ -1,0 +1,44 @@
+query getAllReservasis{
+  getAllReservasis {
+    id
+    tanggalRencanaDatang
+    nomorTelepon
+    statusPasien
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    poliBagianId
+    dokterId
+    user {
+      email
+      username
+      pasien {
+        nama
+      }
+    }
+    kunjungan {
+      id
+      tekananDarah
+      denyutNadi
+      usiaTahun
+      usiaBulan
+      usiaHari
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+    poliBagian {
+      id
+      nama
+      hargaPendaftaran
+    }
+    dokter {
+      id
+      nama
+      nomorTelepon
+    }
+  }
+}

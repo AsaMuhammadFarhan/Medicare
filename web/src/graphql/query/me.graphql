@@ -3,5 +3,6 @@ query Me {
     username
     id
     role
+    email
   }
 }

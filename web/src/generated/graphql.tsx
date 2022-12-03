@@ -89,7 +89,7 @@ export type Kunjungan = {
   createdBy: Scalars['String'];
   denyutNadi: Scalars['Float'];
   id: Scalars['Float'];
-  kunjunganPoli?: Maybe<KunjunganPoli>;
+  kunjunganPoli?: Maybe<Array<KunjunganPoli>>;
   penyakit?: Maybe<Penyakit>;
   penyakitId: Scalars['Float'];
   reservasi?: Maybe<Reservasi>;
@@ -128,6 +128,7 @@ export type KunjunganPoli = {
   hasilBagiPerawat: Scalars['String'];
   id: Scalars['Float'];
   kunjungan?: Maybe<Kunjungan>;
+  kunjunganId: Scalars['Float'];
   obat?: Maybe<Array<Obat>>;
   penyakit?: Maybe<Penyakit>;
   penyakitId: Scalars['Float'];
@@ -146,6 +147,7 @@ export type KunjunganPoliInput = {
   dokterId: Scalars['Float'];
   hasilBagiDokter: Scalars['String'];
   hasilBagiPerawat: Scalars['String'];
+  kunjunganId: Scalars['Float'];
   penyakitId: Scalars['Float'];
   perawatId: Scalars['Float'];
   poliBagianId: Scalars['Float'];
@@ -890,10 +892,15 @@ export type UpdateUserPasienMutationVariables = Exact<{
 
 export type UpdateUserPasienMutation = { __typename?: 'Mutation', updateUserPasien: { __typename?: 'Pasien', id: number } };
 
+export type GetAllReservasisQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllReservasisQuery = { __typename?: 'Query', getAllReservasis?: Array<{ __typename?: 'Reservasi', id: number, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, poliBagianId: number, dokterId: number, user: { __typename?: 'User', email: string, username: string, pasien?: { __typename?: 'Pasien', nama?: string | null } | null }, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, usiaTahun: number, usiaBulan: number, usiaHari: number, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, userId: number } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null }> | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: number, role: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: number, role: string, email: string } | null };
 
 export type MeWithPasienDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -969,12 +976,63 @@ export const UpdateUserPasienDocument = gql`
 export function useUpdateUserPasienMutation() {
   return Urql.useMutation<UpdateUserPasienMutation, UpdateUserPasienMutationVariables>(UpdateUserPasienDocument);
 };
+export const GetAllReservasisDocument = gql`
+    query getAllReservasis {
+  getAllReservasis {
+    id
+    tanggalRencanaDatang
+    nomorTelepon
+    statusPasien
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    poliBagianId
+    dokterId
+    user {
+      email
+      username
+      pasien {
+        nama
+      }
+    }
+    kunjungan {
+      id
+      tekananDarah
+      denyutNadi
+      usiaTahun
+      usiaBulan
+      usiaHari
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+    }
+    poliBagian {
+      id
+      nama
+      hargaPendaftaran
+    }
+    dokter {
+      id
+      nama
+      nomorTelepon
+    }
+  }
+}
+    `;
+
+export function useGetAllReservasisQuery(options: Omit<Urql.UseQueryArgs<GetAllReservasisQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllReservasisQuery>({ query: GetAllReservasisDocument, ...options });
+};
 export const MeDocument = gql`
     query Me {
   me {
     username
     id
     role
+    email
   }
 }
     `;

@@ -41,7 +41,8 @@ const LoginPage = () => {
         return;
       }
       setSubmit(false);
-      if (result.data?.login.user?.role === "admin") router.push("/admin/dashboard")
+      if (typeof router.query.next === "string") router.push(router.query.next);
+      if (result.data?.login.user?.role === "admin") router.push("/admin/dashboard");
       else router.push("pasien/dashboard");
     })
   }
