@@ -62,6 +62,20 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "getAllPoliBagians", x.arguments)
             );
           },
+          createDokter: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllDokters");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllDokters", x.arguments)
+            );
+          },
+          createReservasi: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "meWithAllData");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "meWithAllData", x.arguments)
+            );
+          },
         },
       },
     }),

@@ -124,6 +124,25 @@ export class UserResolver {
     })
   }
 
+  @Query(() => User, { nullable: true })
+  async meWithAllData(
+    @Ctx() { req }: MyContext
+  ): Promise<User | undefined| null> {
+    if (!req.session.userId) {
+      return null
+    }
+
+    return User.findOne(req.session.userId, {
+      relations: [
+        'pasien',
+        'reservasi',
+        'reservasi.poliBagian',
+        'reservasi.dokter',
+        'kunjungan',
+      ]
+    })
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg('options', () => UsernamePasswordInput) options: UsernamePasswordInput,

@@ -8,6 +8,7 @@ query meWithPasienData {
       id
       noRm
       nama
+      nomorTelepon
       nik
       alamat
       tempatLahir

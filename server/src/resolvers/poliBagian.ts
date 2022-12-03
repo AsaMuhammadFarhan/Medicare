@@ -30,13 +30,11 @@ class PoliBagianInput {
 @Resolver()
 export class PoliBagianResolver {
   @Query(() => [PoliBagian], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllPoliBagians(): Promise<PoliBagian[] | undefined> {
     return await PoliBagian.find()
   }
 
   @Query(() => [PoliBagian], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getPoliBagians(
     @Arg('keywords') keywords: string
   ): Promise<PoliBagian[] | undefined> {
@@ -56,6 +54,16 @@ export class PoliBagianResolver {
       )
     }
     return await query.getMany()
+  }
+
+  @Query(() => PoliBagian, { nullable: true })
+  async getPoliBagian(
+    @Arg('id', () => Int) id: number
+  ): Promise<PoliBagian | undefined> {
+    const found = await PoliBagian.findOne(id, {
+      relations: ['dokter'],
+    })
+    return found
   }
 
   @Mutation(() => PoliBagian)

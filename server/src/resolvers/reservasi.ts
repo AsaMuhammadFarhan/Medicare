@@ -30,6 +30,9 @@ class ReservasiInput {
   updatedBy: string
 
   @Field()
+  userId: number
+
+  @Field()
   poliBagianId: number
 
   @Field()
@@ -102,7 +105,6 @@ export class ReservasiResolver {
   }
 
   @Mutation(() => Reservasi)
-  @UseMiddleware(isAdmin)
   async createReservasi(
     @Arg('input') input: ReservasiInput
   ): Promise<Reservasi> {

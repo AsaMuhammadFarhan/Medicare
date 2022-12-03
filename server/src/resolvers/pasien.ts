@@ -23,6 +23,9 @@ class PasienInput {
   nama: string
 
   @Field({ nullable: true })
+  nomorTelepon: string
+
+  @Field({ nullable: true })
   nik: string
 
   @Field({ nullable: true })

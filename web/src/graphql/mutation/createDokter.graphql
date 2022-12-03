@@ -1,0 +1,7 @@
+mutation createDokter($input: DokterInput!) {
+  createDokter(input: $input) {
+    id
+    nama
+    nomorTelepon
+  }
+}

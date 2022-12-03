@@ -1,0 +1,42 @@
+query meWithAllData {
+  meWithAllData {
+    id
+    username
+    email
+    role
+    pasien {
+      id
+      noRm
+      nama
+      nomorTelepon
+      nik
+      alamat
+      tempatLahir
+      tanggalLahir
+      rt
+      rw
+      idKelurahan
+      idKecamatan
+      idKabupatenKota
+      idProvinsi
+    }
+    reservasi {
+      id
+      tanggalRencanaDatang
+      nomorTelepon
+      statusPasien
+      poliBagian {
+        id
+        nama
+      }
+      dokter {
+        id
+        nama
+        nomorTelepon
+      }
+    }
+    kunjungan {
+      id
+    }
+  }
+}

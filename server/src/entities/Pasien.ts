@@ -20,6 +20,10 @@ export class Pasien extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  nomorTelepon: string
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   nik: string
 
   @Field({ nullable: true })

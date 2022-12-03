@@ -1,0 +1,5 @@
+mutation createReservasi($input: ReservasiInput!) {
+  createReservasi(input: $input) {
+    id
+  }
+}

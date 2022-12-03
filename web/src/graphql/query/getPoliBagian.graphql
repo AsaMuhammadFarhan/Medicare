@@ -1,0 +1,12 @@
+query getPoliBagian($id: Int!) {
+  getPoliBagian(id: $id) {
+    id
+    nama
+    hargaPendaftaran
+    dokter {
+      id
+      nama
+      nomorTelepon
+    }
+  }
+}

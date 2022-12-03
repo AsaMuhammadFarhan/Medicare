@@ -30,11 +30,12 @@ const WelcomePasienPage = () => {
   // --
 
   // State
-  const [noRm, setNoRm] = useState("")
-  const [nama, setNama] = useState("")
-  const [nik, setNik] = useState("")
-  const [alamat, setAlamat] = useState("")
-  const [tempatLahir, setTempatLahir] = useState("")
+  const [noRm, setNoRm] = useState("");
+  const [nama, setNama] = useState("");
+  const [nomorTelepon, setNomorTelepon] = useState("");
+  const [nik, setNik] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [tempatLahir, setTempatLahir] = useState("");
   const [tanggalLahir, setTanggalLahir] = useState(""); // new Date("2022-03-25")
   const [bulanLahir, setBulanLahir] = useState("");
   const [tahunLahir, setTahunLahir] = useState("");
@@ -79,6 +80,7 @@ const WelcomePasienPage = () => {
       input: {
         noRm,
         nama,
+        nomorTelepon,
         nik,
         alamat,
         tempatLahir,
@@ -390,6 +392,16 @@ const WelcomePasienPage = () => {
                   ))}
                 </Select>
               )}
+            </Stack>
+            <Stack>
+              <Text>
+                Nomor Handphone
+              </Text>
+              <Input
+                onChange={(e) => setNomorTelepon(e.target.value)}
+                placeholder="No Handphone"
+                value={nomorTelepon}
+              />
             </Stack>
           </Stack>
         )}

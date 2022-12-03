@@ -56,6 +56,10 @@ export class Reservasi extends BaseEntity {
   })
   user: User
 
+  @Field()
+  @Column()
+  userId: number
+
   @Field(() => Kunjungan, { nullable: true })
   @OneToOne(() => Kunjungan, (kunjungan) => kunjungan.reservasi)
   kunjungan: Kunjungan
