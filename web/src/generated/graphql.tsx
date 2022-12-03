@@ -857,6 +857,34 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
+export type CreatePoliBagianMutationVariables = Exact<{
+  input: PoliBagianInput;
+}>;
+
+
+export type CreatePoliBagianMutation = { __typename?: 'Mutation', createPoliBagian: { __typename?: 'PoliBagian', id: number } };
+
+export type CreateRefBhpMutationVariables = Exact<{
+  input: RefBhpInput;
+}>;
+
+
+export type CreateRefBhpMutation = { __typename?: 'Mutation', createRefBhp: { __typename?: 'RefBhp', id: number } };
+
+export type CreateRefObatMutationVariables = Exact<{
+  input: RefObatInput;
+}>;
+
+
+export type CreateRefObatMutation = { __typename?: 'Mutation', createRefObat: { __typename?: 'RefObat', id: number } };
+
+export type CreateRefTindakanMutationVariables = Exact<{
+  input: RefTindakanInput;
+}>;
+
+
+export type CreateRefTindakanMutation = { __typename?: 'Mutation', createRefTindakan: { __typename?: 'RefTindakan', id: number } };
+
 export type CreateUserPasienMutationVariables = Exact<{
   input: PasienInput;
 }>;
@@ -900,7 +928,7 @@ export type GetAllDoktersQuery = { __typename?: 'Query', getAllDokters?: Array<{
 export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, dokter: Array<{ __typename?: 'Dokter', id: number, nama: string }> }> | null };
+export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number }> | null };
 
 export type GetAllRefBhpsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -933,6 +961,50 @@ export type MeWithPasienDataQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeWithPasienDataQuery = { __typename?: 'Query', meWithPasienData?: { __typename?: 'User', id: number, username: string, email: string, role: string, pasien?: { __typename?: 'Pasien', id: number, noRm?: string | null, nama?: string | null, nik?: string | null, alamat?: string | null, tempatLahir?: string | null, tanggalLahir?: any | null, rt?: string | null, rw?: string | null, idKelurahan?: string | null, idKecamatan?: string | null, idKabupatenKota?: string | null, idProvinsi?: string | null } | null } | null };
 
 
+export const CreatePoliBagianDocument = gql`
+    mutation createPoliBagian($input: PoliBagianInput!) {
+  createPoliBagian(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreatePoliBagianMutation() {
+  return Urql.useMutation<CreatePoliBagianMutation, CreatePoliBagianMutationVariables>(CreatePoliBagianDocument);
+};
+export const CreateRefBhpDocument = gql`
+    mutation createRefBhp($input: RefBhpInput!) {
+  createRefBhp(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateRefBhpMutation() {
+  return Urql.useMutation<CreateRefBhpMutation, CreateRefBhpMutationVariables>(CreateRefBhpDocument);
+};
+export const CreateRefObatDocument = gql`
+    mutation createRefObat($input: RefObatInput!) {
+  createRefObat(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateRefObatMutation() {
+  return Urql.useMutation<CreateRefObatMutation, CreateRefObatMutationVariables>(CreateRefObatDocument);
+};
+export const CreateRefTindakanDocument = gql`
+    mutation createRefTindakan($input: RefTindakanInput!) {
+  createRefTindakan(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateRefTindakanMutation() {
+  return Urql.useMutation<CreateRefTindakanMutation, CreateRefTindakanMutationVariables>(CreateRefTindakanDocument);
+};
 export const CreateUserPasienDocument = gql`
     mutation createUserPasien($input: PasienInput!) {
   createUserPasien(input: $input) {
@@ -1025,10 +1097,6 @@ export const GetAllPoliBagiansDocument = gql`
     id
     nama
     hargaPendaftaran
-    dokter {
-      id
-      nama
-    }
   }
 }
     `;

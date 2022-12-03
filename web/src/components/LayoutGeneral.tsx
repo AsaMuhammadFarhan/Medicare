@@ -76,6 +76,7 @@ const LayoutAdmin: React.FC<{
 
     return (
       <Flex
+        position="relative"
         direction="row"
         minH="100vh"
         maxW="100vw"
@@ -87,10 +88,13 @@ const LayoutAdmin: React.FC<{
         <Stack
           bgColor={themeColor.chakraBlue6}
           alignItems="center"
+          position="sticky"
           flexShrink={0}
           spacing="16px"
           p="32px 24px"
+          top="0px"
           w="320px"
+          h="100vh"
         >
           <Stack>
             <Logo size="24px" color="white" />
@@ -173,7 +177,6 @@ const LayoutAdmin: React.FC<{
               </Menu>
             </>
           )}
-
         </Stack>
 
         {/* CORE */}
@@ -211,6 +214,7 @@ export const LayoutPasien: React.FC<{
     }
     return (
       <Flex
+        position="relative"
         direction="row"
         minH="100vh"
         maxW="100vw"
@@ -222,10 +226,13 @@ export const LayoutPasien: React.FC<{
         <Stack
           bgColor={themeColor.chakraBlue6}
           alignItems="center"
+          position="sticky"
           flexShrink={0}
           spacing="16px"
           p="32px 24px"
+          top="0px"
           w="320px"
+          h="100vh"
         >
           <Stack>
             <Logo size="24px" color="white" />
@@ -293,7 +300,6 @@ export const LayoutPasien: React.FC<{
               </Menu>
             </>
           )}
-
         </Stack>
 
         {/* CORE */}

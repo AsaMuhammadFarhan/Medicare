@@ -1,0 +1,5 @@
+mutation createRefBhp($input: RefBhpInput!) {
+  createRefBhp(input: $input) {
+    id
+  }
+}

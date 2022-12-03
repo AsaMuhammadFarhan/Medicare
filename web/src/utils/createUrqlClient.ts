@@ -32,12 +32,35 @@ export const createUrqlClient = (ssrExchange: any) => ({
             cache.invalidate("Query");
           },
           login: (_result, args, cache, info) => {
-            const allField = cache.inspectFields("Query")
-            const argsQueries = allField.filter(x => x.fieldName === "me")
-            argsQueries.forEach(x => cache.invalidate("Query", "me", x.arguments))
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "me");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "me", x.arguments)
+            );
           },
           register: (_result, args, cache, info) => {
             cache.invalidate("Query");
+          },
+          createRefObat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefObats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefObats", x.arguments)
+            );
+          },
+          createRefTindakan: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefTindakans");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefTindakans", x.arguments)
+            );
+          },
+          createPoliBagian: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPoliBagians");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPoliBagians", x.arguments)
+            );
           },
         },
       },

@@ -1,0 +1,5 @@
+mutation createPoliBagian($input: PoliBagianInput!) {
+  createPoliBagian(input: $input) {
+    id
+  }
+}

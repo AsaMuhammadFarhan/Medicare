@@ -43,7 +43,7 @@ const AdminReservasiPage = () => {
                     {reservasi.statusPasien}
                   </Td>
                   <Td>
-                    Ini button
+                    actionButton
                   </Td>
                 </Tr>
               ))}

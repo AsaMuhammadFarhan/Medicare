@@ -3,9 +3,5 @@ query getAllPoliBagians {
     id
     nama
     hargaPendaftaran
-    dokter{
-      id
-      nama
-    }
   }
 }

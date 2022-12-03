@@ -1,0 +1,5 @@
+mutation createRefTindakan($input: RefTindakanInput!) {
+  createRefTindakan(input: $input) {
+    id
+  }
+}
