@@ -1,7 +1,9 @@
-import { Flex, HStack, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import moment from "moment";
 import { withUrqlClient } from "next-urql";
+import Iconify from "../../components/Iconify";
 import { LayoutPasien } from "../../components/LayoutGeneral";
-import { NextChakraLinkWithHover } from "../../components/NextChakraLink";
+import { NextChakraLink, NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import { useMeWithAllDataQuery } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
@@ -11,10 +13,101 @@ const PasienDashboardPage = () => {
 
   const [meWithAllData] = useMeWithAllDataQuery();
 
-  const isTherePendingResevasi: boolean =
-    meWithAllData.data?.meWithAllData?.reservasi.findIndex((res) =>
-      res.statusPasien === "pending"
-    ) !== 1;
+  const pendingReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
+    res.statusPasien === "pending"
+  ) ?? [];
+  const readyReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
+    res.statusPasien === "ready"
+  ) ?? [];
+  const waitingPaymentReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
+    res.statusPasien === "waitingPayment"
+  ) ?? [];
+  const successAndCanceledReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
+    res.statusPasien === "success" || res.statusPasien === "canceled"
+  ) ?? [];
+
+  const getStatusPasien = (value: string) => {
+    if (value === "pending") {
+      return (
+        <Flex
+          bgColor={themeColor.chakraBlue1}
+          color={themeColor.chakraBlue6}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Menunggu Waktu Kedatangan
+        </Flex>
+      )
+    }
+    if (value === "ready") {
+      return (
+        <Flex
+          bgColor={themeColor.chakraBlue1}
+          color={themeColor.chakraBlue6}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Sedang Berlangsung
+        </Flex>
+      )
+    }
+    if (value === "waitingPayment") {
+      return (
+        <Flex
+          bgColor={themeColor.redSoftBg}
+          color={themeColor.redHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Menunggu Pembayaran
+        </Flex>
+      )
+    }
+    if (value === "success") {
+      return (
+        <Flex
+          bgColor={themeColor.greenSoftBg}
+          color={themeColor.greenHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Selesai
+        </Flex>
+      )
+    }
+    if (value === "canceled") {
+      return (
+        <Flex
+          bgColor={themeColor.redSoftBg}
+          color={themeColor.redHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Dibatalkan
+        </Flex>
+      )
+    }
+  };
 
   return (
     <LayoutPasien metaTitle="Dashboard">
@@ -22,7 +115,16 @@ const PasienDashboardPage = () => {
         <Text>
           Dashboard
         </Text>
-        {isTherePendingResevasi ? (
+
+        <Stack spacing="4px">
+          <Text fontSize="18px" fontWeight={600}>
+            Selamat Datang, {meWithAllData.data?.meWithAllData?.pasien?.nama}!
+          </Text>
+          <Text>
+            Ini adalah tampilan dashboard kamu
+          </Text>
+        </Stack>
+        {(pendingReservasi.length > 0 || readyReservasi.length > 0 || waitingPaymentReservasi.length > 0) ? (
           <Stack
             spacing="8px"
             w="100%"
@@ -30,7 +132,7 @@ const PasienDashboardPage = () => {
             <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
               Reservasi Aktif
             </Text>
-            {meWithAllData.data?.meWithAllData?.reservasi.map((res) => (
+            {waitingPaymentReservasi.map((res) => (
               <HStack
                 justify="space-between"
                 alignItems="center"
@@ -50,18 +152,53 @@ const PasienDashboardPage = () => {
                     }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
                   </Text>
                 </Stack>
-                <Flex
-                  bgColor={themeColor.chakraBlue1}
-                  color={themeColor.chakraBlue6}
-                  textTransform="uppercase"
-                  fontWeight={600}
-                  fontSize="12px"
-                  w="fit-content"
-                  rounded="full"
-                  p="4px 8px"
-                >
-                  {res.statusPasien}
-                </Flex>
+                {getStatusPasien(res.statusPasien)}
+              </HStack>
+            ))}
+            {readyReservasi.map((res) => (
+              <HStack
+                justify="space-between"
+                alignItems="center"
+                borderRadius="8px"
+                overflow="hidden"
+                boxShadow="md"
+                key={res.id}
+                w="100%"
+                p="16px"
+              >
+                <Stack spacing="4px">
+                  <Text fontSize="18px">
+                    Reservasi ID#{res.id}
+                  </Text>
+                  <Text fontSize="14px">
+                    [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
+                    }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
+                  </Text>
+                </Stack>
+                {getStatusPasien(res.statusPasien)}
+              </HStack>
+            ))}
+            {pendingReservasi.map((res) => (
+              <HStack
+                justify="space-between"
+                alignItems="center"
+                borderRadius="8px"
+                overflow="hidden"
+                boxShadow="md"
+                key={res.id}
+                w="100%"
+                p="16px"
+              >
+                <Stack spacing="4px">
+                  <Text fontSize="18px">
+                    Reservasi ID#{res.id}
+                  </Text>
+                  <Text fontSize="14px">
+                    [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
+                    }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
+                  </Text>
+                </Stack>
+                {getStatusPasien(res.statusPasien)}
               </HStack>
             ))}
           </Stack>
@@ -75,32 +212,73 @@ const PasienDashboardPage = () => {
             </NextChakraLinkWithHover>
           </Flex>
         )}
-        <SimpleGrid columns={[1, 2, 2]} gap="16px">
-          {/* <Stack
-            borderRadius="8px"
-            overflow="hidden"
-            boxShadow="md"
-            spacing="24px"
-            p="16px"
-            w="100%"
-          >
-            <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
-              Riwayat Kunjungan
-            </Text>
-          </Stack>
-          <Stack
-            borderRadius="8px"
-            overflow="hidden"
-            boxShadow="md"
-            spacing="24px"
-            p="16px"
-            w="100%"
-          >
-            <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
-              Riwayat 
-            </Text>
-          </Stack> */}
-        </SimpleGrid>
+        <Stack
+          spacing="16px"
+          w="100%"
+        >
+          <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
+            Riwayat Kunjungan
+          </Text>
+          {successAndCanceledReservasi.map((res) => (
+            <Stack
+              borderRadius="8px"
+              overflow="hidden"
+              boxShadow="md"
+              spacing="16px"
+              p="24px"
+            >
+              <Stack spacing="4px">
+                <Flex justify="space-between">
+                  <Text fontSize="18px">
+                    Reservasi ID#{res.id}
+                  </Text>
+                  <Flex h="fit-content">
+                    {getStatusPasien(res.statusPasien)}
+                  </Flex>
+                </Flex>
+                <Text fontSize="14px" color={themeColor.muted}>
+                  Periksa {res.kunjungan?.penyakit} dengan {res.kunjungan?.kunjunganPoli?.map((kp) =>
+                    `${kp.dokter?.nama} (Poli ${kp.poliBagian?.nama})`
+                  ).join(", juga ")}
+                </Text>
+              </Stack>
+              <NextChakraLink
+                href={"/pasien/reservasi/" + res.id}
+                borderRadius="8px"
+                w="100%"
+              >
+                <HStack
+                  justify="space-between"
+                  borderColor="gray.200"
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  p="16px"
+                >
+                  <HStack>
+                    <Flex
+                      color={themeColor.chakraBlue8}
+                      alignItems="center"
+                      borderRadius="4px"
+                      bgColor="gray.50"
+                      justify="center"
+                      flexShrink={0}
+                      boxSize="40px"
+                    >
+                      <Iconify icon="bx:file" boxSize="24px" />
+                    </Flex>
+                    <Flex direction="column">
+                      <Text fontSize="14px">
+                        Reservasi-2_{moment(new Date(parseInt(res.updatedAt))).format('L')}
+                      </Text>
+                      <Text color={themeColor.muted}>
+                      </Text>
+                    </Flex>
+                  </HStack>
+                </HStack>
+              </NextChakraLink>
+            </Stack>
+          ))}
+        </Stack>
       </Stack>
     </LayoutPasien>
   )

@@ -137,6 +137,11 @@ export class UserResolver {
         'pasien',
         'reservasi',
         'reservasi.poliBagian',
+        'reservasi.kunjungan',
+        'reservasi.kunjungan.kunjunganPoli',
+        'reservasi.kunjungan.kunjunganPoli.penyakit',
+        'reservasi.kunjungan.kunjunganPoli.dokter',
+        'reservasi.kunjungan.kunjunganPoli.poliBagian',
         'reservasi.dokter',
         'kunjungan',
         'poliBagian'

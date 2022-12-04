@@ -2,17 +2,17 @@ import { Button, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalC
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import DatePicker from "../../components/DatePicker";
-import { LayoutPasien } from "../../components/LayoutGeneral";
+import DatePicker from "../../../components/DatePicker";
+import { LayoutPasien } from "../../../components/LayoutGeneral";
 import {
   useCreateReservasiMutation,
   useGetAllDoktersQuery,
   useGetAllPoliBagiansQuery,
   useGetPoliBagianQuery,
   useMeWithAllDataQuery,
-} from "../../generated/graphql";
-import themeColor from "../../utils/color";
-import { createUrqlClient } from "../../utils/createUrqlClient";
+} from "../../../generated/graphql";
+import themeColor from "../../../utils/color";
+import { createUrqlClient } from "../../../utils/createUrqlClient";
 
 const PasienBuatReservasiPage = () => {
 
