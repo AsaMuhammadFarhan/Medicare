@@ -19,12 +19,14 @@ class BhpInput {
 
   @Field()
   refBhpId: number
+
+  @Field()
+  kunjunganPoliId: number
 }
 
 @Resolver()
 export class BhpResolver {
   @Query(() => [Bhp], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllBhps(): Promise<Bhp[] | undefined> {
     const query = getConnection()
       .getRepository(Bhp)
@@ -70,7 +72,6 @@ export class BhpResolver {
   }
 
   @Mutation(() => Bhp)
-  @UseMiddleware(isAdmin)
   async createBhp(@Arg('input') input: BhpInput): Promise<Bhp> {
     return await Bhp.create({ ...input }).save()
   }
@@ -92,8 +93,7 @@ export class BhpResolver {
     return found
   }
 
-  @Mutation(() => Bhp)
-  @UseMiddleware(isAdmin)
+  @Mutation(() => Boolean)
   async deleteBhp(
     @Arg('id', () => Int) id: number,
   ): Promise<boolean> {

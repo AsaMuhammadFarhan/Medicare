@@ -1,0 +1,65 @@
+query getKunjunganPolisByAdminPoli {
+  getKunjunganPolisByAdminPoli {
+    id
+    biayaPoli
+    hasilBagiDokter
+    hasilBagiPerawat
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    kunjungan {
+      id
+      user {
+        pasien{
+          nama
+        }
+      }
+    }
+    poliBagian {
+      id
+      nama
+    }
+    dokter {
+      id
+      nama
+    }
+    perawat {
+      id
+      nama
+    }
+    penyakit {
+      id
+      nama
+      kode
+    }
+    tindakan {
+      id
+      jumlah
+      harga
+      refTindakan {
+        id
+        nama
+        harga
+      }
+    }
+    obat {
+      id
+      jumlah
+      refObat {
+        id
+        nama
+        harga
+      }
+    }
+    bhp {
+      id
+      jumlah
+      refBhp {
+        id
+        nama
+        harga
+      }
+    }
+  }
+}

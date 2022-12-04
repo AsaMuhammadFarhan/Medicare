@@ -37,6 +37,48 @@ export const createUrqlClient = (ssrExchange: any) => ({
           register: (_result, args, cache, info) => {
             cache.invalidate("Query");
           },
+          deleteObat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          deleteTindakan: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          deleteBhp: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          createObat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          createTindakan: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          createBhp: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
           createRefObat: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");
             const argsQueries = allField.filter((x) => x.fieldName === "getAllRefObats");
@@ -49,6 +91,13 @@ export const createUrqlClient = (ssrExchange: any) => ({
             const argsQueries = allField.filter((x) => x.fieldName === "getAllRefTindakans");
             argsQueries.forEach((x) =>
               cache.invalidate("Query", "getAllRefTindakans", x.arguments)
+            );
+          },
+          createRefBhp: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefBhps");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefBhps", x.arguments)
             );
           },
           createPoliBagian: (_result, args, cache, info) => {

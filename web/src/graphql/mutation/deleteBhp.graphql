@@ -1,0 +1,3 @@
+mutation deleteBhp($id: Int!) {
+  deleteBhp(id: $id)
+}

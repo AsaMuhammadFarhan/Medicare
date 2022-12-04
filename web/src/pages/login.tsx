@@ -43,6 +43,7 @@ const LoginPage = () => {
       setSubmit(false);
       if (typeof router.query.next === "string") router.push(router.query.next);
       if (result.data?.login.user?.role === "admin") router.push("/admin/dashboard");
+      if (result.data?.login.user?.role === "admin-poli") router.push("/admin-poli/dashboard");
       else router.push("pasien/dashboard");
     })
   }

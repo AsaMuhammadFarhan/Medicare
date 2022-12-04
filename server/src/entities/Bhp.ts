@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { KunjunganPoli } from './KunjunganPoli'
 import { RefBhp } from './RefBhp'
 
 @ObjectType()
@@ -48,4 +49,12 @@ export class Bhp extends BaseEntity {
   @Field()
   @Column()
   refBhpId: number
+
+  @Field(() => KunjunganPoli)
+  @ManyToOne(() => KunjunganPoli, (kunjunganPoli) => kunjunganPoli.bhp)
+  kunjunganPoli: KunjunganPoli
+
+  @Field()
+  @Column()
+  kunjunganPoliId: number
 }

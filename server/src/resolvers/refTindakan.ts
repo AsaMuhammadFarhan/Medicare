@@ -30,7 +30,6 @@ class RefTindakanInput {
 @Resolver()
 export class RefTindakanResolver {
   @Query(() => [RefTindakan], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllRefTindakans(): Promise<RefTindakan[] | undefined> {
     return await RefTindakan.find()
   }

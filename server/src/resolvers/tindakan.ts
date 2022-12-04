@@ -42,7 +42,6 @@ class TindakanInput {
 @Resolver()
 export class TindakanResolver {
   @Query(() => [Tindakan], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllTindakans(): Promise<Tindakan[] | undefined> {
     const query = getConnection()
       .getRepository(Tindakan)
@@ -97,7 +96,6 @@ export class TindakanResolver {
   }
 
   @Mutation(() => Tindakan)
-  @UseMiddleware(isAdmin)
   async createTindakan(@Arg('input') input: TindakanInput): Promise<Tindakan> {
     return await Tindakan.create({ ...input }).save()
   }
@@ -119,8 +117,7 @@ export class TindakanResolver {
     return found
   }
 
-  @Mutation(() => Tindakan)
-  @UseMiddleware(isAdmin)
+  @Mutation(() => Boolean)
   async deleteTindakan(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Tindakan.delete(id)
     return true

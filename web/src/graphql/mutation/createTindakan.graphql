@@ -1,0 +1,5 @@
+mutation createTindakan($input: TindakanInput!) {
+  createTindakan(input: $input) {
+    id
+  }
+}

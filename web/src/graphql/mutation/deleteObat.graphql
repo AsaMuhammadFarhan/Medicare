@@ -1,0 +1,3 @@
+mutation deleteObat($id: Int!) {
+  deleteObat(id: $id)
+}

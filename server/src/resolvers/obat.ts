@@ -36,7 +36,6 @@ class ObatInput {
 @Resolver()
 export class ObatResolver {
   @Query(() => [Obat], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllObats(): Promise<Obat[] | undefined> {
     const query = getConnection()
       .getRepository(Obat)
@@ -89,7 +88,6 @@ export class ObatResolver {
   }
 
   @Mutation(() => Obat)
-  @UseMiddleware(isAdmin)
   async createObat(@Arg('input') input: ObatInput): Promise<Obat> {
     return await Obat.create({ ...input }).save()
   }
@@ -111,8 +109,7 @@ export class ObatResolver {
     return found
   }
 
-  @Mutation(() => Obat)
-  @UseMiddleware(isAdmin)
+  @Mutation(() => Boolean)
   async deleteObat(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Obat.delete(id)
     return true

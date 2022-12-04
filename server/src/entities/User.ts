@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -50,6 +51,7 @@ export class User extends BaseEntity {
 
   @Field(() => PoliBagian, { nullable: true })
   @OneToOne(() => PoliBagian, (poliBagian) => poliBagian.user, { nullable: true })
+  @JoinColumn()
   poliBagian: PoliBagian
 
   @Field({ nullable: true })

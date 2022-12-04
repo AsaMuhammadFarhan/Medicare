@@ -4,6 +4,10 @@ query meWithAllData {
     username
     email
     role
+    poliBagianId
+    poliBagian{
+      id
+    }
     pasien {
       id
       noRm

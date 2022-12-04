@@ -30,7 +30,6 @@ class RefBhpInput {
 @Resolver()
 export class RefBhpResolver {
   @Query(() => [RefBhp], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllRefBhps(): Promise<RefBhp[] | undefined> {
     return await RefBhp.find()
   }

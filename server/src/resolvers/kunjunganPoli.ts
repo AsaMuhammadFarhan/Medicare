@@ -2,6 +2,7 @@ import { KunjunganPoli } from '../entities/KunjunganPoli'
 import { isAdmin } from '../middleware/isAdmin'
 import {
   Arg,
+  Ctx,
   Field,
   InputType,
   Int,
@@ -11,6 +12,7 @@ import {
   UseMiddleware,
 } from 'type-graphql'
 import { getConnection } from 'typeorm'
+import { MyContext } from '../types'
 
 @InputType()
 class KunjunganPoliInput {
@@ -48,18 +50,54 @@ class KunjunganPoliInput {
 @Resolver()
 export class KunjunganPoliResolver {
   @Query(() => [KunjunganPoli], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllKunjunganPolis(): Promise<KunjunganPoli[] | undefined> {
     const query = getConnection()
       .getRepository(KunjunganPoli)
       .createQueryBuilder('KunjunganPoli')
-      .leftJoinAndSelect('KunjunganPoli.kunjungan', 'kunjungan')
-      .leftJoinAndSelect('KunjunganPoli.obat', 'obat')
-      .leftJoinAndSelect('KunjunganPoli.tindakan', 'tindakan')
       .leftJoinAndSelect('KunjunganPoli.penyakit', 'penyakit')
       .leftJoinAndSelect('KunjunganPoli.perawat', 'perawat')
       .leftJoinAndSelect('KunjunganPoli.dokter', 'dokter')
       .leftJoinAndSelect('KunjunganPoli.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('KunjunganPoli.kunjungan', 'kunjungan')
+      .leftJoinAndSelect('kunjungan.user', 'user')
+      .leftJoinAndSelect('user.pasien', 'userPasien')
+      .leftJoinAndSelect('KunjunganPoli.obat', 'obat')
+      .leftJoinAndSelect('obat.refObat', 'refObat')
+      .leftJoinAndSelect('KunjunganPoli.bhp', 'bhp')
+      .leftJoinAndSelect('bhp.refBhp', 'refBhp')
+      .leftJoinAndSelect('KunjunganPoli.tindakan', 'tindakan')
+      .leftJoinAndSelect('tindakan.refTindakan', 'refTindakan')
+      .orderBy('KunjunganPoli.id', 'DESC')
+    // .leftJoinAndSelect('KunjunganPoli.value', 'value')
+    // .leftJoinAndSelect('KunjunganPoli.value', 'value')
+
+    return await query.getMany()
+
+  }
+
+  @Query(() => [KunjunganPoli], { nullable: true })
+  async getKunjunganPolisByAdminPoli(
+    @Ctx() { req }: MyContext
+  ): Promise<KunjunganPoli[] | undefined> {
+    const query = getConnection()
+      .getRepository(KunjunganPoli)
+      .createQueryBuilder('KunjunganPoli')
+      .leftJoinAndSelect('KunjunganPoli.kunjungan', 'kunjungan')
+      .leftJoinAndSelect('kunjungan.user', 'user')
+      .leftJoinAndSelect('user.pasien', 'userPasien')
+      .leftJoinAndSelect('KunjunganPoli.obat', 'obat')
+      .leftJoinAndSelect('obat.refObat', 'refObat')
+      .leftJoinAndSelect('KunjunganPoli.bhp', 'bhp')
+      .leftJoinAndSelect('bhp.refBhp', 'refBhp')
+      .leftJoinAndSelect('KunjunganPoli.tindakan', 'tindakan')
+      .leftJoinAndSelect('tindakan.refTindakan', 'refTindakan')
+      .leftJoinAndSelect('KunjunganPoli.penyakit', 'penyakit')
+      .leftJoinAndSelect('KunjunganPoli.perawat', 'perawat')
+      .leftJoinAndSelect('KunjunganPoli.dokter', 'dokter')
+      .leftJoinAndSelect('KunjunganPoli.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('poliBagian.user', 'userPoliBagian')
+      .where('userPoliBagian.id = :id', { id: req.session.userId })
+      .orderBy('KunjunganPoli.id', 'DESC')
     // .leftJoinAndSelect('KunjunganPoli.value', 'value')
     // .leftJoinAndSelect('KunjunganPoli.value', 'value')
 

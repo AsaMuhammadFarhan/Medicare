@@ -1,0 +1,3 @@
+mutation deleteTindakan($id: Int!) {
+  deleteTindakan(id: $id)
+}

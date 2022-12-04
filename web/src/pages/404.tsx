@@ -13,7 +13,8 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 const FourOFour = () => {
   const [me] = useMeQuery();
   const getLocationLink = () => {
-    if (me.data?.me?.role === "admin" || me.data?.me?.role === "admin-poli") return "/admin/dashboard";
+    if (me.data?.me?.role === "admin") return "/admin/dashboard";
+    if (me.data?.me?.role === "admin-poli") return "/admin-poli/dashboard";
     if (me.data?.me?.role === "guest") return "/pasien/dashboard";
     return "/"
   }

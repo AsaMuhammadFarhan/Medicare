@@ -30,7 +30,6 @@ class RefObatInput {
 @Resolver()
 export class RefObatResolver {
   @Query(() => [RefObat], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllRefObats(): Promise<RefObat[] | undefined> {
     return await RefObat.find()
   }

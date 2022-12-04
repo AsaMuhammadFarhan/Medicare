@@ -1,0 +1,5 @@
+mutation createBhp($input: BhpInput!) {
+  createBhp(input: $input) {
+    id
+  }
+}

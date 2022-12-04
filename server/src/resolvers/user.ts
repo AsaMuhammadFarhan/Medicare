@@ -139,6 +139,7 @@ export class UserResolver {
         'reservasi.poliBagian',
         'reservasi.dokter',
         'kunjungan',
+        'poliBagian'
       ]
     })
   }

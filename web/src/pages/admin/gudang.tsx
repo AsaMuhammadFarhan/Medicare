@@ -1,5 +1,6 @@
 import { Stack, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
+import GudangBhp from "../../components/Gudang/Bhp";
 import ConfigurationSetting from "../../components/Gudang/ConfigurationSetting";
 import GudangObat from "../../components/Gudang/Obat";
 import DaftarPenyakit from "../../components/Gudang/Penyakit";
@@ -18,6 +19,7 @@ const AdminGudangPage = () => {
         <Stack spacing="16px">
           <GudangObat />
           <GudangTindakan />
+          <GudangBhp />
           <GudangPoli />
           <DaftarPenyakit />
           <ConfigurationSetting />

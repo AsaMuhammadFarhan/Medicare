@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { Bhp } from './Bhp'
 import { Dokter } from './Dokter'
 import { Kunjungan } from './Kunjungan'
 import { Obat } from './Obat'
@@ -99,4 +100,8 @@ export class KunjunganPoli extends BaseEntity {
   @Field(() => [Obat], { nullable: true })
   @OneToMany(() => Obat, (obat) => obat.kunjunganPoli)
   obat: Obat[]
+
+  @Field(() => [Bhp], { nullable: true })
+  @OneToMany(() => Bhp, (bhp) => bhp.kunjunganPoli)
+  bhp: Bhp[]
 }
