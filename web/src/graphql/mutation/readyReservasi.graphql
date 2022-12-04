@@ -1,0 +1,5 @@
+mutation readyReservasi($id: Int!) {
+  readyReservasi(id: $id) {
+    id
+  }
+}

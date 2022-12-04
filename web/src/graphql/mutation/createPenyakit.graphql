@@ -1,0 +1,5 @@
+mutation createPenyakit($input: PenyakitInput!) {
+  createPenyakit(input: $input) {
+    id
+  }
+}

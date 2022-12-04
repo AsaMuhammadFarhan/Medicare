@@ -1,0 +1,5 @@
+mutation updateKunjungan($id: Int!, $input: KunjunganInput!) {
+  updateKunjungan(id: $id, input: $input) {
+    id
+  }
+}

@@ -189,6 +189,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
+  readyReservasi: Reservasi;
   register: UserResponse;
   updateBhp: Bhp;
   updateConfigurationSetting: ConfigurationSettings;
@@ -367,6 +368,11 @@ export type MutationForgotPasswordArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationReadyReservasiArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -875,6 +881,20 @@ export type CreateDokterMutationVariables = Exact<{
 
 export type CreateDokterMutation = { __typename?: 'Mutation', createDokter: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } };
 
+export type CreateKunjunganMutationVariables = Exact<{
+  input: KunjunganInput;
+}>;
+
+
+export type CreateKunjunganMutation = { __typename?: 'Mutation', createKunjungan: { __typename?: 'Kunjungan', id: number } };
+
+export type CreatePenyakitMutationVariables = Exact<{
+  input: PenyakitInput;
+}>;
+
+
+export type CreatePenyakitMutation = { __typename?: 'Mutation', createPenyakit: { __typename?: 'Penyakit', id: number } };
+
 export type CreatePoliBagianMutationVariables = Exact<{
   input: PoliBagianInput;
 }>;
@@ -930,12 +950,27 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type ReadyReservasiMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ReadyReservasiMutation = { __typename?: 'Mutation', readyReservasi: { __typename?: 'Reservasi', id: number } };
+
 export type RegisterMutationVariables = Exact<{
   input: UsernamePasswordInput;
 }>;
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
+
+export type UpdateKunjunganMutationVariables = Exact<{
+  id: Scalars['Int'];
+  input: KunjunganInput;
+}>;
+
+
+export type UpdateKunjunganMutation = { __typename?: 'Mutation', updateKunjungan: { __typename?: 'Kunjungan', id: number } };
 
 export type UpdateUserPasienMutationVariables = Exact<{
   input: PasienInput;
@@ -949,6 +984,11 @@ export type GetAllDoktersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllDoktersQuery = { __typename?: 'Query', getAllDokters?: Array<{ __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string, poliBagian: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } }> | null };
+
+export type GetAllPenyakitsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPenyakitsQuery = { __typename?: 'Query', getAllPenyakits?: Array<{ __typename?: 'Penyakit', id: number, nama: string, kode: string }> | null };
 
 export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -982,6 +1022,13 @@ export type GetPoliBagianQueryVariables = Exact<{
 
 export type GetPoliBagianQuery = { __typename?: 'Query', getPoliBagian?: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, dokter: Array<{ __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string }> } | null };
 
+export type GetReservasiQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetReservasiQuery = { __typename?: 'Query', getReservasi?: { __typename?: 'Reservasi', id: number, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, poliBagianId: number, dokterId: number, user: { __typename?: 'User', id: number, email: string, username: string, pasien?: { __typename?: 'Pasien', nama?: string | null, tanggalLahir?: any | null } | null }, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, usiaTahun: number, usiaBulan: number, usiaHari: number, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, userId: number, penyakit?: { __typename?: 'Penyakit', id: number, nama: string, kode: string } | null, kunjunganPoli?: Array<{ __typename?: 'KunjunganPoli', biayaPoli: string, hasilBagiDokter: string, hasilBagiPerawat: string, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string } | null, perawat?: { __typename?: 'Perawat', id: number, nama: string } | null, penyakit?: { __typename?: 'Penyakit', id: number, nama: string, kode: string } | null, tindakan?: Array<{ __typename?: 'Tindakan', id: number, jumlah: number, harga: number, bagiHasilDokter: number, bagiHasilPerawat: number, refTindakan: { __typename?: 'RefTindakan', id: number, nama: string, harga: number } }> | null, obat?: Array<{ __typename?: 'Obat', id: number, jumlah: number, harga: number, refObat: { __typename?: 'RefObat', id: number, nama: string, harga: number } }> | null }> | null } | null } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1010,6 +1057,28 @@ export const CreateDokterDocument = gql`
 
 export function useCreateDokterMutation() {
   return Urql.useMutation<CreateDokterMutation, CreateDokterMutationVariables>(CreateDokterDocument);
+};
+export const CreateKunjunganDocument = gql`
+    mutation createKunjungan($input: KunjunganInput!) {
+  createKunjungan(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateKunjunganMutation() {
+  return Urql.useMutation<CreateKunjunganMutation, CreateKunjunganMutationVariables>(CreateKunjunganDocument);
+};
+export const CreatePenyakitDocument = gql`
+    mutation createPenyakit($input: PenyakitInput!) {
+  createPenyakit(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreatePenyakitMutation() {
+  return Urql.useMutation<CreatePenyakitMutation, CreatePenyakitMutationVariables>(CreatePenyakitDocument);
 };
 export const CreatePoliBagianDocument = gql`
     mutation createPoliBagian($input: PoliBagianInput!) {
@@ -1105,6 +1174,17 @@ export const LogoutDocument = gql`
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
+export const ReadyReservasiDocument = gql`
+    mutation readyReservasi($id: Int!) {
+  readyReservasi(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useReadyReservasiMutation() {
+  return Urql.useMutation<ReadyReservasiMutation, ReadyReservasiMutationVariables>(ReadyReservasiDocument);
+};
 export const RegisterDocument = gql`
     mutation Register($input: UsernamePasswordInput!) {
   register(options: $input) {
@@ -1122,6 +1202,17 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateKunjunganDocument = gql`
+    mutation updateKunjungan($id: Int!, $input: KunjunganInput!) {
+  updateKunjungan(id: $id, input: $input) {
+    id
+  }
+}
+    `;
+
+export function useUpdateKunjunganMutation() {
+  return Urql.useMutation<UpdateKunjunganMutation, UpdateKunjunganMutationVariables>(UpdateKunjunganDocument);
 };
 export const UpdateUserPasienDocument = gql`
     mutation updateUserPasien($input: PasienInput!, $id: Float!) {
@@ -1151,6 +1242,19 @@ export const GetAllDoktersDocument = gql`
 
 export function useGetAllDoktersQuery(options: Omit<Urql.UseQueryArgs<GetAllDoktersQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllDoktersQuery>({ query: GetAllDoktersDocument, ...options });
+};
+export const GetAllPenyakitsDocument = gql`
+    query getAllPenyakits {
+  getAllPenyakits {
+    id
+    nama
+    kode
+  }
+}
+    `;
+
+export function useGetAllPenyakitsQuery(options: Omit<Urql.UseQueryArgs<GetAllPenyakitsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllPenyakitsQuery>({ query: GetAllPenyakitsDocument, ...options });
 };
 export const GetAllPoliBagiansDocument = gql`
     query getAllPoliBagians {
@@ -1271,6 +1375,102 @@ export const GetPoliBagianDocument = gql`
 
 export function useGetPoliBagianQuery(options: Omit<Urql.UseQueryArgs<GetPoliBagianQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetPoliBagianQuery>({ query: GetPoliBagianDocument, ...options });
+};
+export const GetReservasiDocument = gql`
+    query getReservasi($id: Int!) {
+  getReservasi(id: $id) {
+    id
+    tanggalRencanaDatang
+    nomorTelepon
+    statusPasien
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    poliBagianId
+    dokterId
+    user {
+      id
+      email
+      username
+      pasien {
+        nama
+        tanggalLahir
+      }
+    }
+    dokter {
+      id
+      nama
+      nomorTelepon
+    }
+    kunjungan {
+      id
+      tekananDarah
+      denyutNadi
+      usiaTahun
+      usiaBulan
+      usiaHari
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      penyakit {
+        id
+        nama
+        kode
+      }
+      kunjunganPoli {
+        biayaPoli
+        hasilBagiDokter
+        hasilBagiPerawat
+        poliBagian {
+          id
+          nama
+        }
+        dokter {
+          id
+          nama
+        }
+        perawat {
+          id
+          nama
+        }
+        penyakit {
+          id
+          nama
+          kode
+        }
+        tindakan {
+          id
+          jumlah
+          harga
+          bagiHasilDokter
+          bagiHasilPerawat
+          refTindakan {
+            id
+            nama
+            harga
+          }
+        }
+        obat {
+          id
+          jumlah
+          harga
+          refObat {
+            id
+            nama
+            harga
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function useGetReservasiQuery(options: Omit<Urql.UseQueryArgs<GetReservasiQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetReservasiQuery>({ query: GetReservasiDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

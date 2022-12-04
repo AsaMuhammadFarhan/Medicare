@@ -17,16 +17,18 @@ const AdminDashboardPage = () => {
 
   return (
     <LayoutAdmin metaTitle="Admin Dashboard">
-      <Stack spacing="16px">
+      <Stack spacing="32px">
         <Text>
           Dashboard
         </Text>
-        <Text fontWeight={700} fontSize="24px">
-          Selamat Datang
-        </Text>
-        <Text>
-          {moment(realTimeDate).format('DD MMMM YYYY, h:mm:ss a')}
-        </Text>
+        <Stack spacing="8px">
+          <Text fontWeight={700} fontSize="24px">
+            Selamat Datang
+          </Text>
+          <Text>
+            {moment(realTimeDate).format('DD MMMM YYYY, h:mm:ss a')}
+          </Text>
+        </Stack>
       </Stack>
     </LayoutAdmin>
   )

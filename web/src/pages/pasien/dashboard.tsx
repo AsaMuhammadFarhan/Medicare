@@ -18,24 +18,29 @@ const PasienDashboardPage = () => {
 
   return (
     <LayoutPasien metaTitle="Dashboard">
-      <Stack spacing="16px" w="100%">
+      <Stack spacing="32px" w="100%">
         <Text>
           Dashboard
         </Text>
         {isTherePendingResevasi ? (
           <Stack
-            borderRadius="8px"
-            overflow="hidden"
-            boxShadow="md"
-            spacing="24px"
-            p="16px"
+            spacing="8px"
             w="100%"
           >
             <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
               Reservasi Aktif
             </Text>
             {meWithAllData.data?.meWithAllData?.reservasi.map((res) => (
-              <HStack justify="space-between" w="100%" key={res.id}>
+              <HStack
+                justify="space-between"
+                alignItems="center"
+                borderRadius="8px"
+                overflow="hidden"
+                boxShadow="md"
+                key={res.id}
+                w="100%"
+                p="16px"
+              >
                 <Stack spacing="4px">
                   <Text fontSize="18px">
                     Reservasi ID#{res.id}

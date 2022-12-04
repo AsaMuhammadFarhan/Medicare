@@ -30,7 +30,6 @@ class PenyakitInput {
 @Resolver()
 export class PenyakitResolver {
   @Query(() => [Penyakit], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllPenyakits(): Promise<Penyakit[] | undefined> {
     return await Penyakit.find()
   }

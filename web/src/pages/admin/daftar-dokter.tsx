@@ -66,7 +66,7 @@ const AdminDaftarDokterPage = () => {
 
   return (
     <LayoutAdmin metaTitle="Daftar Dokter">
-      <Stack spacing="16px" w="100%">
+      <Stack spacing="32px" w="100%">
         <Text>
           Daftar Dokter
         </Text>
@@ -86,7 +86,7 @@ const AdminDaftarDokterPage = () => {
             p="16px"
           >
             <Text>
-              Poli Bagian
+              Daftar Dokter
             </Text>
             <Button
               onClick={onOpen}
@@ -112,7 +112,7 @@ const AdminDaftarDokterPage = () => {
                     <Td>
                       <Flex direction="column">
                         <Text fontWeight={600}>{dokter.nama}</Text>
-                        <Text>{dokter.nomorTelepon}</Text>
+                        <Text fontSize="14px">{dokter.nomorTelepon}</Text>
                       </Flex>
                     </Td>
                     <Td>{dokter.poliBagian.nama}</Td>

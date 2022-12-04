@@ -57,37 +57,7 @@ export class ReservasiResolver {
     return await query.getMany()
   }
 
-  // @Query(() => [Reservasi], { nullable: true })
-  // @UseMiddleware(isAdmin)
-  // async getReservasis(
-  //   @Arg("keywords") keywords: string
-  // ): Promise<Reservasi[] | undefined> {
-  //   const query = getConnection()
-  //     .getRepository(Reservasi)
-  //     .createQueryBuilder("Reservasi")
-  //     .leftJoinAndSelect('Reservasi.dokter', 'dokter')
-  //     .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagian')
-  //     .leftJoinAndSelect('Reservasi.kunjungan', 'kunjungan')
-  //     .leftJoinAndSelect('Reservasi.user', 'user')
-  //     // .leftJoinAndSelect('Reservasi.name', 'name')
-  //     // .leftJoinAndSelect('Reservasi.value', 'value')
-
-  //   const keywordList = keywords.split(" ");
-  //   for (let i = 0; i < keywordList.length; i++) {
-  //     const key = i;
-  //     const param = {
-  //       [key]: `%${keywordList[i]}%`.toLowerCase(),
-  //     };
-  //     query.orWhere(
-  //       `LOWER(ReservasiAttribut) LIKE :${key} OR LOWER(anotherReservasiAttribut) LIKE :${key}`,
-  //       param
-  //     );
-  //   }
-  //   return await query.getMany();
-  // }
-
   @Query(() => Reservasi, { nullable: true })
-  @UseMiddleware(isAdmin)
   async getReservasi(
     @Arg('id', () => Int) id: number
   ): Promise<Reservasi | undefined> {
@@ -95,10 +65,21 @@ export class ReservasiResolver {
       .getRepository(Reservasi)
       .createQueryBuilder('Reservasi')
       .where('"Reservasi"."id" = :id', { id })
-      .leftJoinAndSelect('Reservasi.dokter', 'dokter')
-      .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('Reservasi.dokter', 'dokterKunjunganUmum')
+      .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagianKunjunganUmum')
       .leftJoinAndSelect('Reservasi.kunjungan', 'kunjungan')
+      .leftJoinAndSelect('kunjungan.kunjunganPoli', 'kunjunganPoli')
+      .leftJoinAndSelect('kunjunganPoli.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('kunjunganPoli.dokter', 'dokter')
+      .leftJoinAndSelect('kunjunganPoli.perawat', 'perawat')
+      .leftJoinAndSelect('kunjunganPoli.obat', 'obat')
+      .leftJoinAndSelect('obat.refObat', 'refObat')
+      .leftJoinAndSelect('kunjunganPoli.tindakan', 'tindakan')
+      .leftJoinAndSelect('tindakan.refTindakan', 'refTindakan')
+      .leftJoinAndSelect('kunjunganPoli.penyakit', 'penyakitPoli')
+      .leftJoinAndSelect('kunjungan.penyakit', 'penyakit')
       .leftJoinAndSelect('Reservasi.user', 'user')
+      .leftJoinAndSelect('user.pasien', 'userPasien')
     // .leftJoinAndSelect('Reservasi.reservasi', 'reservasi')
 
     return await query.getOne()
@@ -125,6 +106,20 @@ export class ReservasiResolver {
     if (typeof input !== 'undefined') {
       Reservasi.update({ id }, { ...input })
     }
+    return found
+  }
+
+  @Mutation(() => Reservasi)
+  @UseMiddleware(isAdmin)
+  async readyReservasi(
+    @Arg('id', () => Int) id: number
+  ): Promise<Reservasi | null> {
+    const found = await Reservasi.findOne(id)
+    if (!found) {
+      return null
+    }
+    found.statusPasien = 'ready'
+    found.save()
     return found
   }
 

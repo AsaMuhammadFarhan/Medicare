@@ -64,7 +64,7 @@ const PasienBuatReservasiPage = () => {
 
   return (
     <LayoutPasien metaTitle="Buat Reservasi">
-      <Stack spacing="16px" w="100%">
+      <Stack spacing="32px" w="100%">
         <Text>
           Buat Reservasi
         </Text>

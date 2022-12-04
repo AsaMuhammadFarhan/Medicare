@@ -53,7 +53,7 @@ export class KunjunganPoli extends BaseEntity {
   updatedAt: Date
 
   @Field(() => Kunjungan, { nullable: true })
-  @OneToMany(() => Kunjungan, (kunjungan) => kunjungan.kunjunganPoli)
+  @ManyToOne(() => Kunjungan, (kunjungan) => kunjungan.kunjunganPoli)
   kunjungan: Kunjungan
 
   @Field()

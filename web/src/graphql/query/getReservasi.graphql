@@ -1,0 +1,90 @@
+query getReservasi($id: Int!) {
+  getReservasi(id: $id) {
+    id
+    tanggalRencanaDatang
+    nomorTelepon
+    statusPasien
+    createdBy
+    updatedBy
+    createdAt
+    updatedAt
+    poliBagianId
+    dokterId
+    user {
+      id
+      email
+      username
+      pasien {
+        nama
+        tanggalLahir
+      }
+    }
+    dokter {
+      id
+      nama
+      nomorTelepon
+    }
+    kunjungan {
+      id
+      tekananDarah
+      denyutNadi
+      usiaTahun
+      usiaBulan
+      usiaHari
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      userId
+      penyakit {
+        id
+        nama
+        kode
+      }
+      kunjunganPoli {
+        biayaPoli
+        hasilBagiDokter
+        hasilBagiPerawat
+        poliBagian {
+          id
+          nama
+        }
+        dokter {
+          id
+          nama
+        }
+        perawat {
+          id
+          nama
+        }
+        penyakit {
+          id
+          nama
+          kode
+        }
+        tindakan {
+          id
+          jumlah
+          harga
+          bagiHasilDokter
+          bagiHasilPerawat
+          refTindakan {
+            id
+            nama
+            harga
+          }
+        }
+        obat {
+          id
+          jumlah
+          harga
+          refObat {
+            id
+            nama
+            harga
+          }
+        }
+      }
+    }
+  }
+}

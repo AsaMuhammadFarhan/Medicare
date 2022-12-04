@@ -1,0 +1,5 @@
+mutation createKunjungan($input: KunjunganInput!) {
+  createKunjungan(input: $input) {
+    id
+  }
+}
