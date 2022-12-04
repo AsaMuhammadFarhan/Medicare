@@ -196,6 +196,27 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "getAllReservasis", x.arguments)
             );
           },
+          toWaitingPaymentReservasi: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getKunjunganPolisByAdminPoli", x.arguments)
+            );
+          },
+          toSuccessReservasi: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllReservasis");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllReservasis", x.arguments)
+            );
+          },
+          toCanceledReservasi: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllReservasis");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllReservasis", x.arguments)
+            );
+          },
         },
       },
     }),

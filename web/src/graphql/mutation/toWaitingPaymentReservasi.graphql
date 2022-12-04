@@ -1,0 +1,5 @@
+mutation toWaitingPaymentReservasi($id: Int!) {
+  toWaitingPaymentReservasi(id: $id) {
+    id
+  }
+}

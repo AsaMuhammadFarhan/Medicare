@@ -1,4 +1,4 @@
-query getAllReservasis{
+query getAllReservasis {
   getAllReservasis {
     id
     tanggalRencanaDatang
@@ -29,6 +29,40 @@ query getAllReservasis{
       createdAt
       updatedAt
       userId
+      kunjunganPoli {
+        biayaPoli
+        hasilBagiDokter
+        hasilBagiPerawat
+        poliBagian {
+          nama
+        }
+        obat {
+          harga
+          jumlah
+          refObat {
+            nama
+            harga
+          }
+        }
+        tindakan {
+          harga
+          jumlah
+          bagiHasilDokter
+          bagiHasilPerawat
+          refTindakan{
+            nama
+            harga
+          }
+        }
+        bhp {
+          harga
+          jumlah
+          refBhp {
+            nama
+            harga
+          }
+        }
+      }
     }
     poliBagian {
       id

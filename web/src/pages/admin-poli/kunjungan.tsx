@@ -38,6 +38,7 @@ import {
   useGetAllRefObatsQuery,
   useGetAllRefTindakansQuery,
   useGetKunjunganPolisByAdminPoliQuery,
+  useToWaitingPaymentReservasiMutation,
 } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
@@ -65,6 +66,7 @@ const AdminPoliKunjunganPage = () => {
     .find((conf) => conf.name.includes("dokter"))?.value ?? "0";
   const persentasePerawat = configuration.data?.configurationSettingsByName
     .find((conf) => conf.name.includes("perawat"))?.value ?? "0";
+  const [updateStatus, toPayment] = useToWaitingPaymentReservasiMutation();
 
   const [refObat] = useGetAllRefObatsQuery();
   const [refTindakan] = useGetAllRefTindakansQuery();
@@ -75,6 +77,17 @@ const AdminPoliKunjunganPage = () => {
   const [, deleteObat] = useDeleteObatMutation();
   const [, deleteTindakan] = useDeleteTindakanMutation();
   const [, deleteBhp] = useDeleteBhpMutation();
+
+  const toWaitingPaymentReservasi = (id: number) => {
+    toPayment({
+      id
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message);
+        return;
+      }
+    });
+  };
 
   const openEditKunjunganPoli = (id: number) => {
     setIdEdit(id);
@@ -207,18 +220,21 @@ const AdminPoliKunjunganPage = () => {
                 Daftar Kunjungan Poli Aktif
               </Text>
               <Text>
-                Daftar seluruh kunjungan poli.
+                Daftar seluruh kunjungan poli (KP) dari seluruh reservasi (R).
               </Text>
             </Stack>
             <Checkbox isChecked={false} isDisabled>
-              Hanya Tampilkan Kunjungan Hari Ini
+              hanya tampilkan kunjungan hari ini
             </Checkbox>
           </HStack>
           <Table borderRadius="8px" overflow="hidden" boxShadow="md">
             <Thead>
               <Tr bgColor={themeColor.chakraBlue6}>
                 <Th color="white">
-                  ID Kunjungan Poli
+                  ID KP
+                </Th>
+                <Th color="white">
+                  ID R
                 </Th>
                 <Th color="white">
                   Nama Pasien
@@ -232,7 +248,9 @@ const AdminPoliKunjunganPage = () => {
                 <Th color="white">
                   BHP
                 </Th>
-                <Th />
+                <Th color="white">
+                  Aksi
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -240,6 +258,9 @@ const AdminPoliKunjunganPage = () => {
                 <Tr>
                   <Td>
                     {kp.id}
+                  </Td>
+                  <Td>
+                    {kp.kunjungan?.reservasiId}
                   </Td>
                   <Td>
                     {kp.kunjungan?.user.pasien?.nama}
@@ -250,7 +271,7 @@ const AdminPoliKunjunganPage = () => {
                         {kp.obat?.map((obt) => (
                           <Text>
                             <Text as="span" fontWeight={600}>
-                              {obt.refObat.nama}{" "}
+                              • {obt.refObat.nama}{" "}
                             </Text>
                             @{obt.jumlah}
                           </Text>
@@ -266,7 +287,7 @@ const AdminPoliKunjunganPage = () => {
                         {kp.tindakan?.map((tdkn) => (
                           <Text>
                             <Text as="span" fontWeight={600}>
-                              {tdkn.refTindakan.nama}{" "}
+                              • {tdkn.refTindakan.nama}{" "}
                             </Text>
                             @{tdkn.jumlah}
                           </Text>
@@ -282,7 +303,7 @@ const AdminPoliKunjunganPage = () => {
                         {kp.bhp?.map((bahan) => (
                           <Text>
                             <Text as="span" fontWeight={600}>
-                              {bahan.refBhp.nama}{" "}
+                              • {bahan.refBhp.nama}{" "}
                             </Text>
                             @{bahan.jumlah}
                           </Text>
@@ -293,12 +314,25 @@ const AdminPoliKunjunganPage = () => {
                     )}
                   </Td>
                   <Td>
-                    <Button
-                      onClick={() => openEditKunjunganPoli(kp.id)}
-                      colorScheme="blue"
-                    >
-                      Update
-                    </Button>
+                    <HStack>
+                      <Button
+                        onClick={() => openEditKunjunganPoli(kp.id)}
+                        colorScheme="blue"
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        onClick={() => toWaitingPaymentReservasi(kp.kunjungan?.reservasiId ?? -1)}
+                        isDisabled={kp.kunjungan?.reservasi?.statusPasien !== "ready"}
+                        isLoading={updateStatus.fetching}
+                        colorScheme="green"
+                        w="87px"
+                      >
+                        {kp.kunjungan?.reservasi?.statusPasien === "ready" ? "Selesai" : (
+                          <Iconify boxSize="24px" icon="bx:check-double" />
+                        )}
+                      </Button>
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

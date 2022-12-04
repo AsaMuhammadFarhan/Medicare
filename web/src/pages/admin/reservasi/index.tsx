@@ -12,41 +12,6 @@ const AdminReservasiPage = () => {
   const [reservasis] = useGetAllReservasisQuery();
   const [, updateReady] = useReadyReservasiMutation();
 
-  const getStatusPasien = (value: string) => {
-    if (value === "pending") {
-      return (
-        <Flex
-          bgColor={themeColor.chakraBlue1}
-          color={themeColor.chakraBlue6}
-          textTransform="uppercase"
-          fontWeight={600}
-          fontSize="12px"
-          w="fit-content"
-          rounded="full"
-          p="4px 8px"
-        >
-          Belum Datang
-        </Flex>
-      )
-    }
-    if (value === "ready") {
-      return (
-        <Flex
-          bgColor={themeColor.greenSoftBg}
-          color={themeColor.greenHard}
-          textTransform="uppercase"
-          fontWeight={600}
-          fontSize="12px"
-          w="fit-content"
-          rounded="full"
-          p="4px 8px"
-        >
-          Sudah Datang
-        </Flex>
-      )
-    }
-  };
-
   const handleClickReady = (id: number) => {
     updateReady({
       id,
@@ -98,6 +63,90 @@ const AdminReservasiPage = () => {
     })
   };
 
+
+  const getStatusPasien = (value: string) => {
+    if (value === "pending") {
+      return (
+        <Flex
+          bgColor={themeColor.chakraBlue1}
+          color={themeColor.chakraBlue6}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Belum Datang
+        </Flex>
+      )
+    }
+    if (value === "ready") {
+      return (
+        <Flex
+          bgColor={themeColor.greenSoftBg}
+          color={themeColor.greenHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Sudah Datang
+        </Flex>
+      )
+    }
+    if (value === "waitingPayment") {
+      return (
+        <Flex
+          bgColor={themeColor.chakraBlue1}
+          color={themeColor.chakraBlue6}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Menunggu Pembayaran
+        </Flex>
+      )
+    }
+    if (value === "success") {
+      return (
+        <Flex
+          bgColor={themeColor.greenSoftBg}
+          color={themeColor.greenHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Selesai
+        </Flex>
+      )
+    }
+    if (value === "canceled") {
+      return (
+        <Flex
+          bgColor={themeColor.redSoftBg}
+          color={themeColor.redHard}
+          textTransform="uppercase"
+          fontWeight={600}
+          fontSize="12px"
+          w="fit-content"
+          rounded="full"
+          p="4px 8px"
+        >
+          Dibatalkan
+        </Flex>
+      )
+    }
+  };
+
   return (
     <LayoutAdmin metaTitle="Reservasi">
       <Stack spacing="32px" w="100%">
@@ -115,7 +164,7 @@ const AdminReservasiPage = () => {
               </Text>
             </Stack>
             <Checkbox isChecked={false} isDisabled>
-              Hanya Tampilkan Reservasi Hari Ini
+              hanya tampilkan reservasi hari ini
             </Checkbox>
           </HStack>
           <Table borderRadius="8px" overflow="hidden" boxShadow="md">

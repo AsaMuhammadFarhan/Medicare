@@ -1,0 +1,5 @@
+mutation toSuccessReservasi($id: Int!) {
+  toSuccessReservasi(id: $id) {
+    id
+  }
+}

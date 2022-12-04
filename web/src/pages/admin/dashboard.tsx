@@ -17,7 +17,7 @@ const AdminDashboardPage = () => {
 
   return (
     <LayoutAdmin metaTitle="Admin Dashboard">
-      <Stack spacing="32px">
+      <Stack spacing="32px" w="100%">
         <Text>
           Dashboard
         </Text>

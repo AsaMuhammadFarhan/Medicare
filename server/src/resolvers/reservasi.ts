@@ -42,14 +42,24 @@ class ReservasiInput {
 @Resolver()
 export class ReservasiResolver {
   @Query(() => [Reservasi], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllReservasis(): Promise<Reservasi[] | undefined> {
     const query = getConnection()
       .getRepository(Reservasi)
       .createQueryBuilder('Reservasi')
-      .leftJoinAndSelect('Reservasi.dokter', 'dokter')
-      .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('Reservasi.dokter', 'dokterReservasi')
+      .leftJoinAndSelect('Reservasi.poliBagian', 'poliBagianKunjunganUmum')
       .leftJoinAndSelect('Reservasi.kunjungan', 'kunjungan')
+      .leftJoinAndSelect('kunjungan.kunjunganPoli', 'kunjunganPoli')
+      .leftJoinAndSelect('kunjunganPoli.poliBagian', 'poliBagian')
+      .leftJoinAndSelect('kunjunganPoli.dokter', 'dokter')
+      .leftJoinAndSelect('kunjunganPoli.perawat', 'perawat')
+      .leftJoinAndSelect('kunjunganPoli.obat', 'obat')
+      .leftJoinAndSelect('obat.refObat', 'refObat')
+      .leftJoinAndSelect('kunjunganPoli.bhp', 'bhp')
+      .leftJoinAndSelect('bhp.refBhp', 'refBhp')
+      .leftJoinAndSelect('kunjunganPoli.tindakan', 'tindakan')
+      .leftJoinAndSelect('tindakan.refTindakan', 'refTindakan')
+      .leftJoinAndSelect('kunjunganPoli.penyakit', 'penyakitPoli')
       .leftJoinAndSelect('Reservasi.user', 'user')
       .leftJoinAndSelect('user.pasien', 'userPasien')
       .orderBy('Reservasi.id', 'DESC')
@@ -75,6 +85,8 @@ export class ReservasiResolver {
       .leftJoinAndSelect('kunjunganPoli.perawat', 'perawat')
       .leftJoinAndSelect('kunjunganPoli.obat', 'obat')
       .leftJoinAndSelect('obat.refObat', 'refObat')
+      .leftJoinAndSelect('kunjunganPoli.bhp', 'bhp')
+      .leftJoinAndSelect('bhp.refBhp', 'refBhp')
       .leftJoinAndSelect('kunjunganPoli.tindakan', 'tindakan')
       .leftJoinAndSelect('tindakan.refTindakan', 'refTindakan')
       .leftJoinAndSelect('kunjunganPoli.penyakit', 'penyakitPoli')
@@ -120,6 +132,45 @@ export class ReservasiResolver {
       return null
     }
     found.statusPasien = 'ready'
+    found.save()
+    return found
+  }
+
+  @Mutation(() => Reservasi)
+  async toWaitingPaymentReservasi(
+    @Arg('id', () => Int) id: number
+  ): Promise<Reservasi | null> {
+    const found = await Reservasi.findOne(id)
+    if (!found) {
+      return null
+    }
+    found.statusPasien = 'waitingPayment'
+    found.save()
+    return found
+  }
+
+  @Mutation(() => Reservasi)
+  async toSuccessReservasi(
+    @Arg('id', () => Int) id: number
+  ): Promise<Reservasi | null> {
+    const found = await Reservasi.findOne(id)
+    if (!found) {
+      return null
+    }
+    found.statusPasien = 'success'
+    found.save()
+    return found
+  }
+
+  @Mutation(() => Reservasi)
+  async toCanceledReservasi(
+    @Arg('id', () => Int) id: number
+  ): Promise<Reservasi | null> {
+    const found = await Reservasi.findOne(id)
+    if (!found) {
+      return null
+    }
+    found.statusPasien = 'canceled'
     found.save()
     return found
   }

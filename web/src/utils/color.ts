@@ -13,6 +13,8 @@ const themeColor = {
   chakraBlue10: "#1a365d",
   greenSoftBg: "#F0FFF4",
   greenHard: "#38A169",
+  redSoftBg: "#FFF5F5",
+  redHard: "#E53E3E",
   muted: "#4A5568",
 };
 

@@ -84,6 +84,7 @@ export class KunjunganPoliResolver {
       .createQueryBuilder('KunjunganPoli')
       .leftJoinAndSelect('KunjunganPoli.kunjungan', 'kunjungan')
       .leftJoinAndSelect('kunjungan.user', 'user')
+      .leftJoinAndSelect('kunjungan.reservasi', 'reservasi')
       .leftJoinAndSelect('user.pasien', 'userPasien')
       .leftJoinAndSelect('KunjunganPoli.obat', 'obat')
       .leftJoinAndSelect('obat.refObat', 'refObat')

@@ -1,0 +1,5 @@
+mutation toCanceledReservasi($id: Int!) {
+  toCanceledReservasi(id: $id) {
+    id
+  }
+}

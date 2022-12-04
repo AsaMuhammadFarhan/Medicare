@@ -195,6 +195,9 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   readyReservasi: Reservasi;
   register: UserResponse;
+  toCanceledReservasi: Reservasi;
+  toSuccessReservasi: Reservasi;
+  toWaitingPaymentReservasi: Reservasi;
   updateBhp: Bhp;
   updateConfigurationSetting: ConfigurationSettings;
   updateDokter: Dokter;
@@ -382,6 +385,21 @@ export type MutationReadyReservasiArgs = {
 
 export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
+};
+
+
+export type MutationToCanceledReservasiArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationToSuccessReservasiArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationToWaitingPaymentReservasiArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -1032,6 +1050,27 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
 
+export type ToCanceledReservasiMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ToCanceledReservasiMutation = { __typename?: 'Mutation', toCanceledReservasi: { __typename?: 'Reservasi', id: number } };
+
+export type ToSuccessReservasiMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ToSuccessReservasiMutation = { __typename?: 'Mutation', toSuccessReservasi: { __typename?: 'Reservasi', id: number } };
+
+export type ToWaitingPaymentReservasiMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ToWaitingPaymentReservasiMutation = { __typename?: 'Mutation', toWaitingPaymentReservasi: { __typename?: 'Reservasi', id: number } };
+
 export type UpdateConfigurationSettingMutationVariables = Exact<{
   input: ConfigurationSettingInput;
   id: Scalars['Int'];
@@ -1111,7 +1150,7 @@ export type GetAllRefTindakansQuery = { __typename?: 'Query', getAllRefTindakans
 export type GetAllReservasisQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllReservasisQuery = { __typename?: 'Query', getAllReservasis?: Array<{ __typename?: 'Reservasi', id: number, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, poliBagianId: number, dokterId: number, user: { __typename?: 'User', email: string, username: string, pasien?: { __typename?: 'Pasien', nama?: string | null } | null }, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, usiaTahun: number, usiaBulan: number, usiaHari: number, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, userId: number } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null }> | null };
+export type GetAllReservasisQuery = { __typename?: 'Query', getAllReservasis?: Array<{ __typename?: 'Reservasi', id: number, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, poliBagianId: number, dokterId: number, user: { __typename?: 'User', email: string, username: string, pasien?: { __typename?: 'Pasien', nama?: string | null } | null }, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, usiaTahun: number, usiaBulan: number, usiaHari: number, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, userId: number, kunjunganPoli?: Array<{ __typename?: 'KunjunganPoli', biayaPoli: string, hasilBagiDokter: string, hasilBagiPerawat: string, poliBagian?: { __typename?: 'PoliBagian', nama: string } | null, obat?: Array<{ __typename?: 'Obat', harga: number, jumlah: number, refObat: { __typename?: 'RefObat', nama: string, harga: number } }> | null, tindakan?: Array<{ __typename?: 'Tindakan', harga: number, jumlah: number, bagiHasilDokter: number, bagiHasilPerawat: number, refTindakan: { __typename?: 'RefTindakan', nama: string, harga: number } }> | null, bhp?: Array<{ __typename?: 'Bhp', harga: number, jumlah: number, refBhp: { __typename?: 'RefBhp', nama: string, harga: number } }> | null }> | null } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null }> | null };
 
 export type GetAllUserPasienQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1121,7 +1160,7 @@ export type GetAllUserPasienQuery = { __typename?: 'Query', getAllUserPasien: Ar
 export type GetKunjunganPolisByAdminPoliQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetKunjunganPolisByAdminPoliQuery = { __typename?: 'Query', getKunjunganPolisByAdminPoli?: Array<{ __typename?: 'KunjunganPoli', id: number, biayaPoli: string, hasilBagiDokter: string, hasilBagiPerawat: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, kunjungan?: { __typename?: 'Kunjungan', id: number, user: { __typename?: 'User', pasien?: { __typename?: 'Pasien', nama?: string | null } | null } } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string } | null, perawat?: { __typename?: 'Perawat', id: number, nama: string } | null, penyakit?: { __typename?: 'Penyakit', id: number, nama: string, kode: string } | null, tindakan?: Array<{ __typename?: 'Tindakan', id: number, jumlah: number, harga: number, refTindakan: { __typename?: 'RefTindakan', id: number, nama: string, harga: number } }> | null, obat?: Array<{ __typename?: 'Obat', id: number, jumlah: number, refObat: { __typename?: 'RefObat', id: number, nama: string, harga: number } }> | null, bhp?: Array<{ __typename?: 'Bhp', id: number, jumlah: number, refBhp: { __typename?: 'RefBhp', id: number, nama: string, harga: number } }> | null }> | null };
+export type GetKunjunganPolisByAdminPoliQuery = { __typename?: 'Query', getKunjunganPolisByAdminPoli?: Array<{ __typename?: 'KunjunganPoli', id: number, biayaPoli: string, hasilBagiDokter: string, hasilBagiPerawat: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, kunjungan?: { __typename?: 'Kunjungan', id: number, reservasiId: number, user: { __typename?: 'User', pasien?: { __typename?: 'Pasien', nama?: string | null } | null }, reservasi?: { __typename?: 'Reservasi', statusPasien: string } | null } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string } | null, perawat?: { __typename?: 'Perawat', id: number, nama: string } | null, penyakit?: { __typename?: 'Penyakit', id: number, nama: string, kode: string } | null, tindakan?: Array<{ __typename?: 'Tindakan', id: number, jumlah: number, harga: number, refTindakan: { __typename?: 'RefTindakan', id: number, nama: string, harga: number } }> | null, obat?: Array<{ __typename?: 'Obat', id: number, jumlah: number, refObat: { __typename?: 'RefObat', id: number, nama: string, harga: number } }> | null, bhp?: Array<{ __typename?: 'Bhp', id: number, jumlah: number, refBhp: { __typename?: 'RefBhp', id: number, nama: string, harga: number } }> | null }> | null };
 
 export type GetPoliBagianQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -1406,6 +1445,39 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const ToCanceledReservasiDocument = gql`
+    mutation toCanceledReservasi($id: Int!) {
+  toCanceledReservasi(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useToCanceledReservasiMutation() {
+  return Urql.useMutation<ToCanceledReservasiMutation, ToCanceledReservasiMutationVariables>(ToCanceledReservasiDocument);
+};
+export const ToSuccessReservasiDocument = gql`
+    mutation toSuccessReservasi($id: Int!) {
+  toSuccessReservasi(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useToSuccessReservasiMutation() {
+  return Urql.useMutation<ToSuccessReservasiMutation, ToSuccessReservasiMutationVariables>(ToSuccessReservasiDocument);
+};
+export const ToWaitingPaymentReservasiDocument = gql`
+    mutation toWaitingPaymentReservasi($id: Int!) {
+  toWaitingPaymentReservasi(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useToWaitingPaymentReservasiMutation() {
+  return Urql.useMutation<ToWaitingPaymentReservasiMutation, ToWaitingPaymentReservasiMutationVariables>(ToWaitingPaymentReservasiDocument);
+};
 export const UpdateConfigurationSettingDocument = gql`
     mutation updateConfigurationSetting($input: ConfigurationSettingInput!, $id: Int!) {
   updateConfigurationSetting(input: $input, id: $id) {
@@ -1666,6 +1738,40 @@ export const GetAllReservasisDocument = gql`
       createdAt
       updatedAt
       userId
+      kunjunganPoli {
+        biayaPoli
+        hasilBagiDokter
+        hasilBagiPerawat
+        poliBagian {
+          nama
+        }
+        obat {
+          harga
+          jumlah
+          refObat {
+            nama
+            harga
+          }
+        }
+        tindakan {
+          harga
+          jumlah
+          bagiHasilDokter
+          bagiHasilPerawat
+          refTindakan {
+            nama
+            harga
+          }
+        }
+        bhp {
+          harga
+          jumlah
+          refBhp {
+            nama
+            harga
+          }
+        }
+      }
     }
     poliBagian {
       id
@@ -1721,6 +1827,10 @@ export const GetKunjunganPolisByAdminPoliDocument = gql`
         pasien {
           nama
         }
+      }
+      reservasiId
+      reservasi {
+        statusPasien
       }
     }
     poliBagian {
