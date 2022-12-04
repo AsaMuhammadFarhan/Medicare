@@ -216,12 +216,12 @@ const PasienReservasiDetailPage = ({ reservasiId }: any) => {
             </Text>
             <Flex justify="space-between">
               <Text>
-                Tekanan Darah
+                Status
               </Text>
               <Text>:</Text>
             </Flex>
             <Text>
-              {getStatusPasien(displayedReservasi?.statusPasien)}
+              {getStatusPasien(displayedReservasi?.statusPasien ?? '')}
             </Text>
           </SimpleGrid>
         </Stack>

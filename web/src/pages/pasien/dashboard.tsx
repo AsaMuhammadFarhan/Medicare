@@ -1,4 +1,4 @@
-import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import Iconify from "../../components/Iconify";
@@ -204,7 +204,7 @@ const PasienDashboardPage = () => {
           </Stack>
         ) : (
           <Flex>
-            <Text>
+            <Text mr="4px">
               Tidak ada reservasi aktif...{" "}
             </Text>
             <NextChakraLinkWithHover href="/pasien/reservasi">
@@ -274,6 +274,9 @@ const PasienDashboardPage = () => {
                       </Text>
                     </Flex>
                   </HStack>
+                  <Button colorScheme="blue">
+                    Lihat
+                  </Button>
                 </HStack>
               </NextChakraLink>
             </Stack>
