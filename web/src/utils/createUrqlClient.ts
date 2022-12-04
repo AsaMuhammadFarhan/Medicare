@@ -92,6 +92,10 @@ export const createUrqlClient = (ssrExchange: any) => ({
             argsQueries.forEach((x) =>
               cache.invalidate("Query", "meWithAllData", x.arguments)
             );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "getAllReservasis");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "getAllReservasis", x.arguments)
+            );
           },
           createKunjungan: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");

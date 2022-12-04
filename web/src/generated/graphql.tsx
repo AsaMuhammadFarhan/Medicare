@@ -1061,6 +1061,11 @@ export type GetAllReservasisQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllReservasisQuery = { __typename?: 'Query', getAllReservasis?: Array<{ __typename?: 'Reservasi', id: number, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, poliBagianId: number, dokterId: number, user: { __typename?: 'User', email: string, username: string, pasien?: { __typename?: 'Pasien', nama?: string | null } | null }, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, usiaTahun: number, usiaBulan: number, usiaHari: number, createdBy: string, updatedBy: string, createdAt: string, updatedAt: string, userId: number } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null }> | null };
 
+export type GetAllUserPasienQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUserPasienQuery = { __typename?: 'Query', getAllUserPasien: Array<{ __typename?: 'User', id: number, username: string, email: string, pasien?: { __typename?: 'Pasien', id: number, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null } | null }> };
+
 export type GetPoliBagianQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1490,6 +1495,26 @@ export const GetAllReservasisDocument = gql`
 
 export function useGetAllReservasisQuery(options: Omit<Urql.UseQueryArgs<GetAllReservasisQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllReservasisQuery>({ query: GetAllReservasisDocument, ...options });
+};
+export const GetAllUserPasienDocument = gql`
+    query getAllUserPasien {
+  getAllUserPasien {
+    id
+    username
+    email
+    pasien {
+      id
+      nama
+      nomorTelepon
+      nik
+      alamat
+    }
+  }
+}
+    `;
+
+export function useGetAllUserPasienQuery(options: Omit<Urql.UseQueryArgs<GetAllUserPasienQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllUserPasienQuery>({ query: GetAllUserPasienDocument, ...options });
 };
 export const GetPoliBagianDocument = gql`
     query getPoliBagian($id: Int!) {

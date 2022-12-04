@@ -52,6 +52,7 @@ export class ReservasiResolver {
       .leftJoinAndSelect('Reservasi.kunjungan', 'kunjungan')
       .leftJoinAndSelect('Reservasi.user', 'user')
       .leftJoinAndSelect('user.pasien', 'userPasien')
+      .orderBy('Reservasi.id', 'DESC')
     // .leftJoinAndSelect('Reservasi.value', 'value')
 
     return await query.getMany()

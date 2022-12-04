@@ -33,7 +33,6 @@ class DokterInput {
 @Resolver()
 export class DokterResolver {
   @Query(() => [Dokter], { nullable: true })
-  @UseMiddleware(isAdmin)
   async getAllDokters(): Promise<Dokter[] | undefined> {
     const query = getConnection()
       .getRepository(Dokter)

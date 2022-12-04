@@ -1,0 +1,14 @@
+query getAllUserPasien {
+  getAllUserPasien {
+    id
+    username
+    email
+    pasien {
+      id
+      nama
+      nomorTelepon
+      nik
+      alamat
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Input, Select, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import DatePicker from "../../components/DatePicker";
 import { LayoutPasien } from "../../components/LayoutGeneral";
 import {
   useCreateReservasiMutation,
+  useGetAllDoktersQuery,
   useGetAllPoliBagiansQuery,
   useGetPoliBagianQuery,
   useMeWithAllDataQuery,
@@ -16,6 +17,7 @@ import { createUrqlClient } from "../../utils/createUrqlClient";
 const PasienBuatReservasiPage = () => {
 
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [meWithAllData] = useMeWithAllDataQuery();
 
@@ -39,6 +41,7 @@ const PasienBuatReservasiPage = () => {
       id: parseInt(selectedPoliId)
     }
   });
+  const [dokters] = useGetAllDoktersQuery();
   const [creating, createReservasi] = useCreateReservasiMutation();
 
   const handleBuatReservasi = () => {
@@ -115,6 +118,7 @@ const PasienBuatReservasiPage = () => {
                   ))}
                 </Select>
                 <Button
+                  onClick={onOpen}
                   color={themeColor.chakraBlue6}
                   variant="outline"
                   flexShrink={0}
@@ -157,6 +161,33 @@ const PasienBuatReservasiPage = () => {
           </Stack>
         </Flex>
       </Stack>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent minW={["", "600px", "800px"]}>
+          <ModalHeader>Daftar Dokter</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing="24px">
+              {dokters.data?.getAllDokters?.map((dok) => (
+                <Stack borderRadius="8px" boxShadow="md" p="16px" key={dok.id}>
+                  <Text>
+                    {dok.nama}
+                  </Text>
+                  <Text>
+                    Poli {dok.poliBagian.nama}
+                  </Text>
+                  <Text>
+                    {dok.nomorTelepon}
+                  </Text>
+                </Stack>
+              ))}
+            </Stack>
+          </ModalBody>
+          <ModalFooter pb="0px"></ModalFooter>
+        </ModalContent>
+
+      </Modal>
     </LayoutPasien>
   )
 };
