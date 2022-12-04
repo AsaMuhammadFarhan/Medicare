@@ -1,0 +1,7 @@
+mutation createConfigurationSetting($input: ConfigurationSettingInput!) {
+  createConfigurationSetting(input: $input) {
+    id
+    name
+    value
+  }
+}

@@ -32,9 +32,15 @@ import {
   useGetAllPenyakitsQuery,
   useGetReservasiQuery,
   useUpdateKunjunganMutation,
+  useCreateKunjunganPoliMutation,
+  useGetAllPoliBagiansQuery,
+  useConfigurationSettingsByNameQuery,
+  useGetAllDoktersQuery,
+  useGetAllPerawatsQuery,
 } from "../../../generated/graphql";
 import themeColor from "../../../utils/color";
 import { createUrqlClient } from "../../../utils/createUrqlClient";
+import { numberWithSeparator } from "../../../utils/format";
 import { getRouterQuery } from "../../../utils/getRouterQuery";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -51,13 +57,16 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
   const id = getRouterQuery(reservasiId);
 
   const modalUpdateKunjungan = useDisclosure();
+  const modalTambahKunjunganPoli = useDisclosure();
 
+  // Kunjungan
   const [tekananDarah, setTekananDarah] = useState("0");
   const [denyutNadi, setDenyutNadi] = useState("0");
   const [usiaTahun, setUsiaTahun] = useState("0");
   const [usiaBulan, setUsiaBulan] = useState("0");
   const [usiaHari, setUsiaHari] = useState("0");
   const [penyakitId, setPenyakitId] = useState("0");
+  // --
 
   const [reservasi] = useGetReservasiQuery({
     variables: {
@@ -65,8 +74,21 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
     }
   });
   const [penyakits] = useGetAllPenyakitsQuery();
+  const [poliBagians] = useGetAllPoliBagiansQuery();
+  const [dokters] = useGetAllDoktersQuery();
+  const [perawat] = useGetAllPerawatsQuery();
+  const [configuration] = useConfigurationSettingsByNameQuery({
+    variables: {
+      keywords: "bagi-hasil"
+    }
+  });
+  const persentaseDokter = configuration.data?.configurationSettingsByName
+    .find((conf) => conf.name.includes("dokter"))?.value ?? "0";
+  const persentasePerawat = configuration.data?.configurationSettingsByName
+    .find((conf) => conf.name.includes("perawat"))?.value ?? "0";
   const [, createKunjungan] = useCreateKunjunganMutation();
   const [, updateKunjungan] = useUpdateKunjunganMutation();
+  const [, createKunjunganpoli] = useCreateKunjunganPoliMutation();
 
   useEffect(() => {
     if (reservasi.data?.getReservasi?.kunjungan?.id) {
@@ -80,6 +102,36 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
   }, [reservasi.fetching]);
 
   const isLoaded = reservasi.fetching === false;
+
+  // Kunjungan Poli
+  const [biayaPoli, setbiayaPoli] = useState("");
+  const [hasilBagiDokter, sethasilBagiDokter] = useState("");
+  const [hasilBagiPerawat, sethasilBagiPerawat] = useState("");
+  const [poliBagianId, setpoliBagianId] = useState("");
+  const [dokterId, setdokterId] = useState("");
+  const [perawatId, setperawatId] = useState("");
+  const [penyakitPoliId, setpenyakitPoliId] = useState("");
+
+  const openKunjunganPoli = () => {
+    modalTambahKunjunganPoli.onOpen();
+    setbiayaPoli(`${poliBagians.data?.getAllPoliBagians?.find((pb) =>
+      pb.id === reservasi.data?.getReservasi?.poliBagianId
+    )?.hargaPendaftaran ?? 0}`);
+    sethasilBagiDokter(
+      `${parseInt(persentaseDokter) * (poliBagians.data?.getAllPoliBagians?.find((pb) =>
+        pb.id === reservasi.data?.getReservasi?.poliBagianId
+      )?.hargaPendaftaran ?? 0) / 100}`
+    );
+    sethasilBagiPerawat(
+      `${parseInt(persentasePerawat) * (poliBagians.data?.getAllPoliBagians?.find((pb) =>
+        pb.id === reservasi.data?.getReservasi?.poliBagianId
+      )?.hargaPendaftaran ?? 0) / 100}`
+    )
+    setpoliBagianId(reservasi.data?.getReservasi?.poliBagianId.toString() ?? "")
+    setdokterId(reservasi.data?.getReservasi?.dokterId.toString() ?? "")
+    setpenyakitPoliId(reservasi.data?.getReservasi?.kunjungan?.penyakit?.id.toString() ?? "");
+  };
+  // --
 
   const now = new Date();
   const tanggalLahir = new Date(reservasi.data?.getReservasi?.user.pasien?.tanggalLahir);
@@ -122,8 +174,8 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
           usiaTahun: parseInt(usiaTahun),
           usiaBulan: parseInt(usiaBulan),
           usiaHari: parseInt(usiaHari),
-          createdBy: "Admin",
-          updatedBy: "",
+          createdBy: reservasi.data.getReservasi.kunjungan.createdBy,
+          updatedBy: "Admin",
           userId: reservasi.data?.getReservasi?.user.id ?? -1,
           reservasiId: id,
           penyakitId: parseInt(penyakitId),
@@ -137,6 +189,30 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
       });
     }
   };
+
+  const handleClickTambahKunjunganPoli = () => {
+    createKunjunganpoli({
+      input: {
+        biayaPoli,
+        hasilBagiDokter,
+        hasilBagiPerawat,
+        createdBy: "Admin",
+        updatedBy: "",
+        poliBagianId: parseInt(poliBagianId),
+        dokterId: parseInt(dokterId),
+        perawatId: parseInt(perawatId),
+        penyakitId: parseInt(penyakitPoliId),
+        kunjunganId: reservasi.data?.getReservasi?.kunjungan?.id ?? -1,
+      }
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message);
+        return;
+      }
+      modalTambahKunjunganPoli.onClose();
+
+    })
+  }
 
   return (
     <LayoutAdmin metaTitle="Reservasi">
@@ -218,7 +294,7 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
                 <Tbody>
                   {reservasi.data.getReservasi.kunjungan.kunjunganPoli?.map((kunpol) => (
                     <Tr>
-                      <Td>{kunpol.poliBagian?.nama}</Td>
+                      <Td>{kunpol.poliBagian?.nama} ({kunpol.dokter?.nama})</Td>
                       <Td>Delete/Update</Td>
                     </Tr>
                   ))}
@@ -226,6 +302,7 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
               </Table>
               <Flex justify="end">
                 <Button
+                  onClick={() => openKunjunganPoli()}
                   colorScheme="blue"
                   w="fit-content"
                 >
@@ -316,7 +393,7 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
                   value={penyakitId}
                 >
                   {penyakits.data?.getAllPenyakits?.map((penyakit) => (
-                    <option value={penyakit.id}>{penyakit.nama} {penyakit.kode}</option>
+                    <option value={penyakit.id}>{penyakit.nama} &nbsp;&nbsp; {penyakit.kode}</option>
                   ))}
                 </Select>
               </Stack>
@@ -327,6 +404,137 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
                 justifySelf="end"
               >
                 Simpan
+              </Button>
+            </Stack>
+          </ModalBody>
+          <ModalFooter pb="0px"></ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal Tambah Kunjungan Poli */}
+      <Modal isOpen={modalTambahKunjunganPoli.isOpen} onClose={modalTambahKunjunganPoli.onClose}>
+        <ModalOverlay />
+        <ModalContent minW={["", "600px", "800px"]}>
+          <ModalHeader>Tambah Kunjungan Poli</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing="24px">
+              <Stack>
+                <Text fontSize="12px">Poli Bagian</Text>
+                <Select
+                  onChange={(e) => setpoliBagianId(e.target.value)}
+                  placeholder="Pilih poli"
+                  value={poliBagianId}
+                >
+                  {poliBagians.data?.getAllPoliBagians?.map((poli) => (
+                    <option value={poli.id}>{poli.nama}</option>
+                  ))}
+                </Select>
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Dokter</Text>
+                <Select
+                  onChange={(e) => setdokterId(e.target.value)}
+                  isDisabled={poliBagianId === ""}
+                  placeholder="Pilih dokter"
+                  value={dokterId}
+                >
+                  {dokters.data?.getAllDokters?.filter((dok) => dok.poliBagian.id === parseInt(poliBagianId)).map((dokter) => (
+                    <option value={dokter.id}>{dokter.nama}</option>
+                  ))}
+                </Select>
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Perawat</Text>
+                <Select
+                  onChange={(e) => setperawatId(e.target.value)}
+                  isInvalid={perawatId === ""}
+                  placeholder="Pilih perawat"
+                  value={perawatId}
+                >
+                  {perawat.data?.getAllPerawats?.map((perawat) => (
+                    <option value={perawat.id}>{perawat.nama}</option>
+                  ))}
+                </Select>
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Penyakit</Text>
+                <Select
+                  onChange={(e) => setpenyakitPoliId(e.target.value)}
+                  placeholder="Pilih Penyakit"
+                  value={penyakitPoliId}
+                >
+                  {penyakits.data?.getAllPenyakits?.map((penyakit) => (
+                    <option value={penyakit.id}>{penyakit.nama} &nbsp;&nbsp; {penyakit.kode}</option>
+                  ))}
+                </Select>
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Biaya Poli</Text>
+                <Input
+                  onChange={(e) => setbiayaPoli(e.target.value)}
+                  onWheel={(e) => e.currentTarget.blur()}
+                  placeholder="Biaya poli"
+                  value={biayaPoli}
+                  type="number"
+                />
+                {poliBagians.data?.getAllPoliBagians?.find((pb) =>
+                  pb.id === reservasi.data?.getReservasi?.poliBagianId
+                )?.hargaPendaftaran && (
+                    <Flex alignItems="center">
+                      <Iconify mr="4px" boxSize="12px" icon="bx:info-circle" />
+                      <Text fontSize="12px">
+                        Poli {poliBagians.data?.getAllPoliBagians?.find((pb) =>
+                          pb.id === reservasi.data?.getReservasi?.poliBagianId
+                        )?.nama} memiliki harga pendaftaran Rp{numberWithSeparator(
+                          poliBagians.data?.getAllPoliBagians?.find((pb) =>
+                            pb.id === reservasi.data?.getReservasi?.poliBagianId
+                          )?.hargaPendaftaran ?? 0)}
+                      </Text>
+                    </Flex>
+                  )}
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Hasil Bagi Dokter</Text>
+                <Input
+                  onChange={(e) => sethasilBagiDokter(e.target.value)}
+                  onWheel={(e) => e.currentTarget.blur()}
+                  placeholder="Hasil bagi dokter"
+                  value={hasilBagiDokter}
+                  type="number"
+                />
+                <Flex alignItems="center">
+                  <Iconify mr="4px" boxSize="12px" icon="bx:info-circle" />
+                  <Text fontSize="12px">
+                    Konfigurasi Hasil Bagi Dokter: {persentaseDokter}%. ({persentaseDokter
+                    }% * {biayaPoli} = {parseInt(persentaseDokter) * parseInt(biayaPoli) / 100})
+                  </Text>
+                </Flex>
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Hasil Bagi Perawat</Text>
+                <Input
+                  onChange={(e) => sethasilBagiPerawat(e.target.value)}
+                  onWheel={(e) => e.currentTarget.blur()}
+                  placeholder="Hasil bagi perawat"
+                  value={hasilBagiPerawat}
+                  type="number"
+                />
+                <Flex alignItems="center">
+                  <Iconify mr="4px" boxSize="12px" icon="bx:info-circle" />
+                  <Text fontSize="12px">
+                    Konfigurasi Hasil Bagi Perawat: {persentasePerawat}%. ({persentasePerawat
+                    }% * {biayaPoli} = {parseInt(persentasePerawat) * parseInt(biayaPoli) / 100})
+                  </Text>
+                </Flex>
+              </Stack>
+
+              <Button
+                onClick={handleClickTambahKunjunganPoli}
+                colorScheme="blue"
+                justifySelf="end"
+              >
+                Tambah
               </Button>
             </Stack>
           </ModalBody>

@@ -1,0 +1,7 @@
+query getAllPerawats {
+  getAllPerawats {
+    id
+    nama
+    nomorTelepon
+  }
+}

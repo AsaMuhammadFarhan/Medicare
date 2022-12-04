@@ -40,7 +40,7 @@ export type BhpInput = {
 
 export type ConfigurationSettingInput = {
   name: Scalars['String'];
-  updateBy: Scalars['String'];
+  updatedBy: Scalars['String'];
   value: Scalars['String'];
 };
 
@@ -874,6 +874,13 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
+export type CreateConfigurationSettingMutationVariables = Exact<{
+  input: ConfigurationSettingInput;
+}>;
+
+
+export type CreateConfigurationSettingMutation = { __typename?: 'Mutation', createConfigurationSetting: { __typename?: 'ConfigurationSettings', id: number, name: string, value: string } };
+
 export type CreateDokterMutationVariables = Exact<{
   input: DokterInput;
 }>;
@@ -888,12 +895,26 @@ export type CreateKunjunganMutationVariables = Exact<{
 
 export type CreateKunjunganMutation = { __typename?: 'Mutation', createKunjungan: { __typename?: 'Kunjungan', id: number } };
 
+export type CreateKunjunganPoliMutationVariables = Exact<{
+  input: KunjunganPoliInput;
+}>;
+
+
+export type CreateKunjunganPoliMutation = { __typename?: 'Mutation', createKunjunganPoli: { __typename?: 'KunjunganPoli', id: number } };
+
 export type CreatePenyakitMutationVariables = Exact<{
   input: PenyakitInput;
 }>;
 
 
 export type CreatePenyakitMutation = { __typename?: 'Mutation', createPenyakit: { __typename?: 'Penyakit', id: number } };
+
+export type CreatePerawatMutationVariables = Exact<{
+  input: PerawatInput;
+}>;
+
+
+export type CreatePerawatMutation = { __typename?: 'Mutation', createPerawat: { __typename?: 'Perawat', id: number } };
 
 export type CreatePoliBagianMutationVariables = Exact<{
   input: PoliBagianInput;
@@ -964,6 +985,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
 
+export type UpdateConfigurationSettingMutationVariables = Exact<{
+  input: ConfigurationSettingInput;
+  id: Scalars['Int'];
+}>;
+
+
+export type UpdateConfigurationSettingMutation = { __typename?: 'Mutation', updateConfigurationSetting: { __typename?: 'ConfigurationSettings', id: number, name: string, value: string } };
+
 export type UpdateKunjunganMutationVariables = Exact<{
   id: Scalars['Int'];
   input: KunjunganInput;
@@ -980,6 +1009,18 @@ export type UpdateUserPasienMutationVariables = Exact<{
 
 export type UpdateUserPasienMutation = { __typename?: 'Mutation', updateUserPasien: { __typename?: 'Pasien', id: number } };
 
+export type ConfigurationSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ConfigurationSettingsQuery = { __typename?: 'Query', configurationSettings: Array<{ __typename?: 'ConfigurationSettings', id: number, name: string, value: string }> };
+
+export type ConfigurationSettingsByNameQueryVariables = Exact<{
+  keywords: Scalars['String'];
+}>;
+
+
+export type ConfigurationSettingsByNameQuery = { __typename?: 'Query', configurationSettingsByName: Array<{ __typename?: 'ConfigurationSettings', id: number, name: string, value: string }> };
+
 export type GetAllDoktersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -989,6 +1030,11 @@ export type GetAllPenyakitsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPenyakitsQuery = { __typename?: 'Query', getAllPenyakits?: Array<{ __typename?: 'Penyakit', id: number, nama: string, kode: string }> | null };
+
+export type GetAllPerawatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPerawatsQuery = { __typename?: 'Query', getAllPerawats?: Array<{ __typename?: 'Perawat', id: number, nama: string, nomorTelepon: string }> | null };
 
 export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1045,6 +1091,19 @@ export type MeWithPasienDataQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeWithPasienDataQuery = { __typename?: 'Query', meWithPasienData?: { __typename?: 'User', id: number, username: string, email: string, role: string, pasien?: { __typename?: 'Pasien', id: number, noRm?: string | null, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null, tempatLahir?: string | null, tanggalLahir?: any | null, rt?: string | null, rw?: string | null, idKelurahan?: string | null, idKecamatan?: string | null, idKabupatenKota?: string | null, idProvinsi?: string | null } | null } | null };
 
 
+export const CreateConfigurationSettingDocument = gql`
+    mutation createConfigurationSetting($input: ConfigurationSettingInput!) {
+  createConfigurationSetting(input: $input) {
+    id
+    name
+    value
+  }
+}
+    `;
+
+export function useCreateConfigurationSettingMutation() {
+  return Urql.useMutation<CreateConfigurationSettingMutation, CreateConfigurationSettingMutationVariables>(CreateConfigurationSettingDocument);
+};
 export const CreateDokterDocument = gql`
     mutation createDokter($input: DokterInput!) {
   createDokter(input: $input) {
@@ -1069,6 +1128,17 @@ export const CreateKunjunganDocument = gql`
 export function useCreateKunjunganMutation() {
   return Urql.useMutation<CreateKunjunganMutation, CreateKunjunganMutationVariables>(CreateKunjunganDocument);
 };
+export const CreateKunjunganPoliDocument = gql`
+    mutation createKunjunganPoli($input: KunjunganPoliInput!) {
+  createKunjunganPoli(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreateKunjunganPoliMutation() {
+  return Urql.useMutation<CreateKunjunganPoliMutation, CreateKunjunganPoliMutationVariables>(CreateKunjunganPoliDocument);
+};
 export const CreatePenyakitDocument = gql`
     mutation createPenyakit($input: PenyakitInput!) {
   createPenyakit(input: $input) {
@@ -1079,6 +1149,17 @@ export const CreatePenyakitDocument = gql`
 
 export function useCreatePenyakitMutation() {
   return Urql.useMutation<CreatePenyakitMutation, CreatePenyakitMutationVariables>(CreatePenyakitDocument);
+};
+export const CreatePerawatDocument = gql`
+    mutation createPerawat($input: PerawatInput!) {
+  createPerawat(input: $input) {
+    id
+  }
+}
+    `;
+
+export function useCreatePerawatMutation() {
+  return Urql.useMutation<CreatePerawatMutation, CreatePerawatMutationVariables>(CreatePerawatDocument);
 };
 export const CreatePoliBagianDocument = gql`
     mutation createPoliBagian($input: PoliBagianInput!) {
@@ -1203,6 +1284,19 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const UpdateConfigurationSettingDocument = gql`
+    mutation updateConfigurationSetting($input: ConfigurationSettingInput!, $id: Int!) {
+  updateConfigurationSetting(input: $input, id: $id) {
+    id
+    name
+    value
+  }
+}
+    `;
+
+export function useUpdateConfigurationSettingMutation() {
+  return Urql.useMutation<UpdateConfigurationSettingMutation, UpdateConfigurationSettingMutationVariables>(UpdateConfigurationSettingDocument);
+};
 export const UpdateKunjunganDocument = gql`
     mutation updateKunjungan($id: Int!, $input: KunjunganInput!) {
   updateKunjungan(id: $id, input: $input) {
@@ -1224,6 +1318,32 @@ export const UpdateUserPasienDocument = gql`
 
 export function useUpdateUserPasienMutation() {
   return Urql.useMutation<UpdateUserPasienMutation, UpdateUserPasienMutationVariables>(UpdateUserPasienDocument);
+};
+export const ConfigurationSettingsDocument = gql`
+    query configurationSettings {
+  configurationSettings {
+    id
+    name
+    value
+  }
+}
+    `;
+
+export function useConfigurationSettingsQuery(options: Omit<Urql.UseQueryArgs<ConfigurationSettingsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ConfigurationSettingsQuery>({ query: ConfigurationSettingsDocument, ...options });
+};
+export const ConfigurationSettingsByNameDocument = gql`
+    query configurationSettingsByName($keywords: String!) {
+  configurationSettingsByName(keywords: $keywords) {
+    id
+    name
+    value
+  }
+}
+    `;
+
+export function useConfigurationSettingsByNameQuery(options: Omit<Urql.UseQueryArgs<ConfigurationSettingsByNameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ConfigurationSettingsByNameQuery>({ query: ConfigurationSettingsByNameDocument, ...options });
 };
 export const GetAllDoktersDocument = gql`
     query getAllDokters {
@@ -1255,6 +1375,19 @@ export const GetAllPenyakitsDocument = gql`
 
 export function useGetAllPenyakitsQuery(options: Omit<Urql.UseQueryArgs<GetAllPenyakitsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllPenyakitsQuery>({ query: GetAllPenyakitsDocument, ...options });
+};
+export const GetAllPerawatsDocument = gql`
+    query getAllPerawats {
+  getAllPerawats {
+    id
+    nama
+    nomorTelepon
+  }
+}
+    `;
+
+export function useGetAllPerawatsQuery(options: Omit<Urql.UseQueryArgs<GetAllPerawatsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllPerawatsQuery>({ query: GetAllPerawatsDocument, ...options });
 };
 export const GetAllPoliBagiansDocument = gql`
     query getAllPoliBagians {

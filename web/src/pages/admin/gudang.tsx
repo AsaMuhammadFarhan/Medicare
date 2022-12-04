@@ -1,5 +1,6 @@
 import { Stack, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
+import ConfigurationSetting from "../../components/Gudang/ConfigurationSetting";
 import GudangObat from "../../components/Gudang/Obat";
 import DaftarPenyakit from "../../components/Gudang/Penyakit";
 import GudangPoli from "../../components/Gudang/Poli";
@@ -19,7 +20,7 @@ const AdminGudangPage = () => {
           <GudangTindakan />
           <GudangPoli />
           <DaftarPenyakit />
-          {/* TO DO Konfigurasi Pengaturan */}
+          <ConfigurationSetting />
         </Stack>
       </Stack>
     </LayoutAdmin>

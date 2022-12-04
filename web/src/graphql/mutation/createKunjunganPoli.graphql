@@ -1,0 +1,5 @@
+mutation createKunjunganPoli($input: KunjunganPoliInput!) {
+  createKunjunganPoli(input: $input) {
+    id
+  }
+}

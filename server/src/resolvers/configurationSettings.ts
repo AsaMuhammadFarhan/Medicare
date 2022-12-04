@@ -12,7 +12,7 @@ class ConfigurationSettingInput {
   value: string
 
   @Field()
-  updateBy: string
+  updatedBy: string
 }
 
 @Resolver(ConfigurationSettings)
@@ -51,7 +51,7 @@ export class ConfigurationSettingResolver {
   async createConfigurationSetting(
     @Arg('input') input: ConfigurationSettingInput
   ): Promise<ConfigurationSettings> {
-    return ConfigurationSettings.create({ ...input }).save()
+    return await ConfigurationSettings.create({ ...input }).save()
   }
 
   @Mutation(() => ConfigurationSettings)

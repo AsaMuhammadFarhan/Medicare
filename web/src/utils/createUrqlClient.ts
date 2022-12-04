@@ -65,6 +65,20 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "getAllPenyakits", x.arguments)
             );
           },
+          createKunjunganPoli: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getReservasi");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getReservasi", x.arguments)
+            );
+          },
+          createPerawat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPerawats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPerawats", x.arguments)
+            );
+          },
           createDokter: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");
             const argsQueries = allField.filter((x) => x.fieldName === "getAllDokters");
@@ -98,6 +112,28 @@ export const createUrqlClient = (ssrExchange: any) => ({
             const argsQueries = allField.filter((x) => x.fieldName === "meWithPasienData");
             argsQueries.forEach((x) =>
               cache.invalidate("Query", "meWithPasienData", x.arguments)
+            );
+          },
+          createConfigurationSetting: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "configurationSettings");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "configurationSettings", x.arguments)
+            );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "configurationSettingsByName");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "configurationSettingsByName", x.arguments)
+            );
+          },
+          updateConfigurationSetting: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "configurationSettings");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "configurationSettings", x.arguments)
+            );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "configurationSettingsByName");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "configurationSettingsByName", x.arguments)
             );
           },
           readyReservasi: (_result, args, cache, info) => {

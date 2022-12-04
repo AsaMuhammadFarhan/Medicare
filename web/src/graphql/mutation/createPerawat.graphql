@@ -1,0 +1,5 @@
+mutation createPerawat($input: PerawatInput!) {
+  createPerawat(input: $input) {
+    id
+  }
+}

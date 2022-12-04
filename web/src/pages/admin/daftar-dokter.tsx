@@ -23,6 +23,7 @@ import {
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import LayoutAdmin from "../../components/LayoutGeneral";
+import DaftarPerawat from "../../components/Perawat";
 import {
   useCreateDokterMutation,
   useGetAllDoktersQuery,
@@ -171,6 +172,7 @@ const AdminDaftarDokterPage = () => {
             </ModalContent>
           </Modal>
         </Flex>
+        <DaftarPerawat />
       </Stack>
     </LayoutAdmin>
   )

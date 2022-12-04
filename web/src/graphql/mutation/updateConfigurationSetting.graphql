@@ -1,0 +1,10 @@
+mutation updateConfigurationSetting(
+  $input: ConfigurationSettingInput!
+  $id: Int!
+) {
+  updateConfigurationSetting(input: $input, id: $id) {
+    id
+    name
+    value
+  }
+}
