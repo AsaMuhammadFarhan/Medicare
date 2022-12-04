@@ -3,7 +3,7 @@ import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import LayoutAdmin from "../../../components/LayoutGeneral";
 import { NextChakraLink } from "../../../components/NextChakraLink";
-import { useCreateReservasiMutation, useGetAllPoliBagiansQuery, useGetAllReservasisQuery, useGetAllUserPasienQuery, useGetPoliBagianQuery, useReadyReservasiMutation } from "../../../generated/graphql";
+import { useCreateReservasiMutation, useGetAllPoliBagiansQuery, useGetAllReservasisQuery, useGetAllUserPasienQuery, useGetPoliBagianQuery, useReadyReservasiMutation, useToCanceledReservasiMutation } from "../../../generated/graphql";
 import themeColor from "../../../utils/color";
 import { createUrqlClient } from "../../../utils/createUrqlClient";
 
@@ -39,6 +39,7 @@ const AdminReservasiPage = () => {
   });
   const [userPasiens] = useGetAllUserPasienQuery();
   const [creating, createReservasi] = useCreateReservasiMutation();
+  const [, cancelingReservasi] = useToCanceledReservasiMutation();
 
   const handleBuatReservasi = () => {
     createReservasi({
@@ -63,6 +64,16 @@ const AdminReservasiPage = () => {
     })
   };
 
+  const handleClickCancel = (id: number) => {
+    cancelingReservasi({
+      id,
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      }
+    })
+  };
 
   const getStatusPasien = (value: string) => {
     if (value === "pending") {
@@ -206,25 +217,38 @@ const AdminReservasiPage = () => {
                   <Td>
                     <Stack>
                       <Button
-                        isDisabled={reservasi.statusPasien === "ready"}
+                        isDisabled={reservasi.statusPasien === "ready" || reservasi.statusPasien === "canceled"}
                         onClick={() => handleClickReady(reservasi.id)}
                         colorScheme="green"
                         p="5.5px 12px"
                         h="auto"
                         w="auto"
                       >
-                        Update Kedatangan
+                        Terima Kedatangan
                       </Button>
-                      <NextChakraLink href={`/admin/reservasi/${reservasi.id}`} w="100%">
+                      {reservasi.statusPasien === "ready" && (
+                        <NextChakraLink href={`/admin/reservasi/${reservasi.id}`} w="100%">
+                          <Button
+                            colorScheme="blue"
+                            p="5.5px 12px"
+                            h="auto"
+                            w="100%"
+                          >
+                            Data Kunjungan
+                          </Button>
+                        </NextChakraLink>
+                      )}
+                      {reservasi.statusPasien === "pending" && (
                         <Button
-                          colorScheme="blue"
+                          onClick={() => handleClickCancel(reservasi.id)}
+                          colorScheme="red"
                           p="5.5px 12px"
                           h="auto"
                           w="100%"
                         >
-                          Data Kunjungan
+                          Tolak Reservasi
                         </Button>
-                      </NextChakraLink>
+                      )}
                     </Stack>
                   </Td>
                 </Tr>

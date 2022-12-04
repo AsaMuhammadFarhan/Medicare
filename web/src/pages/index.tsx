@@ -34,7 +34,8 @@ const IndexPage = () => {
   const getBaseRouter = (role?: string) => {
     if (!role) return "/";
     if (role === "admin") return "/admin/dashboard";
-    if (role === "admin-poli") return "/poli/dashboard";
+    if (role === "admin-poli") return "/admin-poli/dashboard";
+    if (role === "cashier") return "/cashier/payment";
     if (role === "guest") return "/pasien/dashboard";
     return "/"
   };

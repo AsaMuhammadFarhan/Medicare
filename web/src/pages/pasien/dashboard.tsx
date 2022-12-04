@@ -236,49 +236,60 @@ const PasienDashboardPage = () => {
                     {getStatusPasien(res.statusPasien)}
                   </Flex>
                 </Flex>
-                <Text fontSize="14px" color={themeColor.muted}>
-                  Periksa {res.kunjungan?.penyakit} dengan {res.kunjungan?.kunjunganPoli?.map((kp) =>
-                    `${kp.dokter?.nama} (Poli ${kp.poliBagian?.nama})`
-                  ).join(", juga ")}
-                </Text>
+                {res.statusPasien === "success" ? (
+                  <Text fontSize="14px" color={themeColor.muted}>
+                    Periksa {res.kunjungan?.penyakit} dengan {res.kunjungan?.kunjunganPoli?.map((kp) =>
+                      `${kp.dokter?.nama} (Poli ${kp.poliBagian?.nama})`
+                    ).join(", juga ")}
+                  </Text>
+                ) : (
+                  <Text fontSize="14px" color={themeColor.muted}>
+                    Periksa dibatalkan
+                  </Text>
+                )}
               </Stack>
-              <NextChakraLink
-                href={"/pasien/reservasi/" + res.id}
-                borderRadius="8px"
-                w="100%"
-              >
-                <HStack
-                  justify="space-between"
-                  borderColor="gray.200"
+              {res.statusPasien === "success" && (
+                <NextChakraLink
+                  href={"/pasien/reservasi/" + res.id}
                   borderRadius="8px"
-                  borderWidth="1px"
-                  p="16px"
+                  w="100%"
                 >
-                  <HStack>
-                    <Flex
-                      color={themeColor.chakraBlue8}
-                      alignItems="center"
-                      borderRadius="4px"
-                      bgColor="gray.50"
-                      justify="center"
-                      flexShrink={0}
-                      boxSize="40px"
-                    >
-                      <Iconify icon="bx:file" boxSize="24px" />
-                    </Flex>
-                    <Flex direction="column">
-                      <Text fontSize="14px">
-                        Reservasi-2_{moment(new Date(parseInt(res.updatedAt))).format('L')}
-                      </Text>
-                      <Text color={themeColor.muted}>
-                      </Text>
-                    </Flex>
+                  <HStack
+                    _hover={{
+                      bgColor: "gray.50"
+                    }}
+                    justify="space-between"
+                    borderColor="gray.200"
+                    borderRadius="8px"
+                    borderWidth="1px"
+                    p="16px"
+                  >
+                    <HStack>
+                      <Flex
+                        color={themeColor.chakraBlue8}
+                        alignItems="center"
+                        borderRadius="4px"
+                        bgColor="gray.50"
+                        justify="center"
+                        flexShrink={0}
+                        boxSize="40px"
+                      >
+                        <Iconify icon="bx:file" boxSize="24px" />
+                      </Flex>
+                      <Flex direction="column">
+                        <Text fontSize="14px">
+                          Reservasi-2_{moment(new Date(parseInt(res.updatedAt))).format('L')}
+                        </Text>
+                        <Text color={themeColor.muted}>
+                        </Text>
+                      </Flex>
+                    </HStack>
+                    <Button colorScheme="blue">
+                      Lihat
+                    </Button>
                   </HStack>
-                  <Button colorScheme="blue">
-                    Lihat
-                  </Button>
-                </HStack>
-              </NextChakraLink>
+                </NextChakraLink>
+              )}
             </Stack>
           ))}
         </Stack>
