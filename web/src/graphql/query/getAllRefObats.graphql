@@ -3,5 +3,6 @@ query getAllRefObats {
     id
     nama
     harga
+    createdBy
   }
 }

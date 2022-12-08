@@ -1,0 +1,5 @@
+mutation updatePoliBagian($id: Int!, $input: PoliBagianInput!) {
+  updatePoliBagian(id: $id, input: $input) {
+    id
+  }
+}

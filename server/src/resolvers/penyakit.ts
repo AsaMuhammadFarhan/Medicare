@@ -31,7 +31,7 @@ class PenyakitInput {
 export class PenyakitResolver {
   @Query(() => [Penyakit], { nullable: true })
   async getAllPenyakits(): Promise<Penyakit[] | undefined> {
-    return await Penyakit.find()
+    return (await Penyakit.find()).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [Penyakit], { nullable: true })
@@ -80,7 +80,7 @@ export class PenyakitResolver {
     return ref
   }
 
-  @Mutation(() => Penyakit)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deletePenyakit(
     @Arg('id', () => Int) id: number,

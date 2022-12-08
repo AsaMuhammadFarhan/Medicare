@@ -38,6 +38,7 @@ export class DokterResolver {
       .getRepository(Dokter)
       .createQueryBuilder('Dokter')
       .leftJoinAndSelect('Dokter.poliBagian', 'poliBagian')
+      .orderBy('Dokter.id','ASC')
 
     return await query.getMany()
   }
@@ -101,7 +102,7 @@ export class DokterResolver {
     return found
   }
 
-  @Mutation(() => Dokter)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteDokter(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Dokter.delete(id)

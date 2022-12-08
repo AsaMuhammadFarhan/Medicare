@@ -3,5 +3,6 @@ query getAllPerawats {
     id
     nama
     nomorTelepon
+    createdBy
   }
 }

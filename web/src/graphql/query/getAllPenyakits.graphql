@@ -3,5 +3,6 @@ query getAllPenyakits {
     id
     nama
     kode
+    createdBy
   }
 }

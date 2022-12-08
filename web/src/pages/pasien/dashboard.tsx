@@ -223,6 +223,7 @@ const PasienDashboardPage = () => {
             <Stack
               borderRadius="8px"
               overflow="hidden"
+              key={`${res.id}`}
               boxShadow="md"
               spacing="16px"
               p="24px"
@@ -278,7 +279,7 @@ const PasienDashboardPage = () => {
                       </Flex>
                       <Flex direction="column">
                         <Text fontSize="14px">
-                          Reservasi-2_{moment(new Date(parseInt(res.updatedAt))).format('L')}
+                          Reservasi-{res.id}_{moment(new Date(parseInt(res.updatedAt))).format('L')}
                         </Text>
                         <Text color={themeColor.muted}>
                         </Text>
@@ -292,6 +293,11 @@ const PasienDashboardPage = () => {
               )}
             </Stack>
           ))}
+          {successAndCanceledReservasi.length === 0 && (
+            <Flex>
+              Riwayat kunjungan masih kosong
+            </Flex>
+          )}
         </Stack>
       </Stack>
     </LayoutPasien>

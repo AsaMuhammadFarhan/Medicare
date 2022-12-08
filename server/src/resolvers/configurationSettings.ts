@@ -21,7 +21,7 @@ export class ConfigurationSettingResolver {
   @Query(() => [ConfigurationSettings])
   @UseMiddleware(isAdmin)
   async configurationSettings(): Promise<ConfigurationSettings[]> {
-    return await ConfigurationSettings.find()
+    return (await ConfigurationSettings.find()).sort((prev, next) => prev.id - next.id)
   }
 
   @Query(() => [ConfigurationSettings])
@@ -33,6 +33,7 @@ export class ConfigurationSettingResolver {
       .createQueryBuilder('setting')
       // .leftJoinAndSelect('setting.name', 'name')
       // .leftJoinAndSelect('setting.value', 'value')
+      .orderBy('setting.id','ASC')
 
     const keywordList = keywords.split(' ')
     for (let i = 0; i < keywordList.length; i++) {
@@ -72,7 +73,7 @@ export class ConfigurationSettingResolver {
   }
 
 
-  @Mutation(() => ConfigurationSettings)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteConfigurationSetting(
     @Arg('id', () => Int) id: number,

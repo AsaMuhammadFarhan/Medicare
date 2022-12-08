@@ -35,6 +35,7 @@ export class PerawatResolver {
     const query = getConnection()
       .getRepository(Perawat)
       .createQueryBuilder('Perawat')
+      .orderBy('Perawat.id','ASC')
 
     return await query.getMany()
   }
@@ -97,7 +98,7 @@ export class PerawatResolver {
     return found
   }
 
-  @Mutation(() => Perawat)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deletePerawat(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Perawat.delete(id)

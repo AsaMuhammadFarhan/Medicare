@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Button, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, SimpleGrid, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -6,7 +6,6 @@ import DatePicker from "../../../components/DatePicker";
 import { LayoutPasien } from "../../../components/LayoutGeneral";
 import {
   useCreateReservasiMutation,
-  useGetAllDoktersQuery,
   useGetAllPoliBagiansQuery,
   useGetPoliBagianQuery,
   useMeWithAllDataQuery,
@@ -41,7 +40,6 @@ const PasienBuatReservasiPage = () => {
       id: parseInt(selectedPoliId)
     }
   });
-  const [dokters] = useGetAllDoktersQuery();
   const [creating, createReservasi] = useCreateReservasiMutation();
 
   const handleBuatReservasi = () => {
@@ -169,17 +167,35 @@ const PasienBuatReservasiPage = () => {
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing="24px">
-              {dokters.data?.getAllDokters?.map((dok) => (
-                <Stack borderRadius="8px" boxShadow="md" p="16px" key={dok.id}>
-                  <Text>
-                    {dok.nama}
+              {poliBagians.data?.getAllPoliBagians?.map((pb) => (
+                <Stack borderRadius="8px" boxShadow="md" p="16px" key={pb.id}>
+                  <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
+                    Poli {pb.nama}
                   </Text>
-                  <Text>
-                    Poli {dok.poliBagian.nama}
-                  </Text>
-                  <Text>
-                    {dok.nomorTelepon}
-                  </Text>
+                  <SimpleGrid columns={3} gap="16px">
+                    {pb.dokter.map((dok) => (
+                      <HStack
+                        bgColor={themeColor.chakraBlue6}
+                        borderRadius="8px"
+                        color="white"
+                        p="8px"
+                      >
+                        <Avatar
+                          name={dok.nama}
+                          boxSize="40px"
+                          size="md"
+                        />
+                        <Flex direction="column">
+                          <Text fontWeight={700}>
+                            {dok.nama}
+                          </Text>
+                          <Text fontSize="14px">
+                            {dok.nomorTelepon}
+                          </Text>
+                        </Flex>
+                      </HStack>
+                    ))}
+                  </SimpleGrid>
                 </Stack>
               ))}
             </Stack>

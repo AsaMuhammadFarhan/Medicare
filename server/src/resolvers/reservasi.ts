@@ -175,7 +175,7 @@ export class ReservasiResolver {
     return found
   }
 
-  @Mutation(() => Reservasi)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteReservasi(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Reservasi.delete(id)

@@ -31,7 +31,7 @@ class RefObatInput {
 export class RefObatResolver {
   @Query(() => [RefObat], { nullable: true })
   async getAllRefObats(): Promise<RefObat[] | undefined> {
-    return await RefObat.find()
+    return (await RefObat.find()).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [RefObat], { nullable: true })
@@ -80,7 +80,7 @@ export class RefObatResolver {
     return ref
   }
 
-  @Mutation(() => RefObat)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteRefObat(
     @Arg('id', () => Int) id: number,

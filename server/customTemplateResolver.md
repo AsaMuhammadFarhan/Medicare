@@ -22,6 +22,7 @@ export class TemplateResolver {
       .createQueryBuilder("template")
       // .leftJoinAndSelect('template.name', 'name')
       // .leftJoinAndSelect('template.value', 'value')
+      .orderBy('template.id','ASC')
 
     return await query.getMany();
   }
@@ -91,7 +92,7 @@ export class TemplateResolver {
     return found;
   }
 
-  @Mutation(() => Template)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteTemplate(
     @Arg('id', () => Int) id: number,

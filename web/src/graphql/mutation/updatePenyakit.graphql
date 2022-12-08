@@ -1,0 +1,5 @@
+mutation updatePenyakit($id: Int!, $input: PenyakitInput!) {
+  updatePenyakit(id: $id, input: $input) {
+    id
+  }
+}

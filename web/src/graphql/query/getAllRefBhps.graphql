@@ -3,5 +3,6 @@ query getAllRefBhps {
     id
     nama
     harga
+    createdBy
   }
 }

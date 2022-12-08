@@ -497,7 +497,7 @@ export const LayoutPasien: React.FC<{
   children,
   metaTitle,
 }) => {
-    useIsAuth();
+    useIsAuth(["guest"]);
     const router = useRouter();
 
     const [me] = useMeQuery();

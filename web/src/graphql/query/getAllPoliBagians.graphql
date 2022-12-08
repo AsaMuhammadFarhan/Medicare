@@ -3,5 +3,10 @@ query getAllPoliBagians {
     id
     nama
     hargaPendaftaran
+    createdBy
+    dokter {
+      nama
+      nomorTelepon
+    }
   }
 }

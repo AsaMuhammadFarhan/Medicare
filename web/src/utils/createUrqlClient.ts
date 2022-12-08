@@ -217,6 +217,77 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "getAllReservasis", x.arguments)
             );
           },
+          updateRefObat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefObats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefObats", x.arguments)
+            );
+          },
+          deleteRefObat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefObats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefObats", x.arguments)
+            );
+          },
+          updatePenyakit: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPenyakits");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPenyakits", x.arguments)
+            );
+          },
+          deletePenyakit: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPenyakits");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPenyakits", x.arguments)
+            );
+          },
+          updateRefTindakan: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefTindakans");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefTindakans", x.arguments)
+            );
+          },
+          deleteRefTindakan: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefTindakans");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefTindakans", x.arguments)
+            );
+          },
+          updateRefBhp: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefBhps");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefBhps", x.arguments)
+            );
+          },
+          deleteRefBhp: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllRefBhps");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllRefBhps", x.arguments)
+            );
+          },
+          updatePoliBagian: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPoliBagians");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPoliBagians", x.arguments)
+            );
+          },
+          deletePoliBagian: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPoliBagians");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPoliBagians", x.arguments)
+            );
+          },
+          
         },
       },
     }),
