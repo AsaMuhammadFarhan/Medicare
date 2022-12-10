@@ -195,6 +195,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   readyReservasi: Reservasi;
   register: UserResponse;
+  specialRegister: UserResponse;
   toCanceledReservasi: Reservasi;
   toSuccessReservasi: Reservasi;
   toWaitingPaymentReservasi: Reservasi;
@@ -385,6 +386,12 @@ export type MutationReadyReservasiArgs = {
 
 export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
+};
+
+
+export type MutationSpecialRegisterArgs = {
+  options: UsernamePasswordInput;
+  role: Scalars['String'];
 };
 
 
@@ -1085,6 +1092,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
 
+export type SpecialRegisterMutationVariables = Exact<{
+  options: UsernamePasswordInput;
+  role: Scalars['String'];
+}>;
+
+
+export type SpecialRegisterMutation = { __typename?: 'Mutation', specialRegister: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } };
+
 export type ToCanceledReservasiMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1564,6 +1579,25 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const SpecialRegisterDocument = gql`
+    mutation specialRegister($options: UsernamePasswordInput!, $role: String!) {
+  specialRegister(options: $options, role: $role) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      email
+    }
+  }
+}
+    `;
+
+export function useSpecialRegisterMutation() {
+  return Urql.useMutation<SpecialRegisterMutation, SpecialRegisterMutationVariables>(SpecialRegisterDocument);
 };
 export const ToCanceledReservasiDocument = gql`
     mutation toCanceledReservasi($id: Int!) {

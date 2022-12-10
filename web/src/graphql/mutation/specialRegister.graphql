@@ -1,0 +1,13 @@
+mutation specialRegister($options: UsernamePasswordInput!, $role: String!) {
+  specialRegister(options: $options, role: $role) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      email
+    }
+  }
+}
