@@ -1,6 +1,5 @@
 import { Box, Button, Center, Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, HStack, Input, InputGroup, InputRightElement, Radio, RadioGroup, Spacer, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { SimpleFooter } from "../components/Footer";
 import Iconify from "../components/Iconify";
@@ -12,7 +11,6 @@ import themeColor from "../utils/color";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const SpecialRegisterPage = () => {
-  const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
   const [isSubmit, setSubmit] = useState(false);
 
@@ -31,7 +29,7 @@ const SpecialRegisterPage = () => {
     }
   });
 
-  const isSpecialRegisterActive: boolean = specialRegister.data?.configurationSettingsByName[0]?.value === "active";
+  const isSpecialRegisterActive: boolean = specialRegister.data?.configurationSettingsByName[0]?.value === "active" ?? true;
 
   const [, register] = useSpecialRegisterMutation();
 
@@ -64,7 +62,6 @@ const SpecialRegisterPage = () => {
         return;
       }
       setSubmit(false);
-      router.push("/pasien/welcome");
     })
   }
 
