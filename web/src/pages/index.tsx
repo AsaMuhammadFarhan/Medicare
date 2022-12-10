@@ -150,7 +150,7 @@ const IndexPage = () => {
             alignItems="center"
             spacing="16px"
           >
-            <NextChakraLink href="/user/login" title="Login">
+            <NextChakraLink href="/login" title="Login">
               <Button
                 _hover={{ bgColor: themeColor.chakraBlue8 }}
                 bgColor={themeColor.chakraBlue10}
@@ -159,7 +159,7 @@ const IndexPage = () => {
                 Masuk
               </Button>
             </NextChakraLink>
-            <NextChakraLink href="/user/register" title="Register">
+            <NextChakraLink href="/register" title="Register">
               <Button>
                 Daftar Sekarang
               </Button>
