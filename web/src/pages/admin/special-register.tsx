@@ -23,21 +23,23 @@ import {
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
-import { SimpleFooter } from "../components/Footer";
-import Iconify from "../components/Iconify";
-import Logo from "../components/Logo";
-import { OriginalMetaTags } from "../components/MetaTags";
-import { NextChakraLinkWithHover } from "../components/NextChakraLink";
+import { SimpleFooter } from "../../components/Footer";
+import Iconify from "../../components/Iconify";
+import Logo from "../../components/Logo";
+import { OriginalMetaTags } from "../../components/MetaTags";
+import { NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import {
   useConfigurationSettingsByNameQuery,
   useInitiationSpecialRegisterMutation,
   useSpecialRegisterMutation,
-} from "../generated/graphql";
-import themeColor from "../utils/color";
-import { createUrqlClient } from "../utils/createUrqlClient";
+} from "../../generated/graphql";
+import themeColor from "../../utils/color";
+import { createUrqlClient } from "../../utils/createUrqlClient";
+import { useIsAuth } from "../../utils/useIsAuth";
 
 const SpecialRegisterPage = () => {
   const toast = useToast();
+  useIsAuth(["admin"]);
 
   const { isOpen, onToggle } = useDisclosure();
   const [isSubmit, setSubmit] = useState(false);
@@ -169,14 +171,14 @@ const SpecialRegisterPage = () => {
                     value={role}
                   >
                     <Stack>
+                      {/* <Radio value="admin">
+                        Admin
+                      </Radio> */}
                       <Radio value="admin-poli">
                         Admin Poli
                       </Radio>
                       <Radio value="cashier">
                         Kasir
-                      </Radio>
-                      <Radio value="admin">
-                        Admin
                       </Radio>
                     </Stack>
                   </RadioGroup>

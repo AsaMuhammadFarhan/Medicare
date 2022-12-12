@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import Iconify from "../../components/Iconify";
@@ -117,101 +117,112 @@ const PasienDashboardPage = () => {
         </Text>
 
         <Stack spacing="4px">
-          <Text fontSize="18px" fontWeight={600}>
-            Selamat Datang, {meWithAllData.data?.meWithAllData?.pasien?.nama}!
+          <Text fontSize="24px" fontWeight={600} color={themeColor.chakraBlue10}>
+            Selamat Datang, {meWithAllData.data?.meWithAllData?.pasien?.nama ?? "Pasien"}!
           </Text>
           <Text>
             Ini adalah tampilan dashboard kamu
           </Text>
         </Stack>
-        {(pendingReservasi.length > 0 || readyReservasi.length > 0 || waitingPaymentReservasi.length > 0) ? (
-          <Stack
-            spacing="8px"
-            w="100%"
-          >
-            <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
-              Reservasi Aktif
-            </Text>
-            {waitingPaymentReservasi.map((res) => (
-              <HStack
-                justify="space-between"
-                alignItems="center"
-                borderRadius="8px"
-                overflow="hidden"
-                boxShadow="md"
-                key={res.id}
-                w="100%"
-                p="16px"
-              >
-                <Stack spacing="4px">
-                  <Text fontSize="18px">
-                    Reservasi ID#{res.id}
-                  </Text>
-                  <Text fontSize="14px">
-                    [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
-                    }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
-                  </Text>
-                </Stack>
-                {getStatusPasien(res.statusPasien)}
-              </HStack>
-            ))}
-            {readyReservasi.map((res) => (
-              <HStack
-                justify="space-between"
-                alignItems="center"
-                borderRadius="8px"
-                overflow="hidden"
-                boxShadow="md"
-                key={res.id}
-                w="100%"
-                p="16px"
-              >
-                <Stack spacing="4px">
-                  <Text fontSize="18px">
-                    Reservasi ID#{res.id}
-                  </Text>
-                  <Text fontSize="14px">
-                    [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
-                    }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
-                  </Text>
-                </Stack>
-                {getStatusPasien(res.statusPasien)}
-              </HStack>
-            ))}
-            {pendingReservasi.map((res) => (
-              <HStack
-                justify="space-between"
-                alignItems="center"
-                borderRadius="8px"
-                overflow="hidden"
-                boxShadow="md"
-                key={res.id}
-                w="100%"
-                p="16px"
-              >
-                <Stack spacing="4px">
-                  <Text fontSize="18px">
-                    Reservasi ID#{res.id}
-                  </Text>
-                  <Text fontSize="14px">
-                    [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
-                    }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
-                  </Text>
-                </Stack>
-                {getStatusPasien(res.statusPasien)}
-              </HStack>
-            ))}
-          </Stack>
-        ) : (
-          <Flex>
-            <Text mr="4px">
-              Tidak ada reservasi aktif...{" "}
-            </Text>
-            <NextChakraLinkWithHover href="/pasien/reservasi">
-              Buat Sekarang
-            </NextChakraLinkWithHover>
-          </Flex>
-        )}
+        <Divider orientation="horizontal" />
+        <Stack
+          spacing="8px"
+          w="100%"
+        >
+          <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
+            Reservasi Aktif
+          </Text>
+          {(pendingReservasi.length > 0 || readyReservasi.length > 0 || waitingPaymentReservasi.length > 0) ? (
+            <>
+              {waitingPaymentReservasi.map((res) => (
+                <HStack
+                  justify="space-between"
+                  alignItems="center"
+                  borderRadius="8px"
+                  overflow="hidden"
+                  boxShadow="md"
+                  key={res.id}
+                  w="100%"
+                  p="16px"
+                >
+                  <Stack spacing="4px">
+                    <Text fontSize="18px">
+                      Reservasi ID#{res.id}
+                    </Text>
+                    <Text fontSize="14px">
+                      [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
+                      }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
+                    </Text>
+                  </Stack>
+                  {getStatusPasien(res.statusPasien)}
+                </HStack>
+              ))}
+              {readyReservasi.map((res) => (
+                <HStack
+                  justify="space-between"
+                  alignItems="center"
+                  borderRadius="8px"
+                  overflow="hidden"
+                  boxShadow="md"
+                  key={res.id}
+                  w="100%"
+                  p="16px"
+                >
+                  <Stack spacing="4px">
+                    <Text fontSize="18px">
+                      Reservasi ID#{res.id}
+                    </Text>
+                    <Text fontSize="14px">
+                      [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
+                      }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
+                    </Text>
+                  </Stack>
+                  {getStatusPasien(res.statusPasien)}
+                </HStack>
+              ))}
+              {pendingReservasi.map((res) => (
+                <HStack
+                  justify="space-between"
+                  alignItems="center"
+                  borderRadius="8px"
+                  overflow="hidden"
+                  boxShadow="md"
+                  key={res.id}
+                  w="100%"
+                  p="16px"
+                >
+                  <Stack spacing="4px">
+                    <Text fontSize="18px">
+                      Reservasi ID#{res.id}
+                    </Text>
+                    <Text fontSize="14px">
+                      [{dateFormatWithoutDay(new Date(parseInt(res.tanggalRencanaDatang)))
+                      }] Bersama {res.dokter?.nama} di Poliklinik {res.poliBagian?.nama}
+                    </Text>
+                  </Stack>
+                  {getStatusPasien(res.statusPasien)}
+                </HStack>
+              ))}
+            </>
+          ) : (
+            <Flex
+              alignItems="center"
+              direction="column"
+              justify="center"
+              h="100px"
+              w="100%"
+            >
+              <Text>
+                Tidak ada reservasi aktif.
+              </Text>
+              <NextChakraLinkWithHover href="/pasien/reservasi">
+                <Button colorScheme="blue">
+                  Buat Reservasi Sekarang
+                </Button>
+              </NextChakraLinkWithHover>
+            </Flex>
+          )}
+        </Stack>
         <Stack
           spacing="16px"
           w="100%"
@@ -294,8 +305,16 @@ const PasienDashboardPage = () => {
             </Stack>
           ))}
           {successAndCanceledReservasi.length === 0 && (
-            <Flex>
-              Riwayat kunjungan masih kosong
+            <Flex
+              alignItems="center"
+              direction="column"
+              justify="center"
+              h="100px"
+              w="100%"
+            >
+              <Flex>
+                Riwayat kunjungan kosong.
+              </Flex>
             </Flex>
           )}
         </Stack>

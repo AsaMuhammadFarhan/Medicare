@@ -58,11 +58,11 @@ const FourOFour = () => {
             w={["calc(100vw - 48px)", "calc(100vw - 48px)", "200px"]}
             border="4px solid white"
             position="relative"
-            objectFit="cover"
           >
             <Image
               src="/images/tom-kaget.jpeg"
               alt="404 | Tom Kaget"
+              objectFit="cover"
               sizes="100px"
               layout="fill"
             />
