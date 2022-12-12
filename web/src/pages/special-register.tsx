@@ -1,4 +1,26 @@
-import { Box, Button, Center, Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, HStack, Input, InputGroup, InputRightElement, Radio, RadioGroup, Spacer, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Radio,
+  RadioGroup,
+  Spacer,
+  Stack,
+  Text,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import { SimpleFooter } from "../components/Footer";
@@ -6,11 +28,17 @@ import Iconify from "../components/Iconify";
 import Logo from "../components/Logo";
 import { OriginalMetaTags } from "../components/MetaTags";
 import { NextChakraLinkWithHover } from "../components/NextChakraLink";
-import { useConfigurationSettingsByNameQuery, useSpecialRegisterMutation } from "../generated/graphql";
+import {
+  useConfigurationSettingsByNameQuery,
+  useInitiationSpecialRegisterMutation,
+  useSpecialRegisterMutation,
+} from "../generated/graphql";
 import themeColor from "../utils/color";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const SpecialRegisterPage = () => {
+  const toast = useToast();
+
   const { isOpen, onToggle } = useDisclosure();
   const [isSubmit, setSubmit] = useState(false);
 
@@ -28,8 +56,41 @@ const SpecialRegisterPage = () => {
       keywords: "special-register"
     }
   });
+  const [, initationSpecialRegister] = useInitiationSpecialRegisterMutation();
+  const handleClickMagic = () => {
+    if (isSubmit) return;
+    setSubmit(true);
+    initationSpecialRegister().then((result) => {
+      if (result.error) {
+        toast({
+          title: "Internal Server Error",
+          description: result.error.message,
+          status: "error",
+          position: "top",
+        })
+        return;
+      }
 
-  const isSpecialRegisterActive: boolean = specialRegister.data?.configurationSettingsByName[0]?.value === "active" ?? true;
+      if (result.data?.initiationSpecialRegister === false) {
+        toast({
+          title: "Admin Sudah Ada!",
+          description: "Login sebagai admin untuk menyalakan halaman ini.",
+          status: "info",
+          position: "top",
+        })
+        return;
+      }
+
+      toast({
+        title: "Admin Berhasil Dibuat!",
+        description: "Gunakan user:password admin:admin untuk login.",
+        status: "success",
+        position: "top"
+      });
+    })
+  };
+
+  const isSpecialRegisterActive: boolean = specialRegister.data?.configurationSettingsByName[0]?.value === "active";
 
   const [, register] = useSpecialRegisterMutation();
 
@@ -91,7 +152,7 @@ const SpecialRegisterPage = () => {
               px={["", "", "24px"]}
               w="100%"
             >
-              <VStack spacing="8">
+              <VStack spacing="4">
                 <Text
                   color={themeColor.chakraBlue6}
                   fontWeight={700}
@@ -99,22 +160,27 @@ const SpecialRegisterPage = () => {
                 >
                   Create Special Account
                 </Text>
-                <RadioGroup
-                  onChange={(e) => setRole(e)}
-                  value={role}
-                >
-                  <Stack>
-                    <Radio value="admin">
-                      Admin
-                    </Radio>
-                    <Radio value="admin-poli">
-                      Admin Poli
-                    </Radio>
-                    <Radio value="cashier">
-                      Kasir
-                    </Radio>
-                  </Stack>
-                </RadioGroup>
+                <HStack alignItems="start">
+                  <Text>
+                    Sebagai :
+                  </Text>
+                  <RadioGroup
+                    onChange={(e) => setRole(e)}
+                    value={role}
+                  >
+                    <Stack>
+                      <Radio value="admin-poli">
+                        Admin Poli
+                      </Radio>
+                      <Radio value="cashier">
+                        Kasir
+                      </Radio>
+                      <Radio value="admin">
+                        Admin
+                      </Radio>
+                    </Stack>
+                  </RadioGroup>
+                </HStack>
               </VStack>
             </Center>
             {/* LEFT SEGMENT */}
@@ -133,7 +199,7 @@ const SpecialRegisterPage = () => {
                   <Logo />
                   <Stack spacing="3" textAlign="center">
                     <Heading fontSize="24px">
-                      Create special account
+                      Create High Grant Privilege Account
                     </Heading>
                     <HStack justify="center" spacing="1">
                       <Text color="muted">Already have an account?</Text>
@@ -207,10 +273,10 @@ const SpecialRegisterPage = () => {
                         <Input
                           onChange={(event) => setPassword(event.target.value)}
                           type={isOpen ? 'text' : 'password'}
+                          autoComplete="new-password"
                           placeholder="Password"
-                          autoComplete="false"
-                          value={password}
                           name="new-password"
+                          value={password}
                         />
                       </InputGroup>
                       <FormHelperText color="muted">
@@ -257,6 +323,12 @@ const SpecialRegisterPage = () => {
           <NextChakraLinkWithHover href="/">
             Back to home
           </NextChakraLinkWithHover>
+          <Button
+            onClick={handleClickMagic}
+            colorScheme="blue"
+          >
+            Magic
+          </Button>
           <Spacer />
         </>
       )}

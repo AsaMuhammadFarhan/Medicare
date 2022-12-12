@@ -221,10 +221,10 @@ const RegisterPage = () => {
                       <Input
                         onChange={(event) => setPassword(event.target.value)}
                         type={isOpen ? 'text' : 'password'}
+                        autoComplete="new-password"
                         placeholder="Password"
-                        autoComplete="false"
-                        value={password}
                         name="new-password"
+                        value={password}
                       />
                     </InputGroup>
                     <FormHelperText color="muted">

@@ -14,5 +14,5 @@ export const useIsAuth = (role?: string[]) => {
         router.replace("/404");
       }
     }
-  }, [me.fetching, me.data, router, role]);
+  }, []);
 };

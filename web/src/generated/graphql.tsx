@@ -191,6 +191,7 @@ export type Mutation = {
   deleteReservasi: Scalars['Boolean'];
   deleteTindakan: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
+  initiationSpecialRegister: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
   readyReservasi: Reservasi;
@@ -1065,6 +1066,11 @@ export type DeleteTindakanMutationVariables = Exact<{
 
 export type DeleteTindakanMutation = { __typename?: 'Mutation', deleteTindakan: boolean };
 
+export type InitiationSpecialRegisterMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InitiationSpecialRegisterMutation = { __typename?: 'Mutation', initiationSpecialRegister: boolean };
+
 export type LoginMutationVariables = Exact<{
   usernameorEmail: Scalars['String'];
   password: Scalars['String'];
@@ -1522,6 +1528,15 @@ export const DeleteTindakanDocument = gql`
 
 export function useDeleteTindakanMutation() {
   return Urql.useMutation<DeleteTindakanMutation, DeleteTindakanMutationVariables>(DeleteTindakanDocument);
+};
+export const InitiationSpecialRegisterDocument = gql`
+    mutation initiationSpecialRegister {
+  initiationSpecialRegister
+}
+    `;
+
+export function useInitiationSpecialRegisterMutation() {
+  return Urql.useMutation<InitiationSpecialRegisterMutation, InitiationSpecialRegisterMutationVariables>(InitiationSpecialRegisterDocument);
 };
 export const LoginDocument = gql`
     mutation Login($usernameorEmail: String!, $password: String!) {
