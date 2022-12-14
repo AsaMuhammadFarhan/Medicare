@@ -1280,7 +1280,7 @@ export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', userna
 export type MeWithAllDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeWithAllDataQuery = { __typename?: 'Query', meWithAllData?: { __typename?: 'User', id: number, username: string, email: string, role: string, poliBagianId?: number | null, poliBagian?: { __typename?: 'PoliBagian', id: number } | null, pasien?: { __typename?: 'Pasien', id: number, noRm?: string | null, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null, tempatLahir?: string | null, tanggalLahir?: any | null, rt?: string | null, rw?: string | null, idKelurahan?: string | null, idKecamatan?: string | null, idKabupatenKota?: string | null, idProvinsi?: string | null } | null, reservasi: Array<{ __typename?: 'Reservasi', id: number, updatedAt: string, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, penyakit?: { __typename?: 'Penyakit', id: number, nama: string } | null, kunjunganPoli?: Array<{ __typename?: 'KunjunganPoli', id: number, dokter?: { __typename?: 'Dokter', id: number, nama: string } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null }> | null } | null }>, kunjungan: Array<{ __typename?: 'Kunjungan', id: number }> } | null };
+export type MeWithAllDataQuery = { __typename?: 'Query', meWithAllData?: { __typename?: 'User', id: number, username: string, email: string, role: string, poliBagianId?: number | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, pasien?: { __typename?: 'Pasien', id: number, noRm?: string | null, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null, tempatLahir?: string | null, tanggalLahir?: any | null, rt?: string | null, rw?: string | null, idKelurahan?: string | null, idKecamatan?: string | null, idKabupatenKota?: string | null, idProvinsi?: string | null } | null, reservasi: Array<{ __typename?: 'Reservasi', id: number, updatedAt: string, tanggalRencanaDatang: string, nomorTelepon: string, statusPasien: string, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null, dokter?: { __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string } | null, kunjungan?: { __typename?: 'Kunjungan', id: number, tekananDarah: number, denyutNadi: number, penyakit?: { __typename?: 'Penyakit', id: number, nama: string } | null, kunjunganPoli?: Array<{ __typename?: 'KunjunganPoli', id: number, dokter?: { __typename?: 'Dokter', id: number, nama: string } | null, poliBagian?: { __typename?: 'PoliBagian', id: number, nama: string } | null }> | null } | null }>, kunjungan: Array<{ __typename?: 'Kunjungan', id: number }> } | null };
 
 export type MeWithPasienDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2267,6 +2267,7 @@ export const MeWithAllDataDocument = gql`
     poliBagianId
     poliBagian {
       id
+      nama
     }
     pasien {
       id

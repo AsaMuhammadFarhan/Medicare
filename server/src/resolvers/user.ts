@@ -131,22 +131,24 @@ export class UserResolver {
     if (!req.session.userId) {
       return null
     }
+    const query = getConnection()
+      .getRepository(User)
+      .createQueryBuilder('User')
+      .where('"User"."id" = :id', { id: req.session.userId })
+      .leftJoinAndSelect('User.pasien', 'pasien')
+      .leftJoinAndSelect('User.reservasi', 'reservasi')
+      .leftJoinAndSelect('reservasi.poliBagian', 'poliBagianReservasi')
+      .leftJoinAndSelect('reservasi.kunjungan', 'kunjungan')
+      .leftJoinAndSelect('kunjungan.kunjunganPoli', 'kunjunganPoli')
+      .leftJoinAndSelect('kunjunganPoli.penyakit', 'penyakit')
+      .leftJoinAndSelect('kunjunganPoli.dokter', 'dokterKunjungan')
+      .leftJoinAndSelect('kunjunganPoli.poliBagian', 'poliBagianKunjungan')
+      .leftJoinAndSelect('reservasi.dokter', 'dokterReservasi')
+      .leftJoinAndSelect('User.kunjungan', 'kunjunganUser')
+      .leftJoinAndSelect('User.poliBagian', 'poliBagian')
+      .orderBy('reservasi.id', 'DESC')
 
-    return User.findOne(req.session.userId, {
-      relations: [
-        'pasien',
-        'reservasi',
-        'reservasi.poliBagian',
-        'reservasi.kunjungan',
-        'reservasi.kunjungan.kunjunganPoli',
-        'reservasi.kunjungan.kunjunganPoli.penyakit',
-        'reservasi.kunjungan.kunjunganPoli.dokter',
-        'reservasi.kunjungan.kunjunganPoli.poliBagian',
-        'reservasi.dokter',
-        'kunjungan',
-        'poliBagian'
-      ]
-    })
+    return await query.getOne()
   }
 
   @Mutation(() => UserResponse)

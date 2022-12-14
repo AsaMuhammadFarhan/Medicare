@@ -314,25 +314,31 @@ const AdminPoliKunjunganPage = () => {
                     )}
                   </Td>
                   <Td>
-                    <HStack>
-                      <Button
-                        onClick={() => openEditKunjunganPoli(kp.id)}
-                        colorScheme="blue"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        onClick={() => toWaitingPaymentReservasi(kp.kunjungan?.reservasiId ?? -1)}
-                        isDisabled={kp.kunjungan?.reservasi?.statusPasien !== "ready"}
-                        isLoading={updateStatus.fetching}
-                        colorScheme="green"
-                        w="87px"
-                      >
-                        {kp.kunjungan?.reservasi?.statusPasien === "ready" ? "Selesai" : (
-                          <Iconify boxSize="24px" icon="bx:check-double" />
-                        )}
-                      </Button>
-                    </HStack>
+                    {kp.kunjungan?.reservasi?.statusPasien !== "ready" ? (
+                      <Flex w="182.4px">
+                        Kunjungan Sudah Selesai
+                      </Flex>
+                    ) : (
+                      <HStack>
+                        <Button
+                          onClick={() => openEditKunjunganPoli(kp.id)}
+                          colorScheme="blue"
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          onClick={() => toWaitingPaymentReservasi(kp.kunjungan?.reservasiId ?? -1)}
+                          isDisabled={kp.kunjungan?.reservasi?.statusPasien !== "ready"}
+                          isLoading={updateStatus.fetching}
+                          colorScheme="green"
+                          w="87px"
+                        >
+                          {kp.kunjungan?.reservasi?.statusPasien === "ready" ? "Selesai" : (
+                            <Iconify boxSize="24px" icon="bx:check-double" />
+                          )}
+                        </Button>
+                      </HStack>
+                    )}
                   </Td>
                 </Tr>
               ))}

@@ -19,6 +19,10 @@ const PasienBuatReservasiPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [meWithAllData] = useMeWithAllDataQuery();
+  
+  if (meWithAllData.fetching === false && !meWithAllData.data?.meWithAllData?.pasien?.id){
+    router.push("/pasien/data-akun")
+  };
 
   const [selectedTanggalKedatangan, setSelectedTanggalKedatangan] = useState<Date | null>(null);
   const [selectedPoliId, setSelectedPoliId] = useState("");
@@ -43,6 +47,10 @@ const PasienBuatReservasiPage = () => {
   const [creating, createReservasi] = useCreateReservasiMutation();
 
   const handleBuatReservasi = () => {
+    if (!isReady){
+      alert("Lengkapi semua data!")
+      return;
+    }
     createReservasi({
       input: {
         tanggalRencanaDatang: selectedTanggalKedatangan,
@@ -149,7 +157,6 @@ const PasienBuatReservasiPage = () => {
               <Button
                 isLoading={creating.fetching}
                 onClick={handleBuatReservasi}
-                isDisabled={!isReady}
                 colorScheme="blue"
                 w="auto"
               >

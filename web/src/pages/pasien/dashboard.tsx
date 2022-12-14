@@ -1,17 +1,21 @@
-import { Button, Divider, Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
+import { useState } from "react";
 import Iconify from "../../components/Iconify";
 import { LayoutPasien } from "../../components/LayoutGeneral";
-import { NextChakraLink, NextChakraLinkWithHover } from "../../components/NextChakraLink";
-import { useMeWithAllDataQuery } from "../../generated/graphql";
+import { NextChakraLink } from "../../components/NextChakraLink";
+import { useMeWithAllDataQuery, useToCanceledReservasiMutation } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import { dateFormatWithoutDay } from "../../utils/format";
 
 const PasienDashboardPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const [meWithAllData] = useMeWithAllDataQuery();
+  const [, cancelReservasi] = useToCanceledReservasiMutation();
 
   const pendingReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
     res.statusPasien === "pending"
@@ -25,6 +29,27 @@ const PasienDashboardPage = () => {
   const successAndCanceledReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
     res.statusPasien === "success" || res.statusPasien === "canceled"
   ) ?? [];
+
+  const [tempId, setTempId] = useState(0);
+  const handleClickWantCancel = (id: number) => {
+    setTempId(id);
+    onOpen();
+  };
+  const confirmCancel = () => {
+    cancelReservasi({
+      id: tempId
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      };
+      toast({
+        title: "Berhasil Membatalkan Reservasi",
+        status: "success",
+        position: "top",
+      })
+    })
+  }
 
   const getStatusPasien = (value: string) => {
     if (value === "pending") {
@@ -182,10 +207,16 @@ const PasienDashboardPage = () => {
               ))}
               {pendingReservasi.map((res) => (
                 <HStack
+                  _hover={{
+                    boxShadow: "lg"
+                  }}
+                  onClick={() => handleClickWantCancel(res.id)}
                   justify="space-between"
                   alignItems="center"
                   borderRadius="8px"
+                  userSelect="none"
                   overflow="hidden"
+                  cursor="pointer"
                   boxShadow="md"
                   key={res.id}
                   w="100%"
@@ -203,6 +234,29 @@ const PasienDashboardPage = () => {
                   {getStatusPasien(res.statusPasien)}
                 </HStack>
               ))}
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent minW={["", "600px", "800px"]}>
+                  <ModalHeader>Konfirmasi</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Stack spacing="24px">
+                      <Text>
+                        Kamu Yakin ingin membatalkan reservasi ID#{tempId}?
+                      </Text>
+                      <Flex justify="space-between">
+                        <Button variant="outline" onClick={onClose}>
+                          Tidak Jadi
+                        </Button>
+                        <Button onClick={confirmCancel} colorScheme="red">
+                          Ya, Batalkan
+                        </Button>
+                      </Flex>
+                    </Stack>
+                  </ModalBody>
+                  <ModalFooter pb="0px"></ModalFooter>
+                </ModalContent>
+              </Modal>
             </>
           ) : (
             <Flex
@@ -215,11 +269,11 @@ const PasienDashboardPage = () => {
               <Text>
                 Tidak ada reservasi aktif.
               </Text>
-              <NextChakraLinkWithHover href="/pasien/reservasi">
+              <NextChakraLink href="/pasien/reservasi">
                 <Button colorScheme="blue">
                   Buat Reservasi Sekarang
                 </Button>
-              </NextChakraLinkWithHover>
+              </NextChakraLink>
             </Flex>
           )}
         </Stack>
@@ -257,6 +311,11 @@ const PasienDashboardPage = () => {
                 ) : (
                   <Text fontSize="14px" color={themeColor.muted}>
                     Periksa dibatalkan
+                  </Text>
+                )}
+                {res.statusPasien === "canceled" && (
+                  <Text fontSize="14px" color={themeColor.muted}>
+                    Dibatalkan pada: {dateFormatWithoutDay(new Date(parseInt(res.updatedAt)))}
                   </Text>
                 )}
               </Stack>

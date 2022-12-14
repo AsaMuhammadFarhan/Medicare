@@ -18,7 +18,7 @@ import {
   Stack,
   Text,
   useDisclosure,
-  useToast,
+  // useToast,
   VStack,
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
@@ -30,15 +30,17 @@ import { OriginalMetaTags } from "../../components/MetaTags";
 import { NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import {
   useConfigurationSettingsByNameQuery,
-  useInitiationSpecialRegisterMutation,
+  // useInitiationSpecialRegisterMutation,
   useSpecialRegisterMutation,
 } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import { useIsAuth } from "../../utils/useIsAuth";
 
+// ADMIN POLI DIKASIH SELECT POLI
+
 const SpecialRegisterPage = () => {
-  const toast = useToast();
+  // const toast = useToast();
   useIsAuth(["admin"]);
 
   const { isOpen, onToggle } = useDisclosure();
@@ -58,39 +60,39 @@ const SpecialRegisterPage = () => {
       keywords: "special-register"
     }
   });
-  const [, initationSpecialRegister] = useInitiationSpecialRegisterMutation();
-  const handleClickMagic = () => {
-    if (isSubmit) return;
-    setSubmit(true);
-    initationSpecialRegister().then((result) => {
-      if (result.error) {
-        toast({
-          title: "Internal Server Error",
-          description: result.error.message,
-          status: "error",
-          position: "top",
-        })
-        return;
-      }
+  // const [, initationSpecialRegister] = useInitiationSpecialRegisterMutation();
+  // const handleClickMagic = () => {
+  //   if (isSubmit) return;
+  //   setSubmit(true);
+  //   initationSpecialRegister().then((result) => {
+  //     if (result.error) {
+  //       toast({
+  //         title: "Internal Server Error",
+  //         description: result.error.message,
+  //         status: "error",
+  //         position: "top",
+  //       })
+  //       return;
+  //     }
 
-      if (result.data?.initiationSpecialRegister === false) {
-        toast({
-          title: "Admin Sudah Ada!",
-          description: "Login sebagai admin untuk menyalakan halaman ini.",
-          status: "info",
-          position: "top",
-        })
-        return;
-      }
+  //     if (result.data?.initiationSpecialRegister === false) {
+  //       toast({
+  //         title: "Admin Sudah Ada!",
+  //         description: "Login sebagai admin untuk menyalakan halaman ini.",
+  //         status: "info",
+  //         position: "top",
+  //       })
+  //       return;
+  //     }
 
-      toast({
-        title: "Admin Berhasil Dibuat!",
-        description: "Gunakan user:password admin:admin untuk login.",
-        status: "success",
-        position: "top"
-      });
-    })
-  };
+  //     toast({
+  //       title: "Admin Berhasil Dibuat!",
+  //       description: "Gunakan user:password admin:admin untuk login.",
+  //       status: "success",
+  //       position: "top"
+  //     });
+  //   })
+  // };
 
   const isSpecialRegisterActive: boolean = specialRegister.data?.configurationSettingsByName[0]?.value === "active";
 
@@ -325,12 +327,12 @@ const SpecialRegisterPage = () => {
           <NextChakraLinkWithHover href="/">
             Back to home
           </NextChakraLinkWithHover>
-          <Button
+          {/* <Button
             onClick={handleClickMagic}
             colorScheme="blue"
           >
             Magic
-          </Button>
+          </Button> */}
           <Spacer />
         </>
       )}

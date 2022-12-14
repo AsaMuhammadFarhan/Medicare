@@ -3,7 +3,7 @@ import { withUrqlClient } from "next-urql";
 import { useEffect, useState } from "react";
 import DatePicker from "../../components/DatePicker";
 import { LayoutPasien } from "../../components/LayoutGeneral";
-import { useMeWithPasienDataQuery, useUpdateUserPasienMutation } from "../../generated/graphql";
+import { useCreateUserPasienMutation, useMeWithPasienDataQuery, useUpdateUserPasienMutation } from "../../generated/graphql";
 import { kabupatenKota } from "../../utils/arrayStock/kabupatenKota";
 import { kecamatan } from "../../utils/arrayStock/kecamatan";
 import { kelurahan } from "../../utils/arrayStock/kelurahan";
@@ -17,6 +17,7 @@ const PasienDataAkunPage = () => {
   const [editMode, setEditMode] = useState(false);
 
   const [meWithPasienData] = useMeWithPasienDataQuery();
+  const [, createUserPasien] = useCreateUserPasienMutation();
   const [, updateUserPasien] = useUpdateUserPasienMutation();
 
   const [noRm, setNoRm] = useState("");
@@ -53,31 +54,58 @@ const PasienDataAkunPage = () => {
   }, [meWithPasienData.fetching]);
 
   const handleClickSimpan = () => {
-    updateUserPasien({
-      id: meWithPasienData.data?.meWithPasienData?.pasien?.id ?? -1,
-      input: {
-        userId: meWithPasienData.data?.meWithPasienData?.id ?? -1,
-        noRm,
-        nama,
-        nomorTelepon,
-        nik,
-        alamat,
-        tempatLahir,
-        tanggalLahir,
-        rt,
-        rw,
-        idKelurahan,
-        idKecamatan,
-        idKabupatenKota,
-        idProvinsi,
-      }
-    }).then((result) => {
-      if (result.error) {
-        alert(result.error.message);
-        return;
-      }
-      setEditMode(false);
-    })
+    if (meWithPasienData.data?.meWithPasienData?.pasien?.id){
+      updateUserPasien({
+        id: meWithPasienData.data?.meWithPasienData?.pasien?.id ?? -1,
+        input: {
+          userId: meWithPasienData.data?.meWithPasienData?.id ?? -1,
+          noRm,
+          nama,
+          nomorTelepon,
+          nik,
+          alamat,
+          tempatLahir,
+          tanggalLahir,
+          rt,
+          rw,
+          idKelurahan,
+          idKecamatan,
+          idKabupatenKota,
+          idProvinsi,
+        }
+      }).then((result) => {
+        if (result.error) {
+          alert(result.error.message);
+          return;
+        }
+        setEditMode(false);
+      })
+    } else {
+      createUserPasien({
+        input: {
+          userId: meWithPasienData.data?.meWithPasienData?.id ?? -1,
+          noRm,
+          nama,
+          nomorTelepon,
+          nik,
+          alamat,
+          tempatLahir,
+          tanggalLahir,
+          rt,
+          rw,
+          idKelurahan,
+          idKecamatan,
+          idKabupatenKota,
+          idProvinsi,
+        }
+      }).then((result) => {
+        if (result.error) {
+          alert(result.error.message);
+          return;
+        }
+        setEditMode(false);
+      })
+    }
   };
 
   return (

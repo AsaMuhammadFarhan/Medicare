@@ -166,6 +166,21 @@ export const createUrqlClient = (ssrExchange: any) => ({
             argsQueries.forEach((x) =>
               cache.invalidate("Query", "meWithPasienData", x.arguments)
             );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "meWithAllData");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "meWithAllData", x.arguments)
+            );
+          },
+          createUserPasien: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "meWithPasienData");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "meWithPasienData", x.arguments)
+            );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "meWithAllData");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "meWithAllData", x.arguments)
+            );
           },
           createConfigurationSetting: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");
@@ -215,6 +230,10 @@ export const createUrqlClient = (ssrExchange: any) => ({
             const argsQueries = allField.filter((x) => x.fieldName === "getAllReservasis");
             argsQueries.forEach((x) =>
               cache.invalidate("Query", "getAllReservasis", x.arguments)
+            );
+            const argsQueries2 = allField.filter((x) => x.fieldName === "meWithAllData");
+            argsQueries2.forEach((x) =>
+              cache.invalidate("Query", "meWithAllData", x.arguments)
             );
           },
           updateRefObat: (_result, args, cache, info) => {
