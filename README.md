@@ -2,6 +2,7 @@
 Kelompok 4:
 - Asa Muhammad Farhan (M0519024)
 - Krisna Sanjaya (M0519055)
+- Sindy Nur Safaati (M0519077)
 
 # Getting Started
 

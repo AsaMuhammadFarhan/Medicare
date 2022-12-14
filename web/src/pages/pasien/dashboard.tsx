@@ -208,6 +208,7 @@ const PasienDashboardPage = () => {
               {pendingReservasi.map((res) => (
                 <HStack
                   _hover={{
+                    bgColor: "gray.50",
                     boxShadow: "lg"
                   }}
                   onClick={() => handleClickWantCancel(res.id)}
