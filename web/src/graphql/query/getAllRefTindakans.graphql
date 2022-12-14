@@ -3,5 +3,6 @@ query getAllRefTindakans {
     id
     nama
     harga
+    createdBy
   }
 }

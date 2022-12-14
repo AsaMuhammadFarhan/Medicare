@@ -1,0 +1,5 @@
+mutation updateRefTindakan($id: Int!, $input: RefTindakanInput!) {
+  updateRefTindakan(id: $id, input: $input) {
+    id
+  }
+}

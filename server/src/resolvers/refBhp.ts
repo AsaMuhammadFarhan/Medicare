@@ -31,7 +31,7 @@ class RefBhpInput {
 export class RefBhpResolver {
   @Query(() => [RefBhp], { nullable: true })
   async getAllRefBhps(): Promise<RefBhp[] | undefined> {
-    return await RefBhp.find()
+    return (await RefBhp.find()).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [RefBhp], { nullable: true })
@@ -80,7 +80,7 @@ export class RefBhpResolver {
     return ref
   }
 
-  @Mutation(() => RefBhp)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteRefBhp(
     @Arg('id', () => Int) id: number,

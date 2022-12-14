@@ -1,0 +1,5 @@
+mutation updateRefBhp($id: Int!, $input: RefBhpInput!) {
+  updateRefBhp(id: $id, input: $input) {
+    id
+  }
+}

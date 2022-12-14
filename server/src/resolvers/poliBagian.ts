@@ -31,7 +31,7 @@ class PoliBagianInput {
 export class PoliBagianResolver {
   @Query(() => [PoliBagian], { nullable: true })
   async getAllPoliBagians(): Promise<PoliBagian[] | undefined> {
-    return await PoliBagian.find()
+    return (await PoliBagian.find({ relations: ['dokter'] })).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [PoliBagian], { nullable: true })
@@ -89,7 +89,7 @@ export class PoliBagianResolver {
     return ref
   }
 
-  @Mutation(() => PoliBagian)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deletePoliBagian(
     @Arg('id', () => Int) id: number,

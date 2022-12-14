@@ -34,7 +34,8 @@ const IndexPage = () => {
   const getBaseRouter = (role?: string) => {
     if (!role) return "/";
     if (role === "admin") return "/admin/dashboard";
-    if (role === "admin-poli") return "/poli/dashboard";
+    if (role === "admin-poli") return "/admin-poli/dashboard";
+    if (role === "cashier") return "/cashier/payment";
     if (role === "guest") return "/pasien/dashboard";
     return "/"
   };
@@ -149,7 +150,7 @@ const IndexPage = () => {
             alignItems="center"
             spacing="16px"
           >
-            <NextChakraLink href="/user/login" title="Login">
+            <NextChakraLink href="/login" title="Login">
               <Button
                 _hover={{ bgColor: themeColor.chakraBlue8 }}
                 bgColor={themeColor.chakraBlue10}
@@ -158,7 +159,7 @@ const IndexPage = () => {
                 Masuk
               </Button>
             </NextChakraLink>
-            <NextChakraLink href="/user/register" title="Register">
+            <NextChakraLink href="/register" title="Register">
               <Button>
                 Daftar Sekarang
               </Button>

@@ -62,6 +62,16 @@ query getReservasi($id: Int!) {
           nama
           kode
         }
+        bhp {
+          id
+          jumlah
+          harga
+          refBhp {
+            id
+            nama
+            harga
+          }
+        }
         tindakan {
           id
           jumlah

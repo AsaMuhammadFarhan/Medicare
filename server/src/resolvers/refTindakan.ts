@@ -31,7 +31,7 @@ class RefTindakanInput {
 export class RefTindakanResolver {
   @Query(() => [RefTindakan], { nullable: true })
   async getAllRefTindakans(): Promise<RefTindakan[] | undefined> {
-    return await RefTindakan.find()
+    return (await RefTindakan.find()).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [RefTindakan], { nullable: true })
@@ -80,7 +80,7 @@ export class RefTindakanResolver {
     return ref
   }
 
-  @Mutation(() => RefTindakan)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteRefTindakan(
     @Arg('id', () => Int) id: number,

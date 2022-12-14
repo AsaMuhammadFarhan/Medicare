@@ -1,11 +1,12 @@
-import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+import { Button, Checkbox, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import { LayoutCashier } from "../../components/LayoutGeneral";
 import { useGetAllReservasisQuery, useToSuccessReservasiMutation } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { numberWithSeparator } from "../../utils/format";
+import { dateFormat, numberWithSeparator } from "../../utils/format";
 
 const CashierPaymentPage = () => {
 
@@ -14,6 +15,10 @@ const CashierPaymentPage = () => {
 
   const [reservasis] = useGetAllReservasisQuery();
   const [updateStatus, toSuccess] = useToSuccessReservasiMutation();
+
+  const [isHideUnnecessary, setIsHideUnnecessary] = useState(true);
+
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const [displayId, setDisplayId] = useState(-1);
   const displayedReservasi = reservasis.data?.getAllReservasis?.find((reservasi) => reservasi.id === displayId);
@@ -109,7 +114,7 @@ const CashierPaymentPage = () => {
           rounded="full"
           p="4px 8px"
         >
-          Sudah Datang
+          Proses Kunjungan
         </Flex>
       )
     }
@@ -148,8 +153,8 @@ const CashierPaymentPage = () => {
     if (value === "canceled") {
       return (
         <Flex
-          bgColor={themeColor.redSoftBg}
-          color={themeColor.redHard}
+          bgColor={themeColor.chakraBlue1}
+          color={themeColor.chakraBlue6}
           textTransform="uppercase"
           fontWeight={600}
           fontSize="12px"
@@ -170,6 +175,37 @@ const CashierPaymentPage = () => {
           Payment
         </Text>
         <Stack spacing="8px">
+          <Flex justify="space-between">
+            <InputGroup size="sm" maxW="300px">
+              <InputLeftElement>
+                <SearchIcon color="gray.400" />
+              </InputLeftElement>
+              <Input
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder="Cari Nama Pasien..."
+                value={searchKeyword}
+              />
+            </InputGroup>
+            <Checkbox
+              onChange={(e) => setIsHideUnnecessary(e.target.checked)}
+              isChecked={isHideUnnecessary}
+            >
+              Sembunyikan yang tidak perlu
+            </Checkbox>
+          </Flex>
+          {searchKeyword !== "" && (
+            <Text fontSize="18px">
+              Menampilkan pasien dengan nama '
+              <Text
+                color={themeColor.chakraBlue8}
+                fontWeight={700}
+                as="span"
+              >
+                {searchKeyword}
+              </Text>
+              '.
+            </Text>
+          )}
           <Table borderRadius="8px" overflow="hidden" boxShadow="md">
             <Thead>
               <Tr bgColor={themeColor.chakraBlue6}>
@@ -189,7 +225,20 @@ const CashierPaymentPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {reservasis.data?.getAllReservasis?.map((reservasi) => (
+              {reservasis.data?.getAllReservasis?.filter((res) =>
+                res.user.pasien?.nama?.toLowerCase().includes(searchKeyword.toLowerCase())
+              )?.sort((prev, next) =>
+                prev.id > next.id ? 1 : -1
+              )?.sort((prev, next) =>
+                prev.statusPasien < next.statusPasien ? 1 : -1
+              ).filter((res) =>
+                isHideUnnecessary
+                  ? (
+                    res.statusPasien !== "canceled"
+                    && res.statusPasien !== "ready"
+                    && res.statusPasien !== "pending"
+                  ) : true
+              )?.map((reservasi) => (
                 <Tr>
                   <Td>
                     {reservasi.id}
@@ -204,12 +253,18 @@ const CashierPaymentPage = () => {
                     Rp {numberWithSeparator(getTotalPrice(reservasi).hargaTotal)}
                   </Td>
                   <Td>
-                    <Button
-                      onClick={() => openDisplay(reservasi.id)}
-                      colorScheme="green"
-                    >
-                      Transaksi
-                    </Button>
+                    {(reservasi.statusPasien !== "canceled"
+                      && reservasi.statusPasien !== "pending"
+                      && reservasi.statusPasien !== "ready"
+                    ) && (
+                        <Button
+                          onClick={() => openDisplay(reservasi.id)}
+                          colorScheme="green"
+                          w="100%"
+                        >
+                          Transaksi
+                        </Button>
+                      )}
                   </Td>
                 </Tr>
               ))}
@@ -321,16 +376,22 @@ const CashierPaymentPage = () => {
                 </Tbody>
               </Table>
 
-              <Button
-                isDisabled={displayedReservasi?.statusPasien === "success"
-                  || displayedReservasi?.statusPasien === "canceled"
-                }
-                isLoading={updateStatus.fetching}
-                onClick={handleClickCheckout}
-                colorScheme="green"
-              >
-                Checkout
-              </Button>
+              {displayedReservasi?.statusPasien === "waitingPayment" && (
+                <Button
+                  isLoading={updateStatus.fetching}
+                  onClick={handleClickCheckout}
+                  colorScheme="green"
+                >
+                  Checkout Pembayaran
+                </Button>
+              )}
+              {displayedReservasi?.statusPasien === "success" && (
+                <Text color={themeColor.chakraBlue6}>
+                  Telah melakukan pembayaran pada {dateFormat(
+                    new Date(parseInt(displayedReservasi.updatedAt))
+                  )}
+                </Text>
+              )}
             </Stack>
           </ModalBody>
           <ModalFooter pb="0px"></ModalFooter>

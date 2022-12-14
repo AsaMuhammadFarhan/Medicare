@@ -183,7 +183,7 @@ export class KunjunganPoliResolver {
     return found
   }
 
-  @Mutation(() => KunjunganPoli)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteKunjunganPoli(
     @Arg('id', () => Int) id: number

@@ -5,7 +5,7 @@ query meWithAllData {
     email
     role
     poliBagianId
-    poliBagian{
+    poliBagian {
       id
     }
     pasien {
@@ -26,6 +26,7 @@ query meWithAllData {
     }
     reservasi {
       id
+      updatedAt
       tanggalRencanaDatang
       nomorTelepon
       statusPasien
@@ -37,6 +38,26 @@ query meWithAllData {
         id
         nama
         nomorTelepon
+      }
+      kunjungan {
+        id
+        tekananDarah
+        denyutNadi
+        penyakit {
+          id
+          nama
+        }
+        kunjunganPoli {
+          id
+          dokter {
+            id
+            nama
+          }
+          poliBagian {
+            id
+            nama
+          }
+        }
       }
     }
     kunjungan {

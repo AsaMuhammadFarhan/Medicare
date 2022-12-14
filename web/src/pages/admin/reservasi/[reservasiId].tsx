@@ -381,7 +381,7 @@ const AdminReservasiDetailPage = ({ reservasiId }: any) => {
                   <Iconify mr="4px" boxSize="12px" icon="bx:info-circle" />
                   <Text fontSize="12px">
                     Usia berdasarkan tanggal lahir {diffYear} tahun {diffMonth
-                    } bulan {diffDate < 0 ? 30 - diffDate : diffDate} hari
+                    } bulan {diffDate < 0 ? 30 + diffDate : diffDate} hari
                   </Text>
                 </Flex>
               </Flex>

@@ -157,6 +157,19 @@ const LayoutAdmin: React.FC<{
           </Stack>
 
           <Spacer />
+          <NextChakraLink href="/admin/special-register" w="100%">
+            <Button
+              _hover={{
+                bgColor: "white",
+                color: themeColor.chakraBlue6
+              }}
+              bgColor="transparent"
+              color="white"
+              w="100%"
+            >
+              <Text ml="16px">Buat Akun Khusus</Text>
+            </Button>
+          </NextChakraLink>
           <NextChakraLink href="/" w="100%">
             <Button
               _hover={{
@@ -497,7 +510,7 @@ export const LayoutPasien: React.FC<{
   children,
   metaTitle,
 }) => {
-    useIsAuth();
+    useIsAuth(["guest"]);
     const router = useRouter();
 
     const [me] = useMeQuery();

@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  HStack,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -22,19 +23,29 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { useState } from "react";
-import { useCreateRefTindakanMutation, useGetAllRefTindakansQuery } from "../../generated/graphql";
+import {
+  useCreateRefTindakanMutation,
+  useDeleteRefTindakanMutation,
+  useGetAllRefTindakansQuery,
+  useUpdateRefTindakanMutation,
+} from "../../generated/graphql";
 import themeColor from "../../utils/color"
 import { numberWithSeparator } from "../../utils/format";
 
 const GudangTindakan = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalEdit = useDisclosure();
 
   const [refTindakans] = useGetAllRefTindakansQuery();
   const [, createRefTindakan] = useCreateRefTindakanMutation();
+  const [, updateRefTindakan] = useUpdateRefTindakanMutation();
+  const [, deleteRefTindakan] = useDeleteRefTindakanMutation();
 
+  const [idEdit, setIdEdit] = useState(-1);
   const [tempNama, setTempNama] = useState("");
   const [tempHarga, setTempHarga] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
 
   const handleClickSimpan = () => {
     createRefTindakan({
@@ -54,6 +65,57 @@ const GudangTindakan = () => {
       setTempNama("");
     })
   };
+
+  const openModalEdit = (
+    id: number,
+    nama: string,
+    value: string,
+    createdBy: string,
+  ) => {
+    setIdEdit(id);
+    setTempNama(nama);
+    setTempHarga(value);
+    setCreatedBy(createdBy);
+    modalEdit.onOpen();
+  };
+
+  const closeModalEdit = () => {
+    setIdEdit(-1);
+    setTempNama("");
+    setTempHarga("");
+    setCreatedBy("");
+    modalEdit.onClose();
+  };
+
+  const handleClickUpdate = () => {
+    updateRefTindakan({
+      id: idEdit,
+      input: {
+        nama: tempNama,
+        harga: parseInt(tempHarga),
+        updatedBy: "Admin",
+        createdBy,
+      }
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      };
+      closeModalEdit();
+    })
+  };
+
+  const handleClickDelete = () => {
+    deleteRefTindakan({
+      id: idEdit
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      };
+      closeModalEdit();
+    })
+  }
 
   return (
     <Flex
@@ -99,13 +161,28 @@ const GudangTindakan = () => {
                 <Td>{tindakan.id}</Td>
                 <Td>{tindakan.nama}</Td>
                 <Td>Rp {numberWithSeparator(tindakan.harga)}</Td>
-                <Td>edit/delete</Td>
+                <Td>
+                  <Button
+                    onClick={() => openModalEdit(
+                      tindakan.id,
+                      tindakan.nama,
+                      tindakan.harga.toString(),
+                      tindakan.createdBy
+                    )}
+                    colorScheme="blue"
+                    h="auto"
+                    w="100%"
+                  >
+                    Edit
+                  </Button>
+                </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </Stack>
 
+      {/* tambah */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -141,6 +218,56 @@ const GudangTindakan = () => {
               >
                 Simpan
               </Button>
+            </Stack>
+          </ModalBody>
+          <ModalFooter pb="0px"></ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* edit */}
+      <Modal isOpen={modalEdit.isOpen} onClose={closeModalEdit}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Tindakan</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing="24px">
+              <Stack>
+                <Text fontSize="12px">Nama Kegiatan</Text>
+                <Input
+                  onChange={(e) => setTempNama(e.target.value)}
+                  placeholder="Nama tindakan"
+                  value={tempNama}
+                />
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Harga</Text>
+                <InputGroup>
+                  <InputLeftAddon>Rp</InputLeftAddon>
+                  <Input
+                    onChange={(e) => setTempHarga(e.target.value)}
+                    onWheel={(e) => e.currentTarget.blur()}
+                    placeholder="Harga tindakan"
+                    value={tempHarga}
+                    type="number"
+                  />
+                </InputGroup>
+              </Stack>
+              <HStack justify="space-between">
+                <Button
+                  onClick={handleClickDelete}
+                  variant="outline"
+                  colorScheme="red"
+                >
+                  Delete
+                </Button>
+                <Button
+                  onClick={handleClickUpdate}
+                  colorScheme="blue"
+                >
+                  Update
+                </Button>
+              </HStack>
             </Stack>
           </ModalBody>
           <ModalFooter pb="0px"></ModalFooter>

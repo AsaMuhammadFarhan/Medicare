@@ -132,7 +132,7 @@ export class KunjunganResolver {
     return found
   }
 
-  @Mutation(() => Kunjungan)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAdmin)
   async deleteKunjungan(@Arg('id', () => Int) id: number): Promise<boolean> {
     await Kunjungan.delete(id)

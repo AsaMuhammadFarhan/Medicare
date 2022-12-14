@@ -1,0 +1,15 @@
+mutation deleteRefObat($id: Int!) {
+  deleteRefObat(id: $id)
+}
+mutation deleteRefTindakan($id: Int!) {
+  deleteRefTindakan(id: $id)
+}
+mutation deleteRefBhp($id: Int!) {
+  deleteRefBhp(id: $id)
+}
+mutation deletePenyakit($id: Int!) {
+  deletePenyakit(id: $id)
+}
+mutation deletePoliBagian($id: Int!) {
+  deletePoliBagian(id: $id)
+}

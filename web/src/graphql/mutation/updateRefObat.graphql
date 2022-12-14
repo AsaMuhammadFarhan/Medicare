@@ -1,0 +1,5 @@
+mutation updateRefObat($id: Int!, $input: RefObatInput!) {
+  updateRefObat(id: $id, input: $input) {
+    id
+  }
+}
