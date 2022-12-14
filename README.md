@@ -1,6 +1,7 @@
 # Clinic Medicare
 Kelompok 4:
 - Asa Muhammad Farhan (M0519024)
+- Krisna Sanjaya (M0519055)
 
 # Getting Started
 
