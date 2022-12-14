@@ -1017,12 +1017,26 @@ export type DeleteBhpMutationVariables = Exact<{
 
 export type DeleteBhpMutation = { __typename?: 'Mutation', deleteBhp: boolean };
 
+export type DeleteDokterMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteDokterMutation = { __typename?: 'Mutation', deleteDokter: boolean };
+
 export type DeleteObatMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
 export type DeleteObatMutation = { __typename?: 'Mutation', deleteObat: boolean };
+
+export type DeletePerawatMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeletePerawatMutation = { __typename?: 'Mutation', deletePerawat: boolean };
 
 export type DeleteRefObatMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -1135,6 +1149,14 @@ export type UpdateConfigurationSettingMutationVariables = Exact<{
 
 export type UpdateConfigurationSettingMutation = { __typename?: 'Mutation', updateConfigurationSetting: { __typename?: 'ConfigurationSettings', id: number, name: string, value: string } };
 
+export type UpdateDokterMutationVariables = Exact<{
+  id: Scalars['Int'];
+  input: DokterInput;
+}>;
+
+
+export type UpdateDokterMutation = { __typename?: 'Mutation', updateDokter: { __typename?: 'Dokter', id: number } };
+
 export type UpdateKunjunganMutationVariables = Exact<{
   id: Scalars['Int'];
   input: KunjunganInput;
@@ -1150,6 +1172,14 @@ export type UpdatePenyakitMutationVariables = Exact<{
 
 
 export type UpdatePenyakitMutation = { __typename?: 'Mutation', updatePenyakit: { __typename?: 'Penyakit', id: number } };
+
+export type UpdatePerawatMutationVariables = Exact<{
+  id: Scalars['Int'];
+  input: PerawatInput;
+}>;
+
+
+export type UpdatePerawatMutation = { __typename?: 'Mutation', updatePerawat: { __typename?: 'Perawat', id: number } };
 
 export type UpdatePoliBagianMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -1466,6 +1496,15 @@ export const DeleteBhpDocument = gql`
 export function useDeleteBhpMutation() {
   return Urql.useMutation<DeleteBhpMutation, DeleteBhpMutationVariables>(DeleteBhpDocument);
 };
+export const DeleteDokterDocument = gql`
+    mutation deleteDokter($id: Int!) {
+  deleteDokter(id: $id)
+}
+    `;
+
+export function useDeleteDokterMutation() {
+  return Urql.useMutation<DeleteDokterMutation, DeleteDokterMutationVariables>(DeleteDokterDocument);
+};
 export const DeleteObatDocument = gql`
     mutation deleteObat($id: Int!) {
   deleteObat(id: $id)
@@ -1474,6 +1513,15 @@ export const DeleteObatDocument = gql`
 
 export function useDeleteObatMutation() {
   return Urql.useMutation<DeleteObatMutation, DeleteObatMutationVariables>(DeleteObatDocument);
+};
+export const DeletePerawatDocument = gql`
+    mutation deletePerawat($id: Int!) {
+  deletePerawat(id: $id)
+}
+    `;
+
+export function useDeletePerawatMutation() {
+  return Urql.useMutation<DeletePerawatMutation, DeletePerawatMutationVariables>(DeletePerawatDocument);
 };
 export const DeleteRefObatDocument = gql`
     mutation deleteRefObat($id: Int!) {
@@ -1660,6 +1708,17 @@ export const UpdateConfigurationSettingDocument = gql`
 export function useUpdateConfigurationSettingMutation() {
   return Urql.useMutation<UpdateConfigurationSettingMutation, UpdateConfigurationSettingMutationVariables>(UpdateConfigurationSettingDocument);
 };
+export const UpdateDokterDocument = gql`
+    mutation updateDokter($id: Int!, $input: DokterInput!) {
+  updateDokter(id: $id, input: $input) {
+    id
+  }
+}
+    `;
+
+export function useUpdateDokterMutation() {
+  return Urql.useMutation<UpdateDokterMutation, UpdateDokterMutationVariables>(UpdateDokterDocument);
+};
 export const UpdateKunjunganDocument = gql`
     mutation updateKunjungan($id: Int!, $input: KunjunganInput!) {
   updateKunjungan(id: $id, input: $input) {
@@ -1681,6 +1740,17 @@ export const UpdatePenyakitDocument = gql`
 
 export function useUpdatePenyakitMutation() {
   return Urql.useMutation<UpdatePenyakitMutation, UpdatePenyakitMutationVariables>(UpdatePenyakitDocument);
+};
+export const UpdatePerawatDocument = gql`
+    mutation updatePerawat($id: Int!, $input: PerawatInput!) {
+  updatePerawat(id: $id, input: $input) {
+    id
+  }
+}
+    `;
+
+export function useUpdatePerawatMutation() {
+  return Urql.useMutation<UpdatePerawatMutation, UpdatePerawatMutationVariables>(UpdatePerawatDocument);
 };
 export const UpdatePoliBagianDocument = gql`
     mutation updatePoliBagian($id: Int!, $input: PoliBagianInput!) {

@@ -1,4 +1,4 @@
-import { Stack, Text } from "@chakra-ui/react";
+import { Divider, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
@@ -29,6 +29,7 @@ const AdminDashboardPage = () => {
             {moment(realTimeDate).format('DD MMMM YYYY, h:mm:ss a')}
           </Text>
         </Stack>
+        <Divider />
       </Stack>
     </LayoutAdmin>
   )

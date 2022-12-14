@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -20,18 +21,35 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { useState } from "react";
-import { useCreatePerawatMutation, useGetAllPerawatsQuery } from "../../generated/graphql";
+import {
+  useCreatePerawatMutation,
+  useDeletePerawatMutation,
+  useGetAllPerawatsQuery,
+  useUpdatePerawatMutation,
+} from "../../generated/graphql";
 import themeColor from "../../utils/color"
 
 const DaftarPerawat = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalEditPerawat = useDisclosure();
 
   const [perawat] = useGetAllPerawatsQuery();
   const [, createPerawat] = useCreatePerawatMutation();
+  const [, updatePerawat] = useUpdatePerawatMutation();
+  const [, deletePerawat] = useDeletePerawatMutation();
+
+  const [idEdit, setIdEdit] = useState(-1);
 
   const [tempNama, setTempNama] = useState("");
   const [tempNomor, setTempNomor] = useState("");
+
+  const openCreate = () => {
+    setIdEdit(-1);
+    setTempNama("");
+    setTempNomor("");
+    onOpen();
+  };
 
   const handleClickSimpan = () => {
     createPerawat({
@@ -51,6 +69,53 @@ const DaftarPerawat = () => {
       setTempNama("");
     })
   };
+
+  const openEdit = (
+    id: number,
+    nama: string,
+    noHp: string,
+  ) => {
+    setIdEdit(id);
+    setTempNama(nama);
+    setTempNomor(noHp);
+    modalEditPerawat.onOpen();
+  };
+
+  const handleClickPerbarui = () => {
+    updatePerawat({
+      id: idEdit,
+      input: {
+        createdBy: "admin",
+        nama: tempNama,
+        nomorTelepon: tempNomor,
+        updatedBy: "admin",
+      }
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      };
+      modalEditPerawat.onClose();
+      setIdEdit(-1);
+      setTempNama("");
+      setTempNomor("");
+    })
+  };
+
+  const handleClickDelete = () => {
+    deletePerawat({
+      id: idEdit
+    }).then((result) => {
+      if (result.error) {
+        alert(result.error.message)
+        return;
+      };
+      modalEditPerawat.onClose();
+      setIdEdit(-1);
+      setTempNama("");
+      setTempNomor("");
+    })
+  }
 
   return (
     <Flex
@@ -72,7 +137,7 @@ const DaftarPerawat = () => {
           Daftar Perawat
         </Text>
         <Button
-          onClick={onOpen}
+          onClick={openCreate}
           variant="outline"
           h="auto"
           w="auto"
@@ -96,13 +161,27 @@ const DaftarPerawat = () => {
                 <Td>{perawat.id}</Td>
                 <Td>{perawat.nama}</Td>
                 <Td>{perawat.nomorTelepon}</Td>
-                <Td>edit/delete</Td>
+                <Td>
+                  <Button
+                    onClick={() => openEdit(
+                      perawat.id,
+                      perawat.nama,
+                      perawat.nomorTelepon
+                    )}
+                    colorScheme="blue"
+                    h="auto"
+                    w="100%"
+                  >
+                    Edit
+                  </Button>
+                </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </Stack>
 
+      {/* Modal Create */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -133,6 +212,51 @@ const DaftarPerawat = () => {
               >
                 Simpan
               </Button>
+            </Stack>
+          </ModalBody>
+          <ModalFooter pb="0px"></ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal Edit */}
+      <Modal isOpen={modalEditPerawat.isOpen} onClose={modalEditPerawat.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Perawat</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing="24px">
+              <Stack>
+                <Text fontSize="12px">Nama</Text>
+                <Input
+                  onChange={(e) => setTempNama(e.target.value)}
+                  placeholder="Nama perawat"
+                  value={tempNama}
+                />
+              </Stack>
+              <Stack>
+                <Text fontSize="12px">Nomor Handphone</Text>
+                <Input
+                  onChange={(e) => setTempNomor(e.target.value)}
+                  placeholder="Nomor handphone"
+                  value={tempNomor}
+                />
+              </Stack>
+              <HStack justify="space-between">
+                <Button
+                  onClick={handleClickDelete}
+                  colorScheme="red"
+                  variant="outline"
+                >
+                  Delete
+                </Button>
+                <Button
+                  onClick={handleClickPerbarui}
+                  colorScheme="blue"
+                >
+                  Update
+                </Button>
+              </HStack>
             </Stack>
           </ModalBody>
           <ModalFooter pb="0px"></ModalFooter>

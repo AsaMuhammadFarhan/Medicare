@@ -236,6 +236,34 @@ export const createUrqlClient = (ssrExchange: any) => ({
               cache.invalidate("Query", "meWithAllData", x.arguments)
             );
           },
+          updatePerawat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPerawats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPerawats", x.arguments)
+            );
+          },
+          deletePerawat: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllPerawats");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllPerawats", x.arguments)
+            );
+          },
+          updateDokter: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllDokters");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllDokters", x.arguments)
+            );
+          },
+          deleteDokter: (_result, args, cache, info) => {
+            const allField = cache.inspectFields("Query");
+            const argsQueries = allField.filter((x) => x.fieldName === "getAllDokters");
+            argsQueries.forEach((x) =>
+              cache.invalidate("Query", "getAllDokters", x.arguments)
+            );
+          },
           updateRefObat: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");
             const argsQueries = allField.filter((x) => x.fieldName === "getAllRefObats");

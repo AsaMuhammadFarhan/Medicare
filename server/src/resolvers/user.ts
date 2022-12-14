@@ -276,7 +276,11 @@ export class UserResolver {
       @Arg('password') password: string,
       @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne(usernameOrEmail.includes('@') ? { where: { email: usernameOrEmail } } : { where: { username: usernameOrEmail } })
+    const user = await User.findOne(usernameOrEmail.includes('@') ? { 
+      where: { email: usernameOrEmail }
+    } : {
+      where: { username: usernameOrEmail }
+    })
     if (!user) {
       return {
         errors: [{

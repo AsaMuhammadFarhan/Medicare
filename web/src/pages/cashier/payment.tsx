@@ -1,5 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Button, Checkbox, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from "@chakra-ui/react";
+import { Button, Checkbox, Flex, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import { LayoutCashier } from "../../components/LayoutGeneral";
@@ -184,6 +184,7 @@ const CashierPaymentPage = () => {
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Cari Nama Pasien..."
                 value={searchKeyword}
+                type="search"
               />
             </InputGroup>
             <Checkbox
@@ -262,7 +263,7 @@ const CashierPaymentPage = () => {
                           colorScheme="green"
                           w="100%"
                         >
-                          Transaksi
+                          {reservasi.statusPasien === "waitingPayment" ? "Bayar" : "Detail"}
                         </Button>
                       )}
                   </Td>
@@ -279,6 +280,18 @@ const CashierPaymentPage = () => {
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing="24px">
+              <SimpleGrid columns={2} rowGap="4px" columnGap="16px">
+                <Flex justify="space-between">
+                  <Text>Nama Pasien</Text>
+                  <Text>:</Text>
+                </Flex>
+                <Text>{displayedReservasi?.user.pasien?.nama}</Text>
+                <Flex justify="space-between">
+                  <Text>Nomor Handphone</Text>
+                  <Text>:</Text>
+                </Flex>
+                <Text>{displayedReservasi?.nomorTelepon}</Text>
+              </SimpleGrid>
               <Table borderRadius="8px" overflow="hidden" boxShadow="md">
                 <Thead>
                   <Tr bgColor={themeColor.chakraBlue6}>
