@@ -37,6 +37,9 @@ export const createUrqlClient = (ssrExchange: any) => ({
           register: (_result, args, cache, info) => {
             cache.invalidate("Query");
           },
+          specialRegister: (_result, args, cache, info) => {
+            cache.invalidate("Query");
+          },
           deleteObat: (_result, args, cache, info) => {
             const allField = cache.inspectFields("Query");
             const argsQueries = allField.filter((x) => x.fieldName === "getKunjunganPolisByAdminPoli");

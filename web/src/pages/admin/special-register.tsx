@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -14,11 +13,12 @@ import {
   InputRightElement,
   Radio,
   RadioGroup,
+  Select,
   Spacer,
   Stack,
   Text,
   useDisclosure,
-  // useToast,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
@@ -30,6 +30,7 @@ import { OriginalMetaTags } from "../../components/MetaTags";
 import { NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import {
   useConfigurationSettingsByNameQuery,
+  useGetAllPoliBagiansQuery,
   // useInitiationSpecialRegisterMutation,
   useSpecialRegisterMutation,
 } from "../../generated/graphql";
@@ -40,11 +41,15 @@ import { useIsAuth } from "../../utils/useIsAuth";
 // ADMIN POLI DIKASIH SELECT POLI
 
 const SpecialRegisterPage = () => {
-  // const toast = useToast();
+  const toast = useToast();
   useIsAuth(["admin"]);
 
   const { isOpen, onToggle } = useDisclosure();
   const [isSubmit, setSubmit] = useState(false);
+
+  const [poliBagians] = useGetAllPoliBagiansQuery();
+  const availablePoli = poliBagians.data?.getAllPoliBagians?.filter((pb) => pb.user?.id === undefined) ?? [];
+  const [selectedPoliId, setSelectedPoliId] = useState('');
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -114,6 +119,7 @@ const SpecialRegisterPage = () => {
         passwordConfirmation,
       },
       role,
+      poliBagianId: role === "admin-poli" ? parseInt(selectedPoliId) : undefined,
     }).then((result) => {
       if (result.error) {
         alert(result.error.message);
@@ -126,6 +132,11 @@ const SpecialRegisterPage = () => {
         setSubmit(false);
         return;
       }
+      toast({
+        title: `Berhasil Membuat Akun ${result.data?.specialRegister.user?.username}`,
+        status: "success",
+        position: "top"
+      })
       setSubmit(false);
     })
   }
@@ -151,42 +162,36 @@ const SpecialRegisterPage = () => {
             py="80px"
           >
             {/* RIGHT SEGMENT */}
-            <Center
-              display={["none", "none", "flex"]}
-              px={["", "", "24px"]}
-              w="100%"
-            >
-              <VStack spacing="4">
-                <Text
-                  color={themeColor.chakraBlue6}
-                  fontWeight={700}
-                  fontSize="24px"
-                >
-                  Create Special Account
+            <VStack spacing="4" w="100%">
+              <Text
+                color={themeColor.chakraBlue6}
+                fontWeight={700}
+                fontSize="24px"
+              >
+                Create Special Account
+              </Text>
+              <HStack alignItems="start">
+                <Text>
+                  Sebagai :
                 </Text>
-                <HStack alignItems="start">
-                  <Text>
-                    Sebagai :
-                  </Text>
-                  <RadioGroup
-                    onChange={(e) => setRole(e)}
-                    value={role}
-                  >
-                    <Stack>
-                      {/* <Radio value="admin">
+                <RadioGroup
+                  onChange={(e) => setRole(e)}
+                  value={role}
+                >
+                  <Stack>
+                    {/* <Radio value="admin">
                         Admin
                       </Radio> */}
-                      <Radio value="admin-poli">
-                        Admin Poli
-                      </Radio>
-                      <Radio value="cashier">
-                        Kasir
-                      </Radio>
-                    </Stack>
-                  </RadioGroup>
-                </HStack>
-              </VStack>
-            </Center>
+                    <Radio value="admin-poli">
+                      Admin Poli
+                    </Radio>
+                    <Radio value="cashier">
+                      Kasir
+                    </Radio>
+                  </Stack>
+                </RadioGroup>
+              </HStack>
+            </VStack>
             {/* LEFT SEGMENT */}
             <Flex
               borderRadius="8px"
@@ -217,6 +222,24 @@ const SpecialRegisterPage = () => {
                 </Stack>
                 <Stack spacing="6">
                   <Stack spacing="5">
+                    <FormControl
+                      isInvalid={selectedPoliId === "" && role === "admin-poli"}
+                      isDisabled={role !== "admin-poli"}
+                      isRequired
+                    >
+                      <FormLabel>
+                        Poli Bagian
+                      </FormLabel>
+                      <Select
+                        onChange={(event) => setSelectedPoliId(event.target.value)}
+                        placeholder="Pilih Poli"
+                        value={selectedPoliId}
+                      >
+                        {availablePoli.map((pb) => (
+                          <option value={pb.id}>{pb.nama}</option>
+                        ))}
+                      </Select>
+                    </FormControl>
                     <FormControl
                       isInvalid={errorField === "username"}
                       isRequired

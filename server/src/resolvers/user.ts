@@ -1,6 +1,6 @@
 import { User } from '../entities/User'
 import { MyContext } from '../types'
-import { Arg, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver, UseMiddleware } from 'type-graphql'
 import argon2 from 'argon2'
 import { COOKIE_NAME, FORGOT_PASSWORD_PREFIX } from '../constants'
 import { UsernamePasswordInput } from './UsernamePasswordInput'
@@ -8,6 +8,7 @@ import { validateRegister } from '../utils/validateRegister'
 import { forgotPasswordEmail } from '../utils/emails'
 import { v4 as uuid } from 'uuid'
 import { getConnection } from 'typeorm'
+import { isAdmin } from '../middleware/isAdmin'
 
 @ObjectType()
 export class FieldError {
@@ -204,10 +205,11 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
+  @UseMiddleware(isAdmin)
   async specialRegister(
     @Arg('options', () => UsernamePasswordInput) options: UsernamePasswordInput,
       @Arg('role', () => String) role: 'admin' | 'admin-poli' | 'cashier',
-      @Ctx() { req }: MyContext
+      @Arg('poliBagianId', () => Int, { nullable:  true }) poliBagianId: number | null | undefined,
   ): Promise<UserResponse> {
     if (role !==  'admin' && role !==  'admin-poli' && role !==  'cashier'){
       return {
@@ -237,6 +239,7 @@ export class UserResolver {
           password: hashedPassword,
           email: options.email,
           role,
+          poliBagianId: poliBagianId ?? undefined,
         }
       ).returning('*').execute()
       user = result.raw[0]
@@ -265,8 +268,6 @@ export class UserResolver {
       console.log('message: ', error.message)
     }
 
-    req.session.userId = user.id
-
     return { user }
   }
 
@@ -276,7 +277,7 @@ export class UserResolver {
       @Arg('password') password: string,
       @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne(usernameOrEmail.includes('@') ? { 
+    const user = await User.findOne(usernameOrEmail.includes('@') ? {
       where: { email: usernameOrEmail }
     } : {
       where: { username: usernameOrEmail }

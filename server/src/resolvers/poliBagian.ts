@@ -31,7 +31,7 @@ class PoliBagianInput {
 export class PoliBagianResolver {
   @Query(() => [PoliBagian], { nullable: true })
   async getAllPoliBagians(): Promise<PoliBagian[] | undefined> {
-    return (await PoliBagian.find({ relations: ['dokter'] })).sort((prev,next) => prev.id - next.id)
+    return (await PoliBagian.find({ relations: ['dokter', 'user'] })).sort((prev,next) => prev.id - next.id)
   }
 
   @Query(() => [PoliBagian], { nullable: true })

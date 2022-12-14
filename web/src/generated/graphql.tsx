@@ -392,6 +392,7 @@ export type MutationRegisterArgs = {
 
 export type MutationSpecialRegisterArgs = {
   options: UsernamePasswordInput;
+  poliBagianId?: InputMaybe<Scalars['Int']>;
   role: Scalars['String'];
 };
 
@@ -1115,6 +1116,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type SpecialRegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
   role: Scalars['String'];
+  poliBagianId?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -1256,7 +1258,7 @@ export type GetAllPerawatsQuery = { __typename?: 'Query', getAllPerawats?: Array
 export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, createdBy: string, dokter: Array<{ __typename?: 'Dokter', nama: string, nomorTelepon: string }> }> | null };
+export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, createdBy: string, dokter: Array<{ __typename?: 'Dokter', nama: string, nomorTelepon: string }>, user?: { __typename?: 'User', id: number, username: string } | null }> | null };
 
 export type GetAllRefBhpsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1644,8 +1646,8 @@ export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const SpecialRegisterDocument = gql`
-    mutation specialRegister($options: UsernamePasswordInput!, $role: String!) {
-  specialRegister(options: $options, role: $role) {
+    mutation specialRegister($options: UsernamePasswordInput!, $role: String!, $poliBagianId: Int) {
+  specialRegister(options: $options, role: $role, poliBagianId: $poliBagianId) {
     errors {
       field
       message
@@ -1960,6 +1962,10 @@ export const GetAllPoliBagiansDocument = gql`
     dokter {
       nama
       nomorTelepon
+    }
+    user {
+      id
+      username
     }
   }
 }

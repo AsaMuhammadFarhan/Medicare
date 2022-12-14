@@ -8,5 +8,9 @@ query getAllPoliBagians {
       nama
       nomorTelepon
     }
+    user {
+      id
+      username
+    }
   }
 }

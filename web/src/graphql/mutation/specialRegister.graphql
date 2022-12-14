@@ -1,5 +1,9 @@
-mutation specialRegister($options: UsernamePasswordInput!, $role: String!) {
-  specialRegister(options: $options, role: $role) {
+mutation specialRegister(
+  $options: UsernamePasswordInput!
+  $role: String!
+  $poliBagianId: Int
+) {
+  specialRegister(options: $options, role: $role, poliBagianId: $poliBagianId) {
     errors {
       field
       message
