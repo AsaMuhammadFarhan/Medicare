@@ -147,7 +147,7 @@ const PasienDataAkunPage = () => {
                   <Text>Email</Text>
                   <Text>:</Text>
                 </Flex>
-                <Text>{meWithPasienData.data?.meWithPasienData?.id}</Text>
+                <Text>{meWithPasienData.data?.meWithPasienData?.email}</Text>
               </SimpleGrid>
             </Stack>
           </Flex>

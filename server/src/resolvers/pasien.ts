@@ -84,6 +84,12 @@ export class UserPasienResolver {
     return await query.getMany()
   }
 
+  @Query(() => Number)
+  async getCountUser(): Promise<number> {
+    const user = await User.find()
+    return user.length
+  }
+
   @Mutation(() => Pasien)
   async createUserPasien(@Arg('input') input: PasienInput): Promise<Pasien> {
     return await Pasien.create({ ...input }).save()

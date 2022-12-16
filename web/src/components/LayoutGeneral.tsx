@@ -190,13 +190,13 @@ const LayoutAdmin: React.FC<{
               <Divider />
               <Menu>
                 <MenuButton w="100%">
-                  <HStack spacing="12px" w="100%" color="white">
+                  <HStack spacing="12px" w="100%" color="white" overflow="hidden">
                     <Avatar name={me.data.me.username} src={undefined} boxSize="10" />
                     <Flex direction="column" alignItems="start">
                       <Text fontWeight="medium" fontSize="sm">
                         {me.data.me.username}
                       </Text>
-                      <Text color="#EBF8FF" fontSize="sm">
+                      <Text color="#EBF8FF" fontSize="sm" noOfLines={1}>
                         {me.data.me.email}
                       </Text>
                     </Flex>
@@ -329,13 +329,13 @@ export const LayoutAdminPoli: React.FC<{
               <Divider />
               <Menu>
                 <MenuButton w="100%">
-                  <HStack spacing="12px" w="100%" color="white">
+                  <HStack spacing="12px" w="100%" color="white" overflow="hidden">
                     <Avatar name={me.data.me.username} src={undefined} boxSize="10" />
                     <Flex direction="column" alignItems="start">
                       <Text fontWeight="medium" fontSize="sm">
                         {me.data.me.username}
                       </Text>
-                      <Text color="#EBF8FF" fontSize="sm">
+                      <Text color="#EBF8FF" fontSize="sm" noOfLines={1}>
                         {me.data.me.email}
                       </Text>
                     </Flex>
@@ -468,13 +468,13 @@ export const LayoutCashier: React.FC<{
               <Divider />
               <Menu>
                 <MenuButton w="100%">
-                  <HStack spacing="12px" w="100%" color="white">
+                  <HStack spacing="12px" w="100%" color="white" overflow="hidden">
                     <Avatar name={me.data.me.username} src={undefined} boxSize="10" />
                     <Flex direction="column" alignItems="start">
                       <Text fontWeight="medium" fontSize="sm">
                         {me.data.me.username}
                       </Text>
-                      <Text color="#EBF8FF" fontSize="sm">
+                      <Text color="#EBF8FF" fontSize="sm" noOfLines={1}>
                         {me.data.me.email}
                       </Text>
                     </Flex>
@@ -591,13 +591,13 @@ export const LayoutPasien: React.FC<{
               <Divider />
               <Menu>
                 <MenuButton w="100%">
-                  <HStack spacing="12px" w="100%" color="white">
+                  <HStack spacing="12px" w="100%" color="white" overflow="hidden">
                     <Avatar name={me.data.me.username} src={undefined} boxSize="10" />
                     <Flex direction="column" alignItems="start">
                       <Text fontWeight="medium" fontSize="sm">
                         {me.data.me.username}
                       </Text>
-                      <Text color="#EBF8FF" fontSize="sm">
+                      <Text color="#EBF8FF" fontSize="sm" noOfLines={1}>
                         {me.data.me.email}
                       </Text>
                     </Flex>

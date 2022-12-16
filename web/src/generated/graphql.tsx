@@ -644,6 +644,7 @@ export type Query = {
   getAllTindakans?: Maybe<Array<Tindakan>>;
   getAllUserPasien: Array<User>;
   getBhp?: Maybe<Bhp>;
+  getCountUser: Scalars['Float'];
   getDokter?: Maybe<Dokter>;
   getDokters?: Maybe<Array<Dokter>>;
   getKunjungan?: Maybe<Kunjungan>;
@@ -1284,6 +1285,11 @@ export type GetAllUserPasienQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllUserPasienQuery = { __typename?: 'Query', getAllUserPasien: Array<{ __typename?: 'User', id: number, username: string, email: string, pasien?: { __typename?: 'Pasien', id: number, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null } | null }> };
+
+export type GetCountUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCountUserQuery = { __typename?: 'Query', getCountUser: number };
 
 export type GetKunjunganPolisByAdminPoliQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2119,6 +2125,15 @@ export const GetAllUserPasienDocument = gql`
 
 export function useGetAllUserPasienQuery(options: Omit<Urql.UseQueryArgs<GetAllUserPasienQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllUserPasienQuery>({ query: GetAllUserPasienDocument, ...options });
+};
+export const GetCountUserDocument = gql`
+    query getCountUser {
+  getCountUser
+}
+    `;
+
+export function useGetCountUserQuery(options: Omit<Urql.UseQueryArgs<GetCountUserQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetCountUserQuery>({ query: GetCountUserDocument, ...options });
 };
 export const GetKunjunganPolisByAdminPoliDocument = gql`
     query getKunjunganPolisByAdminPoli {

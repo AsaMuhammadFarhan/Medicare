@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   HStack,
+  Skeleton,
   Spacer,
   Stack,
   Text,
@@ -12,7 +13,7 @@ import Iconify from '../components/Iconify'
 import Logo from '../components/Logo'
 import { OriginalMetaTags } from '../components/MetaTags'
 import { NextChakraLink, NextChakraLinkWithHover } from '../components/NextChakraLink'
-import { useLogoutMutation, useMeQuery } from '../generated/graphql'
+import { useConfigurationSettingsByNameQuery, useGetCountUserQuery, useLogoutMutation, useMeQuery } from '../generated/graphql'
 import themeColor from '../utils/color'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
@@ -20,6 +21,28 @@ const IndexPage = () => {
   const router = useRouter()
   const [me] = useMeQuery();
   const [, logout] = useLogoutMutation();
+  const [apaItuMedicare] = useConfigurationSettingsByNameQuery({
+    variables: {
+      keywords: "apa-itu-medicare"
+    }
+  });
+  const [countUsers] = useGetCountUserQuery();
+  const [countPartners] = useConfigurationSettingsByNameQuery({
+    variables: {
+      keywords: "jumlah-klinik-partner"
+    }
+  });
+  const [ratingMedicare] = useConfigurationSettingsByNameQuery({
+    variables: {
+      keywords: "rating-medicare"
+    }
+  });
+
+  const totalUser = countUsers.data?.getCountUser ?? 0;
+
+  const isLoaded = countUsers.fetching === false
+    && countPartners.fetching === false
+    && ratingMedicare.fetching === false
 
   const handleClickLogout = () => {
     logout().then((result) => {
@@ -98,12 +121,12 @@ const IndexPage = () => {
                 Halo, {me.data.me?.username}
               </Text>
               <NextChakraLink href={getBaseRouter(me.data.me.role)}>
-              <Button
-                variant="link"
-                color="white"
-              >
-                Dashboard
-              </Button>
+                <Button
+                  variant="link"
+                  color="white"
+                >
+                  Dashboard
+                </Button>
               </NextChakraLink>
               <Button
                 onClick={() => {
@@ -139,10 +162,8 @@ const IndexPage = () => {
             >
               Kesehatanmu Adalah Prioritas Utama Kami
             </Text>
-            <Text
-              fontSize="20px"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+            <Text fontSize="20px">
+              Kami tahu, bahkan merawat kesehatan bisa menjadi hal yang membosankan bila harus menunggu waktu yang lama. 
             </Text>
           </Stack>
           <Stack
@@ -150,20 +171,39 @@ const IndexPage = () => {
             alignItems="center"
             spacing="16px"
           >
-            <NextChakraLink href="/login" title="Login">
-              <Button
-                _hover={{ bgColor: themeColor.chakraBlue8 }}
-                bgColor={themeColor.chakraBlue10}
-                colorScheme="blue"
-              >
-                Masuk
-              </Button>
-            </NextChakraLink>
-            <NextChakraLink href="/register" title="Register">
-              <Button>
-                Daftar Sekarang
-              </Button>
-            </NextChakraLink>
+            {me.data?.me?.id ? (
+              <>
+                <NextChakraLink href={getBaseRouter(me.data.me.role)} title="Dashboard">
+                  <Button
+                    _hover={{ bgColor: themeColor.chakraBlue8 }}
+                    bgColor={themeColor.chakraBlue10}
+                    colorScheme="blue"
+                  >
+                    Dashboard
+                  </Button>
+                </NextChakraLink>
+                <Button onClick={handleClickLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <NextChakraLink href="/login" title="Login">
+                  <Button
+                    _hover={{ bgColor: themeColor.chakraBlue8 }}
+                    bgColor={themeColor.chakraBlue10}
+                    colorScheme="blue"
+                  >
+                    Masuk
+                  </Button>
+                </NextChakraLink>
+                <NextChakraLink href="/register" title="Register">
+                  <Button>
+                    Daftar Sekarang
+                  </Button>
+                </NextChakraLink>
+              </>
+            )}
           </Stack>
         </Stack>
 
@@ -267,50 +307,57 @@ const IndexPage = () => {
               fontSize={["36px", "36px", "60px"]}
               fontWeight={[700, 700, 600]}
             >
-              Ini Segmen{" "}
+              Apa sih{" "}
               <Text as="span" color={themeColor.chakraBlue6}>
-                Marketing
+                Medicare{" "}
               </Text>
+              Itu?
             </Text>
-            <Text fontSize="20px" color={themeColor.muted}>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui sit, reprehenderit asperiores aut incidunt adipisci possimus, itaque repellendus inventore sed laudantium, alias facere soluta eius impedit nesciunt. Praesentium, nulla excepturi.
-            </Text>
+            <Skeleton isLoaded={apaItuMedicare.fetching === false}>
+              <Text fontSize="20px" color={themeColor.muted}>
+                {apaItuMedicare.data?.configurationSettingsByName[0]?.value ?? (
+                  "Lorem ipsum dolor, sit amet consectetur adipisicing elit."
+                )}
+              </Text>
+            </Skeleton>
           </Stack>
-          <Stack
-            direction={["column", "column", "row"]}
-            bgColor={themeColor.chakraBlue8}
-            p={["24px", "24px", "64px"]}
-            borderRadius="16px"
-            alignItems="center"
-            textAlign="center"
-            color="white"
-            w="100%"
-          >
-            <Stack w="100%" px="8px">
-              <Text fontSize="64px" fontWeight={600}>
-                20k
-              </Text>
-              <Text fontSize="18px">
-                Pengguna
-              </Text>
+          <Skeleton isLoaded={isLoaded} w="100%">
+            <Stack
+              direction={["column", "column", "row"]}
+              bgColor={themeColor.chakraBlue8}
+              p={["24px", "24px", "64px"]}
+              borderRadius="16px"
+              alignItems="center"
+              textAlign="center"
+              color="white"
+              w="100%"
+            >
+              <Stack w="100%" px="8px">
+                <Text fontSize="64px" fontWeight={600}>
+                  {totalUser > 1000 ? `${totalUser.toString().slice(0, -3)}k` : totalUser}
+                </Text>
+                <Text fontSize="18px">
+                  Pengguna
+                </Text>
+              </Stack>
+              <Stack w="100%" px="8px">
+                <Text fontSize="64px" fontWeight={600}>
+                  {countPartners.data?.configurationSettingsByName[0]?.value ?? 30}+
+                </Text>
+                <Text fontSize="18px">
+                  Klinik Partner
+                </Text>
+              </Stack>
+              <Stack w="100%" px="8px">
+                <Text fontSize="64px" fontWeight={600}>
+                  {ratingMedicare.data?.configurationSettingsByName[0]?.value ?? "-"}
+                </Text>
+                <Text fontSize="18px">
+                  Stars
+                </Text>
+              </Stack>
             </Stack>
-            <Stack w="100%" px="8px">
-              <Text fontSize="64px" fontWeight={600}>
-                30+
-              </Text>
-              <Text fontSize="18px">
-                Klinik Partner
-              </Text>
-            </Stack>
-            <Stack w="100%" px="8px">
-              <Text fontSize="64px" fontWeight={600}>
-                4.7
-              </Text>
-              <Text fontSize="18px">
-                Stars
-              </Text>
-            </Stack>
-          </Stack>
+          </Skeleton>
         </Stack>
       </Flex>
 
