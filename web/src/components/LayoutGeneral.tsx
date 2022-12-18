@@ -2,6 +2,10 @@ import {
   Avatar,
   Button,
   Divider,
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
   HStack,
   Menu,
@@ -11,6 +15,7 @@ import {
   Spacer,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -512,6 +517,7 @@ export const LayoutPasien: React.FC<{
 }) => {
     useIsAuth(["guest"]);
     const router = useRouter();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [me] = useMeQuery();
     const [, logout] = useLogoutMutation();
@@ -537,6 +543,7 @@ export const LayoutPasien: React.FC<{
 
         {/* SIDEBAR */}
         <Stack
+          display={["none", "none", "flex"]}
           bgColor={themeColor.chakraBlue6}
           alignItems="center"
           position="sticky"
@@ -615,11 +622,109 @@ export const LayoutPasien: React.FC<{
           )}
         </Stack>
 
+        {/* DRAWER MOBILE */}
+        <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+          <DrawerContent
+            maxW="70vw"
+          >
+            <DrawerCloseButton color="white" />
+            <Stack
+              bgColor={themeColor.chakraBlue6}
+              alignItems="center"
+              spacing="16px"
+              p="16px"
+              h="100vh"
+            >
+              <Stack>
+                <Logo size="24px" color="white" />
+                <Flex color="white" fontSize="24px" alignItems="center">
+                  <Text fontWeight={600} mr="16px">
+                    Medicare{" "}
+                    <Text
+                      color={themeColor.chakraBlue6}
+                      borderRadius="2px"
+                      bgColor="white"
+                      as="span"
+                      px="4px"
+                    >
+                      Pasien
+                    </Text>
+                  </Text>
+                </Flex>
+              </Stack>
+              <Stack w="100%" spacing="8px" pt="32px">
+                {pasienSidebar.map((nav) => (
+                  <NextChakraLink href={nav.link}>
+                    <Button
+                      _hover={{
+                        bgColor: "white",
+                        color: themeColor.chakraBlue6
+                      }}
+                      bgColor={router.pathname.includes(nav.link) ? "white" : "transparent"}
+                      color={router.pathname.includes(nav.link) ? themeColor.chakraBlue6 : "white"}
+                      w="100%"
+                    >
+                      <HStack w="100%" spacing="12px">
+                        <Text>{nav.label}</Text>
+                      </HStack>
+                    </Button>
+                  </NextChakraLink>
+                ))}
+              </Stack>
+
+              <Spacer />
+              {(me.data?.me?.username) && (
+                <>
+                  <Divider />
+                  <Menu>
+                    <MenuButton w="100%">
+                      <HStack spacing="12px" w="100%" color="white" overflow="hidden">
+                        <Avatar name={me.data.me.username} src={undefined} boxSize="10" />
+                        <Flex direction="column" alignItems="start">
+                          <Text fontWeight="medium" fontSize="sm">
+                            {me.data.me.username}
+                          </Text>
+                          <Text color="#EBF8FF" fontSize="sm" noOfLines={1}>
+                            {me.data.me.email}
+                          </Text>
+                        </Flex>
+                      </HStack>
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem
+                        onClick={handleClickLogout}
+                      >
+                        Logout
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </>
+              )}
+            </Stack>
+          </DrawerContent>
+        </Drawer>
+
         {/* CORE */}
         <Flex
-          p="32px 24px"
+          p={["16px", "16px", "32px 24px"]}
+          direction="column"
           w="100%"
         >
+          <Button
+            display={["flex", "flex", "none"]}
+            colorScheme="blue"
+            onClick={onOpen}
+            boxSize="40px"
+            minW="0px"
+            minH="0px"
+            mb="16px"
+          >
+            <Iconify
+              boxSize="24px"
+              icon="bx:menu"
+            />
+          </Button>
           {children}
         </Flex>
 

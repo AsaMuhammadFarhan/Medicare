@@ -61,7 +61,7 @@ const RegisterPage = () => {
 
   return (
     <Flex
-      bgColor={themeColor.background}
+      bgColor={[themeColor.chakraBlue6, themeColor.chakraBlue6, themeColor.background]}
       alignItems="center"
       direction="column"
       minH="100vh"
@@ -74,9 +74,9 @@ const RegisterPage = () => {
         w="100%"
       >
         <HStack
+          spacing={["0px", "0px", "48px"]}
+          p={["16px", "16px", "80px 0px"]}
           direction="row"
-          spacing="48px"
-          py="80px"
         >
           {/* RIGHT SEGMENT */}
           <Center

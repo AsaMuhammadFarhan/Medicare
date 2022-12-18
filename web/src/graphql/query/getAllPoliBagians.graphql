@@ -5,6 +5,7 @@ query getAllPoliBagians {
     hargaPendaftaran
     createdBy
     dokter {
+      id
       nama
       nomorTelepon
     }

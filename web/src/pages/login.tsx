@@ -51,7 +51,7 @@ const LoginPage = () => {
 
   return (
     <Flex
-      bgColor={themeColor.background}
+      bgColor={[themeColor.chakraBlue6, themeColor.chakraBlue6, themeColor.background]}
       direction="column"
       justify="center"
       minH="100vh"

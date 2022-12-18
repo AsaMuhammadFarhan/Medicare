@@ -1278,7 +1278,7 @@ export type GetAllPerawatsQuery = { __typename?: 'Query', getAllPerawats?: Array
 export type GetAllPoliBagiansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, createdBy: string, dokter: Array<{ __typename?: 'Dokter', nama: string, nomorTelepon: string }>, user?: { __typename?: 'User', id: number, username: string } | null }> | null };
+export type GetAllPoliBagiansQuery = { __typename?: 'Query', getAllPoliBagians?: Array<{ __typename?: 'PoliBagian', id: number, nama: string, hargaPendaftaran: number, createdBy: string, dokter: Array<{ __typename?: 'Dokter', id: number, nama: string, nomorTelepon: string }>, user?: { __typename?: 'User', id: number, username: string } | null }> | null };
 
 export type GetAllRefBhpsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2012,6 +2012,7 @@ export const GetAllPoliBagiansDocument = gql`
     hargaPendaftaran
     createdBy
     dokter {
+      id
       nama
       nomorTelepon
     }

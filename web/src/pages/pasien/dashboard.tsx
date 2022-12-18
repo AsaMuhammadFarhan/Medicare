@@ -1,10 +1,10 @@
-import { Button, Divider, Flex, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Divider, Flex, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, Stack, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import Iconify from "../../components/Iconify";
 import { LayoutPasien } from "../../components/LayoutGeneral";
-import { NextChakraLink } from "../../components/NextChakraLink";
+import { NextChakraLink, NextChakraLinkWithHover } from "../../components/NextChakraLink";
 import { useMeWithAllDataQuery, useToCanceledReservasiMutation } from "../../generated/graphql";
 import themeColor from "../../utils/color";
 import { createUrqlClient } from "../../utils/createUrqlClient";
@@ -16,6 +16,7 @@ const PasienDashboardPage = () => {
 
   const [meWithAllData] = useMeWithAllDataQuery();
   const [, cancelReservasi] = useToCanceledReservasiMutation();
+  const isLoaded = meWithAllData.fetching === false;
 
   const pendingReservasi = meWithAllData.data?.meWithAllData?.reservasi.filter((res) =>
     res.statusPasien === "pending"
@@ -142,21 +143,44 @@ const PasienDashboardPage = () => {
         </Text>
 
         <Stack spacing="4px">
-          <Text fontSize="24px" fontWeight={600} color={themeColor.chakraBlue10}>
-            Selamat Datang, {meWithAllData.data?.meWithAllData?.pasien?.nama ?? "Pasien"}!
-          </Text>
-          <Text>
-            Ini adalah tampilan dashboard kamu
-          </Text>
+          <Skeleton isLoaded={isLoaded}>
+            <Text fontSize="24px" fontWeight={600} color={themeColor.chakraBlue10}>
+              Selamat Datang, {meWithAllData.data?.meWithAllData?.pasien?.nama ?? "Pasien"}!
+            </Text>
+          </Skeleton>
+          <Skeleton isLoaded={isLoaded}>
+            <Text>
+              Ini adalah tampilan dashboard kamu
+            </Text>
+          </Skeleton>
         </Stack>
         <Divider orientation="horizontal" />
+        {!meWithAllData.data?.meWithAllData?.pasien?.id && (
+          <Alert status="warning">
+            <AlertIcon />
+            <Stack spacing="0px" direction={["column", "column", "row"]}>
+              <AlertTitle>
+                Data Pasien Kamu Kosong!
+              </AlertTitle>
+              <AlertDescription>
+                Pergi ke halaman{" "}
+                <NextChakraLinkWithHover as="span" href="/pasien/data-akun" fontWeight={600}>
+                  Akun{" "}
+                </NextChakraLinkWithHover>
+                untuk membuat data pasien.
+              </AlertDescription>
+            </Stack>
+          </Alert>
+        )}
         <Stack
           spacing="8px"
           w="100%"
         >
-          <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
-            Reservasi Aktif
-          </Text>
+          <Skeleton isLoaded={isLoaded}>
+            <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
+              Reservasi Aktif
+            </Text>
+          </Skeleton>
           {(pendingReservasi.length > 0 || readyReservasi.length > 0 || waitingPaymentReservasi.length > 0) ? (
             <>
               {waitingPaymentReservasi.map((res) => (
@@ -282,9 +306,11 @@ const PasienDashboardPage = () => {
           spacing="16px"
           w="100%"
         >
-          <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
-            Riwayat Kunjungan
-          </Text>
+          <Skeleton isLoaded={isLoaded}>
+            <Text fontWeight={600} fontSize="24px" color={themeColor.chakraBlue9}>
+              Riwayat Kunjungan
+            </Text>
+          </Skeleton>
           {successAndCanceledReservasi.map((res) => (
             <Stack
               borderRadius="8px"

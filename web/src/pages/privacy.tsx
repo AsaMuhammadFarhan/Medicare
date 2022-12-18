@@ -33,7 +33,7 @@ export const PrivacyPage = () => {
             {`←`} Home
           </Button>
         </NextChakraLinkWithHover>
-        <Flex>
+        <Flex direction={["column", "column", "row"]}>
           <Text fontSize="48px" fontWeight={600} color="white" mr="16px">
             Kebijakan Privasi
           </Text>

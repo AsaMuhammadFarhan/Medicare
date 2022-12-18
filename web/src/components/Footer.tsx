@@ -19,7 +19,7 @@ export const SimpleFooter = () => {
       color="white"
       p="16px"
       w="100%"
-      h="56px"
+      h={["fit-content", "fit-content", "56px"]}
     >
       <Text>
         Copyright {currentYear} ©

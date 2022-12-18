@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { withUrqlClient } from "next-urql";
 import { LayoutPasien } from "../../../components/LayoutGeneral";
@@ -226,104 +226,121 @@ const PasienReservasiDetailPage = ({ reservasiId }: any) => {
           </SimpleGrid>
         </Stack>
 
-        <Table borderRadius="8px" overflow="hidden" boxShadow="md">
-          <Thead>
-            <Tr bgColor={themeColor.chakraBlue6}>
-              <Th color="white">
-                Barang/Jasa
-              </Th>
-              <Th color="white">
-                Harga Satuan
-              </Th>
-              <Th color="white">
-                Jumlah
-              </Th>
-              <Th color="white">
-                Total
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {displayedReservasi?.kunjungan?.kunjunganPoli?.map((kp) => (
-              <>
-                <Tr>
-                  <Td>
-                    Periksa Poli {kp.poliBagian?.nama}
-                  </Td>
-                  <Td />
-                  <Td />
-                  <Td>
-                    Rp {numberWithSeparator(parseInt(kp.biayaPoli))}
-                  </Td>
-                </Tr>
-                {kp.obat?.map((obt) => (
-                  <Tr>
-                    <Td>
-                      {obt.refObat.nama}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(obt.refObat.harga)}
-                    </Td>
-                    <Td>
-                      @{obt.jumlah}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(obt.harga)}
-                    </Td>
-                  </Tr>
-                ))}
-                {kp.tindakan?.map((tdkn) => (
-                  <Tr>
-                    <Td>
-                      {tdkn.refTindakan.nama}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(tdkn.refTindakan.harga)}
-                    </Td>
-                    <Td>
-                      @{tdkn.jumlah}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(tdkn.harga)}
-                    </Td>
-                  </Tr>
-                ))}
-                {kp.bhp?.map((bahan) => (
-                  <Tr>
-                    <Td>
-                      {bahan.refBhp.nama}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(bahan.refBhp.harga)}
-                    </Td>
-                    <Td>
-                      @{bahan.jumlah}
-                    </Td>
-                    <Td>
-                      Rp {numberWithSeparator(bahan.harga)}
-                    </Td>
-                  </Tr>
-                ))}
-              </>
-            ))}
-            <Tr bgColor={themeColor.chakraBlue2}>
-              <Td>
-                <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
+        <Box
+          overflow="scroll"
+          css={{
+            "&::-webkit-scrollbar": {
+              height: "3px",
+              width: "0px",
+            },
+            "&::-webkit-scrollbar-track": {
+              height: "3px",
+              background: "#FAFAFA",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#3182ce",
+            },
+          }}
+        >
+          <Table borderRadius="8px" overflow="hidden" boxShadow="md">
+            <Thead>
+              <Tr bgColor={themeColor.chakraBlue6}>
+                <Th color="white">
+                  Barang/Jasa
+                </Th>
+                <Th color="white">
+                  Harga Satuan
+                </Th>
+                <Th color="white">
+                  Jumlah
+                </Th>
+                <Th color="white">
                   Total
-                </Text>
-              </Td>
-              <Td />
-              <Td />
-              <Td>
-                <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
-                  Rp {numberWithSeparator(getTotalPrice(displayedReservasi).hargaTotal)}
-                </Text>
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {displayedReservasi?.kunjungan?.kunjunganPoli?.map((kp) => (
+                <>
+                  <Tr>
+                    <Td>
+                      Periksa Poli {kp.poliBagian?.nama}
+                    </Td>
+                    <Td />
+                    <Td />
+                    <Td>
+                      Rp {numberWithSeparator(parseInt(kp.biayaPoli))}
+                    </Td>
+                  </Tr>
+                  {kp.obat?.map((obt) => (
+                    <Tr>
+                      <Td>
+                        {obt.refObat.nama}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(obt.refObat.harga)}
+                      </Td>
+                      <Td>
+                        @{obt.jumlah}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(obt.harga)}
+                      </Td>
+                    </Tr>
+                  ))}
+                  {kp.tindakan?.map((tdkn) => (
+                    <Tr>
+                      <Td>
+                        {tdkn.refTindakan.nama}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(tdkn.refTindakan.harga)}
+                      </Td>
+                      <Td>
+                        @{tdkn.jumlah}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(tdkn.harga)}
+                      </Td>
+                    </Tr>
+                  ))}
+                  {kp.bhp?.map((bahan) => (
+                    <Tr>
+                      <Td>
+                        {bahan.refBhp.nama}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(bahan.refBhp.harga)}
+                      </Td>
+                      <Td>
+                        @{bahan.jumlah}
+                      </Td>
+                      <Td>
+                        Rp {numberWithSeparator(bahan.harga)}
+                      </Td>
+                    </Tr>
+                  ))}
+                </>
+              ))}
+              <Tr bgColor={themeColor.chakraBlue2}>
+                <Td>
+                  <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
+                    Total
+                  </Text>
+                </Td>
+                <Td />
+                <Td />
+                <Td>
+                  <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
+                    Rp {numberWithSeparator(getTotalPrice(displayedReservasi).hargaTotal)}
+                  </Text>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Box>
       </Stack>
-    </LayoutPasien>
+    </LayoutPasien >
   )
 };
 

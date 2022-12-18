@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Select, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Flex, Input, Select, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useEffect, useState } from "react";
 import DatePicker from "../../components/DatePicker";
@@ -54,7 +54,7 @@ const PasienDataAkunPage = () => {
   }, [meWithPasienData.fetching]);
 
   const handleClickSimpan = () => {
-    if (meWithPasienData.data?.meWithPasienData?.pasien?.id){
+    if (meWithPasienData.data?.meWithPasienData?.pasien?.id) {
       updateUserPasien({
         id: meWithPasienData.data?.meWithPasienData?.pasien?.id ?? -1,
         input: {
@@ -132,25 +132,38 @@ const PasienDataAkunPage = () => {
               Data Akun
             </Flex>
             <Stack spacing="24px" p="16px">
-              <SimpleGrid columns={2} gap="16px">
-                <Flex justify="space-between">
-                  <Text>Username</Text>
-                  <Text>:</Text>
+              <SimpleGrid columns={[1, 1, 2]} gap="16px">
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>Username</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 <Text>{meWithPasienData.data?.meWithPasienData?.username}</Text>
-                <Flex justify="space-between">
-                  <Text>User ID</Text>
-                  <Text>:</Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>User ID</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 <Text>{meWithPasienData.data?.meWithPasienData?.id}</Text>
-                <Flex justify="space-between">
-                  <Text>Email</Text>
-                  <Text>:</Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>Email</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 <Text>{meWithPasienData.data?.meWithPasienData?.email}</Text>
               </SimpleGrid>
             </Stack>
           </Flex>
+          {!meWithPasienData.data?.meWithPasienData?.pasien?.id && (
+            <Alert status="error">
+              <AlertIcon />
+              <Stack spacing="0px" direction={["column", "column", "row"]}>
+                <AlertTitle>
+                  Lengkapi Data Pasien!
+                </AlertTitle>
+                <AlertDescription>
+                  Kamu tidak dapat melakukan reservasi sebelum melengkapi data diri kamu.
+                </AlertDescription>
+              </Stack>
+            </Alert>
+          )}
           <Flex
             borderRadius="8px"
             direction="column"
@@ -168,12 +181,17 @@ const PasienDataAkunPage = () => {
               Data Pasien
             </Flex>
             <Stack spacing={editMode ? "16px" : "24px"} p="16px">
-              <SimpleGrid columns={2} columnGap="16px" rowGap={editMode ? "0px" : "16px"} alignItems="center">
-                <Flex justify="space-between">
-                  <Text>
+              <SimpleGrid
+                rowGap={editMode ? "0px" : "16px"}
+                alignItems="center"
+                columns={[1, 1, 2]}
+                columnGap="16px"
+              >
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nomor Rekam Medis
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -183,11 +201,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.noRm}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nama Lengkap
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -197,11 +215,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.nama}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nomor Handphone
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -211,11 +229,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.nomorTelepon}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nomor Induk Kependudukan
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -225,11 +243,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.nik}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Alamat
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -239,11 +257,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.alamat}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Tempat Lahir
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -253,11 +271,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.tempatLahir}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Tanggal Lahir
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <DatePicker
@@ -265,13 +283,18 @@ const PasienDataAkunPage = () => {
                     selected={tanggalLahir}
                   />
                 ) : (
-                  <Text>{dateFormatWithoutDay(new Date(meWithPasienData.data?.meWithPasienData?.pasien?.tanggalLahir))}</Text>
-                )}
-                <Flex justify="space-between">
                   <Text>
+                    {meWithPasienData.data?.meWithPasienData?.pasien?.tanggalLahir
+                      ? dateFormatWithoutDay(new Date(meWithPasienData.data?.meWithPasienData?.pasien?.tanggalLahir))
+                      : ""
+                    }
+                  </Text>
+                )}
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nomor RT
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -281,11 +304,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.rt}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Nomor RW
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Input
@@ -295,11 +318,11 @@ const PasienDataAkunPage = () => {
                 ) : (
                   <Text>{meWithPasienData.data?.meWithPasienData?.pasien?.rw}</Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Provinsi
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Select
@@ -318,11 +341,11 @@ const PasienDataAkunPage = () => {
                     }
                   </Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Kabupaten/Kota
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Select
@@ -341,11 +364,11 @@ const PasienDataAkunPage = () => {
                     }
                   </Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Kecamatan
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Select
@@ -364,11 +387,11 @@ const PasienDataAkunPage = () => {
                     }
                   </Text>
                 )}
-                <Flex justify="space-between">
-                  <Text>
+                <Flex justify={["", "", "space-between"]}>
+                  <Text fontWeight={600}>
                     Kelurahan
                   </Text>
-                  <Text>:</Text>
+                  <Text fontWeight={600}>:</Text>
                 </Flex>
                 {editMode ? (
                   <Select

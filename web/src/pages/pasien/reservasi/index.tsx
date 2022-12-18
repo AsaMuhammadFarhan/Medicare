@@ -19,8 +19,8 @@ const PasienBuatReservasiPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [meWithAllData] = useMeWithAllDataQuery();
-  
-  if (meWithAllData.fetching === false && !meWithAllData.data?.meWithAllData?.pasien?.id){
+
+  if (meWithAllData.fetching === false && !meWithAllData.data?.meWithAllData?.pasien?.id) {
     router.push("/pasien/data-akun")
   };
 
@@ -47,7 +47,7 @@ const PasienBuatReservasiPage = () => {
   const [creating, createReservasi] = useCreateReservasiMutation();
 
   const handleBuatReservasi = () => {
-    if (!isReady){
+    if (!isReady) {
       alert("Lengkapi semua data!")
       return;
     }
@@ -112,7 +112,7 @@ const PasienBuatReservasiPage = () => {
               <Text fontSize="12px">
                 Dokter
               </Text>
-              <HStack spacing="16px">
+              <Stack spacing="16px" direction={["column", "column", "row"]}>
                 <Select
                   onChange={(e) => setSelectedDokterId(e.target.value)}
                   isDisabled={selectedPoliId === ""}
@@ -131,7 +131,7 @@ const PasienBuatReservasiPage = () => {
                 >
                   Lihat Semua Dokter
                 </Button>
-              </HStack>
+              </Stack>
             </Stack>
             <Stack>
               <Text fontSize="12px">
@@ -179,11 +179,17 @@ const PasienBuatReservasiPage = () => {
                   <Text fontWeight={600} fontSize="18px" color={themeColor.chakraBlue10}>
                     Poli {pb.nama}
                   </Text>
-                  <SimpleGrid columns={3} gap="16px">
+                  <SimpleGrid columns={[1, 1, 3]} gap="16px">
                     {pb.dokter.map((dok) => (
                       <HStack
+                        onClick={() => {
+                          setSelectedPoliId(pb.id.toString());
+                          setSelectedDokterId(dok.id.toString());
+                          onClose();
+                        }}
                         bgColor={themeColor.chakraBlue6}
                         borderRadius="8px"
+                        cursor="pointer"
                         color="white"
                         p="8px"
                       >

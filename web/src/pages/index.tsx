@@ -120,23 +120,28 @@ const IndexPage = () => {
               <Text>
                 Halo, {me.data.me?.username}
               </Text>
-              <NextChakraLink href={getBaseRouter(me.data.me.role)}>
+              <HStack
+                display={["none", "none", "block"]}
+                spacing="16px"
+              >
+                <NextChakraLink href={getBaseRouter(me.data.me.role)}>
+                  <Button
+                    variant="link"
+                    color="white"
+                  >
+                    Dashboard
+                  </Button>
+                </NextChakraLink>
                 <Button
+                  onClick={() => {
+                    handleClickLogout()
+                  }}
                   variant="link"
                   color="white"
                 >
-                  Dashboard
+                  Logout
                 </Button>
-              </NextChakraLink>
-              <Button
-                onClick={() => {
-                  handleClickLogout()
-                }}
-                variant="link"
-                color="white"
-              >
-                Logout
-              </Button>
+              </HStack>
             </>
           )}
         </HStack>
@@ -163,26 +168,35 @@ const IndexPage = () => {
               Kesehatanmu Adalah Prioritas Utama Kami
             </Text>
             <Text fontSize="20px">
-              Kami tahu, bahkan merawat kesehatan bisa menjadi hal yang membosankan bila harus menunggu waktu yang lama. 
+              Kami tahu, bahkan merawat kesehatan bisa menjadi hal yang membosankan bila harus menunggu waktu yang lama.
             </Text>
           </Stack>
           <Stack
             direction={["column", "column", "row"]}
+            w={["100%", "100%", "fit-content"]}
             alignItems="center"
             spacing="16px"
           >
             {me.data?.me?.id ? (
               <>
-                <NextChakraLink href={getBaseRouter(me.data.me.role)} title="Dashboard">
+                <NextChakraLink
+                  href={getBaseRouter(me.data.me.role)}
+                  w={["100%", "100%", "fit-content"]}
+                  title="Dashboard"
+                >
                   <Button
                     _hover={{ bgColor: themeColor.chakraBlue8 }}
+                    w={["100%", "100%", "fit-content"]}
                     bgColor={themeColor.chakraBlue10}
                     colorScheme="blue"
                   >
                     Dashboard
                   </Button>
                 </NextChakraLink>
-                <Button onClick={handleClickLogout}>
+                <Button
+                  w={["100%", "100%", "fit-content"]}
+                  onClick={handleClickLogout}
+                >
                   Logout
                 </Button>
               </>
