@@ -1,19 +1,20 @@
 <!-- Typescript -->
-- Bekerja lebih baik pada projek yang kompleks karena menggunakan TS, bukan JS
-
 <!-- Node.js -->
-- Backend menggunakan mekanisme single threaded dan penanganan request serentak dengan Node.js
-
 <!-- PostgreSQL -->
-- Database PostgreSQL memungkinkan memiliki performa sangat baik meski menuntut query yang lebih kompleks
-- Database PostgreSQL keamanan yang lebih ketat
-
 <!-- GraphQL -->
-- Memiliki keunggulan anti overfetching dengan GraphQL (seperti yang digunakan meta/facebook developer)
-
 <!-- Next.js -->
-- Konten lebih SEO Friendly berkat penggunaan Framework Next.js
-- Performa yang baik dengan mengimplementasikan Code Splitting, SPA, dan Image Optimization
-
 <!-- Chakra UI -->
-- Tampilan bersifat responsif dan mudah karena kemudahan fitur responsive styles dari Chakra UI
+
+Kelebihan Teknologi Pada App Ini:
+
+- (User) Performa - Mengimplementasikan SPA
+- (User) Performa - Mengimplementasikan Code Splitting
+- (User) Performa - Minimalisir overfetching karena menggunakan GraphQL
+- (User) Performa - Server menggunakan Node.js (single threaded, request serentak)
+- (User) Performa - Database menggunakan PostgreSQL
+- (User) Tampilan - Responsive UI
+- (User) Keamanan - CORS
+- (User) Keamanan - Middleware
+- (User) Keamanan - Database menggunakan PostgreSQL
+- (Marketing) SEO - Next.js memungkinkan project menjadi lebih SEO friendly
+- (Developer) Hand Over - Menggunakan bahasa pemrograman Typescript
