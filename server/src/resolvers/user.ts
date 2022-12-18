@@ -326,4 +326,61 @@ export class UserResolver {
   ): Promise<User | undefined> {
     return await User.findOne(id)
   }
+
+  @Query(() => Boolean)
+  async isThereAdmin(): Promise<boolean> {
+    const user = await User.findOne({},{ where: { role: 'admin' } })
+    if (user) return true
+    return false
+  }
+
+  @Mutation(() => UserResponse)
+  async createAdmin(
+    @Arg('options', () => UsernamePasswordInput) options: UsernamePasswordInput,
+  ): Promise<UserResponse> {
+
+    const errors = validateRegister(options)
+    if (errors) {
+      return { errors }
+    }
+
+    const hashedPassword = await argon2.hash(options.password)
+    let user
+    try {
+      const result = await getConnection().createQueryBuilder().insert().into(User).values(
+        {
+          username: options.username,
+          password: hashedPassword,
+          email: options.email,
+          role: 'admin',
+        }
+      ).returning('*').execute()
+      user = result.raw[0]
+    } catch(error) {
+      console.log('error: ', error)
+      if (error.code === '23505') {
+        if (error.detail.includes('email')){
+          return {
+            errors: [
+              {
+                field: 'email',
+                message: 'email already taken',
+              },
+            ],
+          }
+        }
+
+        // duplicate username error
+        return {
+          errors: [{
+            field: 'username',
+            message: 'username already taken'
+          }]
+        }
+      }
+      console.log('message: ', error.message)
+    }
+
+    return { user }
+  }
 }

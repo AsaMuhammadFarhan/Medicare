@@ -161,6 +161,7 @@ export type KunjunganPoliInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
+  createAdmin: UserResponse;
   createBhp: Bhp;
   createConfigurationSetting: ConfigurationSettings;
   createDokter: Dokter;
@@ -221,6 +222,11 @@ export type Mutation = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationCreateAdminArgs = {
+  options: UsernamePasswordInput;
 };
 
 
@@ -664,6 +670,7 @@ export type Query = {
   getTindakan?: Maybe<Tindakan>;
   getUserPasien?: Maybe<Pasien>;
   getUserbyId?: Maybe<User>;
+  isThereAdmin: Scalars['Boolean'];
   me?: Maybe<User>;
   meWithAllData?: Maybe<User>;
   meWithPasienData?: Maybe<User>;
@@ -907,6 +914,13 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
+export type CreateAdminMutationVariables = Exact<{
+  input: UsernamePasswordInput;
+}>;
+
+
+export type CreateAdminMutation = { __typename?: 'Mutation', createAdmin: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
+
 export type CreateBhpMutationVariables = Exact<{
   input: BhpInput;
 }>;
@@ -1086,6 +1100,11 @@ export type InitiationSpecialRegisterMutationVariables = Exact<{ [key: string]: 
 
 
 export type InitiationSpecialRegisterMutation = { __typename?: 'Mutation', initiationSpecialRegister: boolean };
+
+export type IsThereAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IsThereAdminQuery = { __typename?: 'Query', isThereAdmin: boolean };
 
 export type LoginMutationVariables = Exact<{
   usernameorEmail: Scalars['String'];
@@ -1326,6 +1345,24 @@ export type MeWithPasienDataQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeWithPasienDataQuery = { __typename?: 'Query', meWithPasienData?: { __typename?: 'User', id: number, username: string, email: string, role: string, pasien?: { __typename?: 'Pasien', id: number, noRm?: string | null, nama?: string | null, nomorTelepon?: string | null, nik?: string | null, alamat?: string | null, tempatLahir?: string | null, tanggalLahir?: any | null, rt?: string | null, rw?: string | null, idKelurahan?: string | null, idKecamatan?: string | null, idKabupatenKota?: string | null, idProvinsi?: string | null } | null } | null };
 
 
+export const CreateAdminDocument = gql`
+    mutation createAdmin($input: UsernamePasswordInput!) {
+  createAdmin(options: $input) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+    `;
+
+export function useCreateAdminMutation() {
+  return Urql.useMutation<CreateAdminMutation, CreateAdminMutationVariables>(CreateAdminDocument);
+};
 export const CreateBhpDocument = gql`
     mutation createBhp($input: BhpInput!) {
   createBhp(input: $input) {
@@ -1593,6 +1630,15 @@ export const InitiationSpecialRegisterDocument = gql`
 
 export function useInitiationSpecialRegisterMutation() {
   return Urql.useMutation<InitiationSpecialRegisterMutation, InitiationSpecialRegisterMutationVariables>(InitiationSpecialRegisterDocument);
+};
+export const IsThereAdminDocument = gql`
+    query isThereAdmin {
+  isThereAdmin
+}
+    `;
+
+export function useIsThereAdminQuery(options: Omit<Urql.UseQueryArgs<IsThereAdminQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<IsThereAdminQuery>({ query: IsThereAdminDocument, ...options });
 };
 export const LoginDocument = gql`
     mutation Login($usernameorEmail: String!, $password: String!) {

@@ -1,0 +1,12 @@
+mutation createAdmin($input: UsernamePasswordInput!) {
+  createAdmin(options: $input) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+    }
+  }
+}
