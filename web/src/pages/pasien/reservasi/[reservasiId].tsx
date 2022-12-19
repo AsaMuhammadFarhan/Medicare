@@ -206,7 +206,7 @@ const PasienReservasiDetailPage = ({ reservasiId }: any) => {
             </Text>
             <Flex justify="space-between">
               <Text>
-                Tekanan Darah
+                Umur
               </Text>
               <Text>:</Text>
             </Flex>
