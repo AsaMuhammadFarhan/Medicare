@@ -53,7 +53,9 @@ Caranya:
 Database mah download aja.
 jangan lupa bikin akun di database yang dapet semua permission. Diinget passwordnya
 
-#### Layout
+#### Layouting
+Melakukan perubahan tampilan seperti ketika menggunakan HTML, CSS, JS.
+Namun di project ini menggunakan NextJS - Chakra UI.
 
 #### Integration 
 Graphql Playground[http://localhost:4000/graphql]
