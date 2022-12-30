@@ -61,6 +61,7 @@ Namun di project ini menggunakan NextJS - Chakra UI.
 Graphql Playground[http://localhost:4000/graphql]
 
 #### Route
+Karena menggunakan Next JS, semua route sudah disetting sesuai nama file setelah ```src/pages/```.
 
 #### Cache
 createUrqlClient.ts
