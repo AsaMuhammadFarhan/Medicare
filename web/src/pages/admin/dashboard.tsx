@@ -1,13 +1,14 @@
-import { Divider, Stack, Text } from "@chakra-ui/react";
+import { Divider, Stack, Text, Button } from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
 import LayoutAdmin from "../../components/LayoutGeneral";
 import { createUrqlClient } from "../../utils/createUrqlClient";
+import Link from "next/link"
 
-const AdminDashboardPage = () => {
+function AdminDashboardPage() {
 
-  const [realTimeDate, setRealTimeDate] = useState(new Date())
+  const [realTimeDate, setRealTimeDate] = useState(new Date());
   const [trigger, setTrigger] = useState(true);
   if (trigger === true) {
     setTrigger(false);
@@ -30,9 +31,16 @@ const AdminDashboardPage = () => {
           </Text>
         </Stack>
         <Divider />
+        <Stack height="12">
+          <Button colorScheme={"blue"} size="md" width="20">
+            <Link href="/admin/reservasi"> Reservasi </Link>
+          </Button>
+        </Stack>
       </Stack>
     </LayoutAdmin>
-  )
-};
+  );
+
+}
+
 
 export default withUrqlClient(createUrqlClient)(AdminDashboardPage);
