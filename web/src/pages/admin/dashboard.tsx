@@ -33,7 +33,7 @@ function AdminDashboardPage() {
         <Divider />
         <Stack height="12">
           <Button colorScheme={"blue"} size="md" width="20">
-            <Link href="http://localhost:3000/admin/reservasi"> Reservasi </Link>
+            <Link href="/admin/reservasi"> Reservasi </Link>
           </Button>
         </Stack>
       </Stack>
