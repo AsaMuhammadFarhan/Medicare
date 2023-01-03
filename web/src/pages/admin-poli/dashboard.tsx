@@ -1,4 +1,4 @@
-import { Divider, Skeleton, Stack, Text } from "@chakra-ui/react";
+import { Divider, Skeleton, Stack, Text} from "@chakra-ui/react";
 import moment from "moment";
 import { withUrqlClient } from "next-urql";
 import { useState } from "react";
@@ -26,7 +26,7 @@ const AdminPoliDashboardPage = () => {
         </Text>
         <Stack spacing="8px">
           <Text fontWeight={700} fontSize="24px">
-            Selamat Datang,
+            Selamat Datang
           </Text>
           <Skeleton isLoaded={me.fetching === false}>
             <Text fontWeight={700} fontSize="24px">
